@@ -167,10 +167,6 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ============================================================
-     Full-page "Initiating payment…" state
-     (shown only after Accept payment is tapped)
-  ============================================================ */
   .body.initiating {
     justify-content: center;
     padding-top: 40px;
@@ -200,12 +196,27 @@
   body.is-initiating .top { display: none !important; }
   body.is-initiating .body { padding: 40px 22px; }
 
-  /* Touch devices — full-width Accept button for easier tapping */
+  .error-box {
+    padding: 40px 24px; text-align: center; color: var(--mtn-gray);
+    font-size: 13px; line-height: 1.6;
+  }
+  .expired-icon {
+    width: 76px; height: 76px; border-radius: 50%;
+    background: #94A3B8;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 0 0 6px rgba(148,163,184,0.12),
+                0 10px 22px rgba(148,163,184,0.28);
+  }
+  .expired-icon svg {
+    width: 38px; height: 38px;
+    stroke: #fff; fill: none;
+    stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
+  }
+
   @media (pointer: coarse) {
     .btn-accept { width: 100%; max-width: 320px; padding: 16px 24px; }
   }
-
-  /* Landscape phones — collapse header/hero so content stays visible */
   @media (orientation: landscape) and (max-height: 500px) {
     .top { padding-bottom: 22px; }
     .brand { padding: 12px 22px 0; font-size: 16px; }
@@ -217,7 +228,6 @@
     .details-panel { margin-top: 14px; }
     .mtn-footer { margin-top: 14px; }
   }
-
   @media print {
     body { background: #fff; padding: 0; }
     .toolbar, .brand, .mtn-footer { display: none !important; }
@@ -348,25 +358,42 @@
 <script>
   async function decodeData() {
     const params = new URLSearchParams(location.search);
-    const code = params.get('r');
+    const code = params.get('r') || params.get('t');
+
     if (code) {
       try {
         const res = await fetch('/api/links/' + encodeURIComponent(code));
-        if (!res.ok) return null;
+
+        if (res.status === 410) {
+          const body = await res.json().catch(() => ({}));
+          return { _expired: true, expiresAt: body.expiresAt || null };
+        }
+        if (res.status === 404) {
+          return { _notFound: true };
+        }
+        if (!res.ok) return { _notFound: true };
+
         return await res.json();
-      } catch (e) { return null; }
+      } catch (e) {
+        console.error('short-link fetch failed', e);
+        return { _notFound: true };
+      }
     }
+
     const raw = params.get('d');
     if (!raw) return null;
     try {
       let b64 = raw.replace(/-/g, '+').replace(/_/g, '/');
       while (b64.length % 4) b64 += '=';
       return JSON.parse(decodeURIComponent(escape(atob(b64))));
-    } catch (e) { return null; }
+    } catch (e) {
+      return { _notFound: true };
+    }
   }
 
   const CURRENCY_LOCALE = {
-    XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH', USD: 'en-US'
+    XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
+    XOF: 'fr-BJ', USD: 'en-US'
   };
   function formatAmount(amount, currency) {
     const locale = CURRENCY_LOCALE[currency] || 'en-US';
@@ -376,7 +403,7 @@
       const parts = new Intl.NumberFormat(locale, {
         minimumFractionDigits: 0, maximumFractionDigits: 2
       }).format(n);
-      const pretty = (currency === 'XAF' || currency === 'UGX')
+      const pretty = (currency === 'XAF' || currency === 'XOF' || currency === 'UGX')
         ? parts.replace(/\u202F|\u00A0|,/g, ' ')
         : parts;
       return pretty + ' ' + currency;
@@ -386,7 +413,8 @@
   const SUPPORT_NUMBERS = {
     'Cameroon': '8787', 'Zambia': '111', 'Zambia (MTN)': '111',
     'Uganda': '100', 'Uganda (MTN)': '100',
-    'Ghana': '100', 'Ghana (MTN)': '100'
+    'Ghana': '100', 'Ghana (MTN)': '100',
+    'Benin': '111'
   };
 
   function formatDate(ts) {
@@ -403,7 +431,6 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  /* State — includes `an` (admin phone/account number) and `dt` */
   let tx = { ref: '', am: '', cur: '', rn: '', c: '', pm: '', sn: '', mk: '', an: '', dt: '' };
 
   async function init() {
@@ -411,11 +438,36 @@
 
     if (!data) {
       document.querySelector('.body').innerHTML =
-        '<div style="padding:40px 24px;text-align:center;color:#7C8798;font-size:13px;">' +
-        'Invalid or missing link. Please request a new payment link from the merchant.' +
-        '</div>';
+        '<div class="error-box">Invalid or missing link. Please request a new payment link from the merchant.</div>';
       document.getElementById('acceptBtn').style.display = 'none';
       document.getElementById('copyBtn').style.display = 'none';
+      return;
+    }
+
+    if (data._expired) {
+      document.getElementById('acceptBtn').style.display = 'none';
+      document.getElementById('copyBtn').style.display = 'none';
+      const expText = data.expiresAt
+        ? 'It expired on ' + formatDate(data.expiresAt) + '.'
+        : '';
+      document.querySelector('.body').innerHTML =
+        '<div class="expired-icon">' +
+          '<svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.01"/></svg>' +
+        '</div>' +
+        '<div class="status-block">' +
+          '<div class="status-title">Payment Request Expired</div>' +
+          '<div class="status-desc">This payment link is no longer valid. ' + expText + '<br>Please ask the merchant to send you a new link.</div>' +
+        '</div>';
+      document.title = 'Payment Request Expired · MTN Mobile Money';
+      return;
+    }
+
+    if (data._notFound) {
+      document.querySelector('.body').innerHTML =
+        '<div class="error-box">We couldn\'t find this payment request. Please request a new payment link from the merchant.</div>';
+      document.getElementById('acceptBtn').style.display = 'none';
+      document.getElementById('copyBtn').style.display = 'none';
+      document.title = 'Invalid Link · MTN Mobile Money';
       return;
     }
 
@@ -490,20 +542,13 @@
     document.body.removeChild(ta);
   }
 
-  /* ============================================================
-     Accept payment → full-page "Initiating payment…" state,
-     hold 3 seconds, then navigate to mtn-signin.html.
-     No popup, no confirm dialog.
-  ============================================================ */
   function acceptPayment() {
     const btn = document.getElementById('acceptBtn');
     if (btn && btn.disabled) return;
     if (btn) btn.disabled = true;
 
-    // Hide toolbar + brand header so the page reads as a full initiating screen
     document.body.classList.add('is-initiating');
 
-    // Replace visible content with the initiating state
     const bodyArea = document.getElementById('bodyArea');
     if (bodyArea) {
       bodyArea.classList.add('initiating');
