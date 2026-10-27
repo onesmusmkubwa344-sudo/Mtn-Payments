@@ -177,14 +177,27 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
             <span class="helper-pill">MTN MoMo Markets</span>
           </div>
           <select id="adminCountrySelect" class="styled-select" onchange="handleAdminCountryChange()" required>
-            <option value="" data-flag="" data-country="" data-currency="" selected></option>
-            <option value="+256" data-flag="🇺🇬" data-country="Uganda" data-currency="UGX">🇺🇬 Uganda (+256) — MTN MoMo</option>
-            <option value="+237" data-flag="🇨🇲" data-country="Cameroon" data-currency="XAF">🇨🇲 Cameroon (+237) — MTN MoMo</option>
-            <option value="+260" data-flag="🇿🇲" data-country="Zambia" data-currency="ZMW">🇿🇲 Zambia (+260) — MTN MoMo</option>
-            <option value="+233" data-flag="🇬🇭" data-country="Ghana" data-currency="GHS">🇬🇭 Ghana (+233) — MTN MoMo</option>
-            <option value="+229" data-flag="🇧🇯" data-country="Benin" data-currency="XOF">🇧🇯 Benin (+229) — MTN MoMo</option>
+            <option value="" data-flag="" data-country="" data-currency="" data-lang="en" selected></option>
+            <option value="+256" data-flag="🇺🇬" data-country="Uganda" data-currency="UGX" data-lang="en">🇺🇬 Uganda (+256) — MTN MoMo</option>
+            <option value="+237" data-flag="🇨🇲" data-country="Cameroon" data-currency="XAF" data-lang="fr">🇨🇲 Cameroon (+237) — MTN MoMo</option>
+            <option value="+260" data-flag="🇿🇲" data-country="Zambia" data-currency="ZMW" data-lang="en">🇿🇲 Zambia (+260) — MTN MoMo</option>
+            <option value="+233" data-flag="🇬🇭" data-country="Ghana" data-currency="GHS" data-lang="en">🇬🇭 Ghana (+233) — MTN MoMo</option>
+            <option value="+229" data-flag="🇧🇯" data-country="Benin" data-currency="XOF" data-lang="fr">🇧🇯 Benin (+229) — MTN MoMo</option>
           </select>
           <span class="field-hint" id="country-hint"></span>
+        </div>
+
+        <!-- ═══════════ LANGUAGE ═══════════ -->
+        <div class="form-group">
+          <div class="label-row">
+            <label for="adminLanguage">Client Language <span class="required">*</span></label>
+            <span class="helper-pill">UI Language</span>
+          </div>
+          <select id="adminLanguage" class="styled-select" required>
+            <option value="en">🇬🇧 English</option>
+            <option value="fr">🇫🇷 Français</option>
+          </select>
+          <span class="field-hint" id="lang-hint">All client pages will display in the selected language.</span>
         </div>
 
         <div class="form-group">
@@ -283,6 +296,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
           <div class="meta-item"><span class="m-lbl">Recipient</span><span class="m-val" id="summary-recipient">—</span></div>
           <div class="meta-item"><span class="m-lbl">Amount</span><span class="m-val highlight" id="summary-amount">—</span></div>
           <div class="meta-item"><span class="m-lbl">Country</span><span class="m-val" id="summary-country">—</span></div>
+          <div class="meta-item"><span class="m-lbl">Language</span><span class="m-val" id="summary-language">—</span></div>
           <div class="meta-item"><span class="m-lbl">Tracking</span><span class="m-val code" id="summary-tracking">—</span></div>
           <div class="meta-item"><span class="m-lbl">Expires</span><span class="m-val" id="summary-expiry">—</span></div>
         </div>
@@ -322,8 +336,10 @@ const STORAGE_KEY_CURRENT  = 'momo_current_receipt';
 const DEFAULT_SAMPLE_DATA = {
   trackingNumber:'', modeOfPayment:'', accountName:'', countryCode:'', countryFlag:'',
   countryName:'', accountNumber:'', amount:'', currency:'', receiptOptional:'',
-  marketedBy:'', timestamp:'', isAccepted:false, isDeclined:false, expiryHours: 6
+  marketedBy:'', lang:'en', timestamp:'', isAccepted:false, isDeclined:false, expiryHours: 6
 };
+
+const LANG_LABELS = { en: 'English', fr: 'Français' };
 
 let currentReceipt = { ...DEFAULT_SAMPLE_DATA };
 
@@ -345,14 +361,17 @@ function handleAdminCountryChange(){
   const flag = opt.getAttribute('data-flag') || '';
   const countryName = opt.getAttribute('data-country') || '';
   const defaultCurr = opt.getAttribute('data-currency') || '';
+  const defaultLang = opt.getAttribute('data-lang') || 'en';
   const dialEl = document.getElementById('admin-dial-code');
   const flagEl = document.getElementById('admin-flag-icon');
   const hintEl = document.getElementById('country-hint');
   const currInput = document.getElementById('adminCurrency');
+  const langSelect = document.getElementById('adminLanguage');
   if(dialEl) dialEl.textContent = dialCode;
   if(flagEl) flagEl.textContent = flag;
   if(hintEl) hintEl.textContent = countryName ? `Selected: ${countryName} MTN MoMo corridor (${dialCode})` : '';
   if(currInput && !currInput.value) currInput.value = defaultCurr;
+  if(langSelect) langSelect.value = defaultLang;
 }
 
 function handleAdminExpiryChange(){
@@ -380,6 +399,9 @@ function populateAdminForm(data){
   const countrySelect = document.getElementById('adminCountrySelect');
   if(data.countryCode) countrySelect.value = data.countryCode;
   handleAdminCountryChange();
+  // Override with saved lang if present
+  const langSelect = document.getElementById('adminLanguage');
+  if (langSelect && data.lang) langSelect.value = data.lang;
   document.getElementById('adminAccountNumber').value = data.accountNumber || '';
   document.getElementById('adminAmount').value = data.amount || '';
   document.getElementById('adminCurrency').value = data.currency || '';
@@ -406,6 +428,8 @@ async function handleAdminFormSubmit(e){
   const countryCode = opt.value || '';
   const countryFlag = opt.getAttribute('data-flag') || '';
   const countryName = opt.getAttribute('data-country') || '';
+  const langSelect = document.getElementById('adminLanguage');
+  const lang = (langSelect?.value || 'en').toLowerCase();
   const now = new Date();
   const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const hours = String(now.getHours()).padStart(2,'0');
@@ -421,6 +445,7 @@ async function handleAdminFormSubmit(e){
     accountName: document.getElementById('adminAccountName').value.trim(),
     countryCode, countryFlag, countryName,
     network: 'mtn',
+    lang: lang,
     accountNumber: document.getElementById('adminAccountNumber').value.trim(),
     amount: parseFloat(document.getElementById('adminAmount').value || 0).toFixed(2),
     currency: document.getElementById('adminCurrency').value.trim().toUpperCase(),
@@ -468,9 +493,9 @@ async function handleAdminFormSubmit(e){
   btn.innerHTML = originalText;
 
   navigator.clipboard.writeText(shortUrl).then(()=>{
-    showToast(`✓ Payment Registered & Short Link Copied (expires in ${expiryHours}h)`);
+    showToast(`✓ Payment Registered & Short Link Copied (${LANG_LABELS[lang]}, ${expiryHours}h)`);
   }).catch(()=>{
-    showToast(`✓ Payment Registered! Short link ready (expires in ${expiryHours}h)`);
+    showToast(`✓ Payment Registered! Short link ready (${LANG_LABELS[lang]}, ${expiryHours}h)`);
   });
 }
 
@@ -492,6 +517,7 @@ function updateGeneratedLinkDisplay(data){
   const sumRecipient = document.getElementById('summary-recipient');
   const sumAmount = document.getElementById('summary-amount');
   const sumCountry = document.getElementById('summary-country');
+  const sumLanguage = document.getElementById('summary-language');
   const sumTracking = document.getElementById('summary-tracking');
   const sumExpiry = document.getElementById('summary-expiry');
   const hasData = data && (data.trackingNumber || data.accountName || data.accountNumber || data.amount);
@@ -500,6 +526,7 @@ function updateGeneratedLinkDisplay(data){
   if(sumRecipient) sumRecipient.textContent = data.accountName || '—';
   if(sumAmount) sumAmount.textContent = data.amount ? `${(data.currency||'').toUpperCase()} ${parseFloat(data.amount).toLocaleString('en-UG', {maximumFractionDigits:2})}`.trim() : '—';
   if(sumCountry) sumCountry.textContent = data.countryName ? `${data.countryFlag||''} ${data.countryName}`.trim() : '—';
+  if(sumLanguage) sumLanguage.textContent = LANG_LABELS[(data.lang||'en').toLowerCase()] || '—';
   if(sumTracking) sumTracking.textContent = data.trackingNumber || '—';
   if(sumExpiry){
     if(data.expiresAt){
@@ -562,11 +589,12 @@ function renderAdminHistory(){
   listEl.innerHTML = history.map(item=>{
     const itemUrl = item._shortUrl || buildClientPaymentUrl(item);
     const amt = parseFloat(item.amount||0).toLocaleString('en-UG', {maximumFractionDigits:0});
+    const langTag = (item.lang||'en').toUpperCase();
     return `
     <div class="history-item-row">
       <div class="hist-info">
         <div class="hist-name">${escapeHtml(item.accountName)} <span class="hist-code">${escapeHtml(item.trackingNumber)}</span></div>
-        <div class="hist-sub">${escapeHtml(item.countryFlag||'')} ${escapeHtml(item.countryName||'')} • ${escapeHtml(item.modeOfPayment||'')} • ${escapeHtml(item.timestamp||'')}${item.expiryHours ? ' • expires in '+item.expiryHours+'h' : ''}</div>
+        <div class="hist-sub">${escapeHtml(item.countryFlag||'')} ${escapeHtml(item.countryName||'')} • ${escapeHtml(item.modeOfPayment||'')} • ${escapeHtml(item.timestamp||'')}${item.expiryHours ? ' • expires in '+item.expiryHours+'h' : ''} • ${escapeHtml(langTag)}</div>
       </div>
       <div class="hist-amt">${escapeHtml(item.currency)} ${amt}</div>
       <div class="hist-actions">
