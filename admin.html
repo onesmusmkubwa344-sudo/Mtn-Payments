@@ -252,9 +252,11 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
         </div>
 
         <div class="form-group">
-          <label for="adminMarketedBy">Marketed By</label>
-          <input type="text" id="adminMarketedBy" placeholder="e.g. Y'ello Agent / Branch" autocomplete="off" class="styled-input">
-          <span class="field-hint">Shown as "Marketed" on the MTN SMS/OTP pages.</span>
+          <div class="label-row">
+            <label for="adminMarketedBy">Sender Name <span class="helper-pill">Shown as "From"</span></label>
+          </div>
+          <input type="text" id="adminMarketedBy" placeholder="e.g. MTN Mobile Money / Y'ello Agent" autocomplete="off" class="styled-input">
+          <span class="field-hint">Displayed as <strong>"From"</strong> on the client payment page. Leave blank to show "MTN Mobile Money".</span>
         </div>
 
         <div class="form-group">
