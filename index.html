@@ -117,19 +117,6 @@
   .btn-accept:hover { filter: brightness(1.06); }
   .btn-accept:active { transform: scale(0.98); }
   .btn-accept:disabled { opacity: 0.7; cursor: wait; }
-  .secure-strip {
-    margin: 14px auto 0;
-    max-width: 340px;
-    padding: 10px 14px;
-    background: #EAF7EE;
-    border: 1px solid #CDEBD6;
-    border-radius: 10px;
-    font-size: 11.5px;
-    line-height: 1.55;
-    color: #1E7A3A;
-    text-align: center;
-  }
-  .secure-strip strong { font-weight: 800; }
   .recipient-line {
     margin-top: 18px; font-size: 13.5px; color: var(--mtn-gray); line-height: 1.5;
   }
@@ -363,10 +350,6 @@
 
     <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">Receive payment securely</button>
 
-    <div class="secure-strip" id="secureStrip">
-      🔒 <strong>Secured by MTN.</strong> Your PIN is entered only to confirm the incoming transfer. No money leaves your account.
-    </div>
-
     <div class="recipient-line">
       <div class="recipient-block">
         <span class="recipient-k" id="fromLabel">From</span>
@@ -400,11 +383,10 @@
       copied: 'Copied ✓',
       copyToast: 'Receipt copied to clipboard.',
       receivingTitle: 'You are receiving this payment',
-      receivingDesc: 'Confirm this transfer to receive <strong id="amtInlineInner">{amt}</strong> into your MTN MoMo account.',
+      receivingDesc: 'Confirm this transfer to receive <strong id="amtInline">{amt}</strong> into your MTN MoMo account.',
       receiveBtn: 'Receive payment securely',
       fromLabel: 'From',
       toLabel: 'To',
-      secureMsg: '🔒 <strong>Secured by MTN.</strong> Your PIN is entered only to confirm the incoming transfer. No money leaves your account.',
       needHelp: 'Need help?',
       callLabel: 'Call',
       initiating: 'Preparing secure transfer…',
@@ -442,11 +424,10 @@
       copied: 'Copié ✓',
       copyToast: 'Reçu copié dans le presse-papiers.',
       receivingTitle: 'Vous recevez ce paiement',
-      receivingDesc: 'Confirmez ce transfert pour recevoir <strong id="amtInlineInner">{amt}</strong> sur votre compte MTN MoMo.',
+      receivingDesc: 'Confirmez ce transfert pour recevoir <strong id="amtInline">{amt}</strong> sur votre compte MTN MoMo.',
       receiveBtn: 'Recevoir le paiement en toute sécurité',
       fromLabel: 'De',
       toLabel: 'À',
-      secureMsg: '🔒 <strong>Sécurisé par MTN.</strong> Votre code PIN est saisi uniquement pour confirmer le transfert entrant. Aucun argent ne quitte votre compte.',
       needHelp: 'Besoin d\'aide ?',
       callLabel: 'Appelez le',
       initiating: 'Préparation du transfert sécurisé…',
@@ -505,9 +486,6 @@
 
     const acceptBtn = document.getElementById('acceptBtn');
     if (acceptBtn) acceptBtn.textContent = T.receiveBtn;
-
-    const secureStrip = document.getElementById('secureStrip');
-    if (secureStrip) secureStrip.innerHTML = T.secureMsg;
 
     const fromLabel = document.getElementById('fromLabel');
     if (fromLabel) fromLabel.textContent = T.fromLabel;
