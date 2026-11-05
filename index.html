@@ -22,6 +22,7 @@
     --sb-green:     #0E7A4A;
     --sb-red:       #B3261E;
     --sb-red-soft:  #FDECEA;
+    --sb-gold-soft: #FFF8E1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -37,42 +38,45 @@
     position: relative; overflow: hidden;
   }
 
-  /* ─── TOOLBAR ─── */
-  .toolbar {
+  /* ══════════════════════════════════════════════════════
+     HEADER — Logo prominent at very top
+     ══════════════════════════════════════════════════════ */
+  .header {
     flex-shrink: 0; background: var(--sb-white);
-    padding: max(12px, env(safe-area-inset-top, 0px)) 16px 12px;
+    padding: max(20px, env(safe-area-inset-top, 0px)) 20px 16px;
     border-bottom: 1px solid var(--sb-border);
     display: flex; align-items: center; justify-content: space-between;
-    gap: 10px; z-index: 30;
+    gap: 12px;
   }
-  .toolbar-logo { height: 26px; width: auto; display: block; }
-  .toolbar-actions { display: flex; gap: 8px; }
-  .tool-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 8px 12px; font-size: 12px; font-weight: 600;
-    border-radius: 8px; font-family: inherit; cursor: pointer;
-    transition: all .15s; border: 1px solid var(--sb-border);
+  .header-logo {
+    height: 34px; width: auto; display: block;
+  }
+  .header-actions { display: flex; gap: 8px; }
+  .header-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: 8px; border: 1px solid var(--sb-border);
     background: var(--sb-white); color: var(--sb-primary);
+    cursor: pointer; transition: all .15s;
   }
-  .tool-btn:hover { border-color: var(--sb-primary); background: #F6F8FC; }
-  .tool-btn.copied { background: var(--sb-green); border-color: var(--sb-green); color: #fff; }
-  .tool-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+  .header-btn:hover { border-color: var(--sb-primary); background: #F6F8FC; }
+  .header-btn.copied { background: var(--sb-green); border-color: var(--sb-green); color: #fff; }
+  .header-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-  /* ─── HERO / HEADER ─── */
-  .top {
+  /* ══════════════════════════════════════════════════════
+     HERO STRIP — Title + secure badge
+     ══════════════════════════════════════════════════════ */
+  .hero {
     position: relative; flex-shrink: 0;
     background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
-    padding: 26px 22px 28px;
+    padding: 22px 22px 26px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
   }
-  .top::before {
+  .hero::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
     background: var(--sb-gold);
     border-top-left-radius: 20px; border-top-right-radius: 20px;
-  }
-  .top-row {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
   }
   .secure-badge {
     display: inline-flex; align-items: center; gap: 6px;
@@ -85,105 +89,126 @@
   .secure-badge svg {
     width: 11px; height: 11px; stroke: var(--sb-gold); fill: none; stroke-width: 2.4;
   }
-
   .hero-title {
-    margin-top: 22px; font-size: 21px; font-weight: 800;
+    margin-top: 16px; font-size: 22px; font-weight: 800;
     color: #FFFFFF; letter-spacing: -0.4px; line-height: 1.25;
   }
   .hero-sub {
-    margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,0.82);
-    line-height: 1.55; max-width: 320px;
+    margin-top: 6px; font-size: 13px; color: rgba(255,255,255,0.82);
+    line-height: 1.55; max-width: 340px;
   }
 
-  /* ─── BODY ─── */
+  /* ══════════════════════════════════════════════════════
+     BODY
+     ══════════════════════════════════════════════════════ */
   .body {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    padding: 22px 20px 24px;
+    padding: 20px 20px 24px;
     display: flex; flex-direction: column;
   }
 
-  /* ─── AMOUNT CARD ─── */
+  /* AMOUNT CARD — big, prominent */
   .amount-card {
-    background: var(--sb-soft); border-radius: 12px;
+    background: var(--sb-soft); border-radius: 14px;
     border: 1px solid var(--sb-border);
-    padding: 16px 18px; margin-bottom: 14px;
-    display: flex; flex-direction: column; gap: 4px;
+    padding: 18px 20px; margin-bottom: 14px;
   }
   .amount-card .label {
-    font-size: 10.5px; color: var(--sb-muted); font-weight: 700;
+    font-size: 11px; color: var(--sb-muted); font-weight: 700;
     letter-spacing: 0.7px; text-transform: uppercase;
+    margin-bottom: 6px; display: block;
   }
   .amount-card .amount {
-    font-size: 30px; font-weight: 800; color: var(--sb-primary);
-    letter-spacing: -0.8px; line-height: 1.1;
+    font-size: 34px; font-weight: 800; color: var(--sb-primary);
+    letter-spacing: -1px; line-height: 1.1; display: block;
   }
 
-  /* ─── PURPOSE CARD ─── */
+  /* PURPOSE CARD — gold accent, prominent */
   .purpose-card {
-    background: #FFFDF5; border-radius: 12px;
+    background: #FFFDF5; border-radius: 14px;
     border: 1px solid #F2E4B8;
-    padding: 14px 18px; margin-bottom: 20px;
-    display: flex; flex-direction: column; gap: 4px;
+    padding: 16px 20px; margin-bottom: 22px;
     position: relative; overflow: hidden;
   }
+  .purpose-card.hidden { display: none; }
   .purpose-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
     background: var(--sb-gold);
   }
   .purpose-card .label {
-    font-size: 10.5px; color: #8A6600; font-weight: 700;
-    letter-spacing: 0.7px; text-transform: uppercase;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.7px;
+    text-transform: uppercase; color: #8A6600;
+    margin-bottom: 6px; display: block;
   }
   .purpose-card .purpose {
-    font-size: 14.5px; font-weight: 700; color: var(--sb-navy);
-    line-height: 1.4; word-break: break-word;
+    font-size: 15px; font-weight: 700; color: var(--sb-navy);
+    line-height: 1.45; word-break: break-word;
   }
-  .purpose-card.hidden { display: none; }
 
-  /* ─── ACCEPT BUTTON ─── */
+  /* BUTTON — full width, generous */
   .btn-accept {
-    width: 100%; height: 52px;
+    width: 100%; height: 56px;
     background: var(--sb-primary); color: #fff;
-    font-family: inherit; font-size: 14.5px; font-weight: 700;
+    font-family: inherit; font-size: 15px; font-weight: 800;
     letter-spacing: 0.4px;
-    border: none; border-radius: 10px; cursor: pointer;
-    box-shadow: 0 8px 20px rgba(1,0,140,0.22);
+    border: none; border-radius: 12px; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(1,0,140,0.25);
     transition: filter .15s, transform .1s, box-shadow .15s;
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
   }
-  .btn-accept:hover { filter: brightness(1.08); box-shadow: 0 10px 24px rgba(1,0,140,0.28); }
+  .btn-accept:hover { filter: brightness(1.08); box-shadow: 0 10px 24px rgba(1,0,140,0.32); }
   .btn-accept:active { transform: scale(0.985); }
   .btn-accept:disabled { opacity: 0.65; cursor: wait; }
+  .btn-accept svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* ─── RECIPIENT ─── */
-  .recipient-line {
-    margin-top: 18px; font-size: 13px; color: var(--sb-muted); line-height: 1.5;
-    display: flex; flex-direction: column; gap: 10px;
+  /* RECIPIENT ROWS — cleaner, more space */
+  .recipient-section {
+    margin-bottom: 20px;
   }
-  .recipient-block {
-    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-    padding: 10px 14px;
+  .recipient-label-row {
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
+    text-transform: uppercase; color: var(--sb-muted);
+    margin-bottom: 10px;
+  }
+  .recipient-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; padding: 13px 16px;
     background: var(--sb-soft); border-radius: 10px;
     border: 1px solid var(--sb-border);
+    margin-bottom: 8px;
   }
-  .recipient-k {
-    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.6px; color: var(--sb-muted); flex-shrink: 0;
+  .recipient-row:last-child { margin-bottom: 0; }
+  .recipient-row .k {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--sb-muted); flex-shrink: 0;
   }
-  .recv-name {
+  .recipient-row .v {
     font-weight: 700; color: var(--sb-text);
-    font-size: 13.5px; text-align: right; word-break: break-word;
+    font-size: 14px; text-align: right; word-break: break-word;
   }
 
-  /* ─── DETAILS PANEL ─── */
+  /* DETAILS PANEL — proper spacing */
   .details-panel {
-    width: 100%; margin-top: 18px;
-    background: var(--sb-white); border-radius: 12px;
+    width: 100%; margin-bottom: 22px;
+    background: var(--sb-white); border-radius: 14px;
     border: 1px solid var(--sb-border);
-    padding: 4px 16px; text-align: left;
+    overflow: hidden;
+  }
+  .details-panel .panel-title {
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
+    text-transform: uppercase; color: var(--sb-muted);
+    padding: 14px 20px 8px;
+    background: var(--sb-soft);
+    border-bottom: 1px solid var(--sb-border);
+  }
+  .details-panel .panel-body {
+    padding: 4px 20px 8px;
   }
   .detail-row {
     display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 12px; padding: 11px 0;
+    gap: 12px; padding: 12px 0;
     border-bottom: 1px solid var(--sb-border);
   }
   .detail-row:last-child { border-bottom: none; }
@@ -191,125 +216,125 @@
     font-size: 11.5px; color: var(--sb-muted); flex-shrink: 0; font-weight: 500;
   }
   .detail-row .v {
-    font-size: 12px; font-weight: 700; text-align: right;
+    font-size: 12.5px; font-weight: 700; text-align: right;
     word-break: break-word; color: var(--sb-text);
   }
 
-  /* ─── FOOTER ─── */
+  /* FOOTER */
   .sb-footer {
-    width: 100%; margin-top: 22px;
+    width: 100%; margin-top: auto;
     background: var(--sb-navy);
-    border-radius: 12px;
-    padding: 16px 18px;
+    border-radius: 14px;
+    padding: 18px 20px;
     display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; text-align: left;
+    gap: 14px;
   }
   .sb-footer .foot-logo {
-    height: 22px; width: auto; display: block;
+    height: 26px; width: auto; display: block;
+    filter: brightness(0) invert(1); opacity: 0.96;
   }
   .sb-footer .foot-support {
-    font-size: 10.5px; color: rgba(255,255,255,0.72); line-height: 1.5; font-weight: 500;
+    font-size: 11px; color: rgba(255,255,255,0.75); line-height: 1.5; font-weight: 500;
     text-align: right;
   }
   .sb-footer .foot-support strong {
-    color: var(--sb-gold); font-weight: 700; font-size: 11.5px;
+    color: var(--sb-gold); font-weight: 700; font-size: 12.5px;
   }
 
-  /* ─── TOAST ─── */
+  /* TOAST */
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: var(--sb-navy); color: #fff; padding: 11px 18px; border-radius: 9px;
+    background: var(--sb-navy); color: #fff; padding: 12px 20px; border-radius: 10px;
     font-size: 12.5px; font-weight: 600; opacity: 0; transition: all .3s ease;
     z-index: 50; pointer-events: none; max-width: 90%; text-align: center;
     box-shadow: 0 12px 28px rgba(0,0,0,0.25);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ─── INITIATING STATE ─── */
+  /* INITIATING STATE */
   .body.initiating {
     justify-content: center;
-    padding-top: 40px;
+    padding-top: 60px;
   }
   .init-spinner {
-    width: 54px; height: 54px;
+    width: 56px; height: 56px;
     border: 4px solid var(--sb-soft);
     border-top-color: var(--sb-primary);
     border-radius: 50%;
     animation: initSpin 0.9s linear infinite;
-    margin-bottom: 26px;
+    margin: 0 auto 28px;
   }
   @keyframes initSpin { to { transform: rotate(360deg); } }
   .init-title {
-    font-size: 20px; font-weight: 800; letter-spacing: -0.4px;
-    color: var(--sb-navy); margin-bottom: 8px; line-height: 1.25;
+    font-size: 21px; font-weight: 800; letter-spacing: -0.4px;
+    color: var(--sb-navy); margin-bottom: 10px; line-height: 1.3; text-align: center;
   }
   .init-desc {
-    font-size: 13px; color: var(--sb-muted); line-height: 1.6;
-    max-width: 300px; margin: 0 auto;
+    font-size: 13.5px; color: var(--sb-muted); line-height: 1.65;
+    max-width: 300px; margin: 0 auto; text-align: center;
   }
   .init-note {
-    margin-top: 22px; font-size: 11.5px; color: var(--sb-muted);
-    font-weight: 600;
+    margin-top: 24px; font-size: 12px; color: var(--sb-muted);
+    font-weight: 600; text-align: center;
   }
-  body.is-initiating .toolbar,
-  body.is-initiating .top { display: none !important; }
-  body.is-initiating .body { padding: 40px 22px; }
+  body.is-initiating .header,
+  body.is-initiating .hero { display: none !important; }
+  body.is-initiating .body { padding: 60px 24px; }
 
-  /* ─── ERROR / EXPIRED ─── */
+  /* ERROR / EXPIRED */
   .error-box {
     padding: 40px 24px; text-align: center; color: var(--sb-muted);
-    font-size: 13px; line-height: 1.6;
+    font-size: 14px; line-height: 1.6;
   }
   .expired-icon {
-    width: 72px; height: 72px; border-radius: 50%;
+    width: 76px; height: 76px; border-radius: 50%;
     background: #94A3B8;
     display: inline-flex; align-items: center; justify-content: center;
-    margin: 0 auto 16px;
+    margin: 0 auto 20px;
     box-shadow: 0 0 0 6px rgba(148,163,184,0.12),
                 0 10px 22px rgba(148,163,184,0.28);
   }
   .expired-icon svg {
-    width: 36px; height: 36px;
+    width: 38px; height: 38px;
     stroke: #fff; fill: none;
     stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
   }
 
-  /* ─── RESPONSIVE ─── */
+  /* RESPONSIVE */
   @media (pointer: coarse) {
-    .btn-accept { height: 54px; font-size: 15px; }
-  }
-  @media (orientation: landscape) and (max-height: 500px) {
-    .top { padding: 16px 20px 18px; }
-    .hero-title { margin-top: 12px; font-size: 17px; }
-    .body { padding: 16px 20px; }
-    .amount-card { padding: 12px 16px; margin-bottom: 10px; }
-    .amount-card .amount { font-size: 24px; }
-    .purpose-card { padding: 10px 16px; margin-bottom: 12px; }
-    .btn-accept { height: 46px; }
-    .details-panel, .sb-footer { margin-top: 12px; }
-  }
-  @media print {
-    body { background: #fff; padding: 0; }
-    .toolbar, .sb-footer, .btn-accept { display: none !important; }
-    .phone { box-shadow: none; }
-    .top { background: #fff; border-bottom: 1px solid #ccc; padding: 12px 0; }
-    .hero-title { color: var(--sb-primary); }
-    .hero-sub { color: var(--sb-muted); }
-    .secure-badge { display: none; }
-    .body { padding-top: 20px; }
+    .btn-accept { height: 58px; font-size: 15.5px; }
   }
   @media (max-width: 380px) {
-    .toolbar-logo { height: 22px; }
-    .tool-btn { padding: 7px 10px; font-size: 11px; }
-    .top { padding: 20px 18px 22px; }
+    .header { padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: 14px; }
+    .header-logo { height: 28px; }
+    .header-btn { width: 36px; height: 36px; }
+    .hero { padding: 18px 18px 22px; }
+    .hero-title { font-size: 20px; }
+    .body { padding: 18px 18px 20px; }
+    .amount-card { padding: 16px 18px; }
+    .amount-card .amount { font-size: 28px; }
+    .purpose-card { padding: 14px 18px; }
+    .purpose-card .purpose { font-size: 14px; }
+    .btn-accept { height: 52px; font-size: 14.5px; margin-bottom: 20px; }
+    .recipient-row { padding: 12px 14px; }
+    .recipient-row .v { font-size: 13px; }
+    .details-panel .panel-title { padding: 12px 16px 8px; }
+    .details-panel .panel-body { padding: 4px 16px 8px; }
+    .detail-row { padding: 11px 0; }
+    .detail-row .k { font-size: 11px; }
+    .detail-row .v { font-size: 12px; }
+    .sb-footer { padding: 16px 18px; }
+    .sb-footer .foot-logo { height: 22px; }
+  }
+  @media (max-height: 680px) {
+    .hero { padding: 16px 20px 20px; }
     .hero-title { font-size: 19px; }
-    .amount-card .amount { font-size: 26px; }
-    .purpose-card .purpose { font-size: 13.5px; }
-    .btn-accept { height: 50px; font-size: 14px; }
-    .detail-row .v { font-size: 11.5px; }
-    .sb-footer { padding: 14px 16px; }
-    .sb-footer .foot-logo { height: 20px; }
+    .body { padding: 16px 18px 18px; }
+    .amount-card { padding: 14px 18px; margin-bottom: 12px; }
+    .amount-card .amount { font-size: 28px; }
+    .purpose-card { padding: 12px 18px; margin-bottom: 16px; }
+    .btn-accept { height: 50px; margin-bottom: 16px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
@@ -320,71 +345,90 @@
       overflow: hidden;
     }
   }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .header-actions, .sb-footer, .btn-accept { display: none !important; }
+    .phone { box-shadow: none; }
+    .hero { background: #fff; padding: 16px 0; }
+    .hero::before { display: none; }
+    .hero-title { color: var(--sb-primary); }
+    .hero-sub { color: var(--sb-muted); }
+    .secure-badge { display: none; }
+  }
 </style>
 </head>
 <body>
 
 <div class="phone">
 
-  <!-- TOOLBAR -->
-  <div class="toolbar">
+  <!-- ═══ HEADER — Logo at top ═══ -->
+  <div class="header">
     <img
-      class="toolbar-logo"
+      class="header-logo"
       src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/light/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
       alt="Stanbic Bank"
     >
-    <div class="toolbar-actions">
-      <button class="tool-btn" id="copyBtn" onclick="copyReceipt()">
+    <div class="header-actions">
+      <button class="header-btn" id="copyBtn" onclick="copyReceipt()" aria-label="Copy receipt">
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        <span id="copyLbl">Copy</span>
       </button>
-      <button class="tool-btn" onclick="window.print()">
+      <button class="header-btn" onclick="window.print()" aria-label="Print">
         <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        <span id="printLbl">Print</span>
       </button>
     </div>
   </div>
 
-  <!-- HERO -->
-  <div class="top">
-    <div class="top-row">
-      <div class="secure-badge">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Secure Transfer
-      </div>
+  <!-- ═══ HERO ═══ -->
+  <div class="hero">
+    <div class="secure-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Secure Transfer
     </div>
     <div class="hero-title" id="heroTitle">Incoming Transfer</div>
     <div class="hero-sub" id="heroSub">A secure payment is being transferred to your account. Review the details below and confirm to proceed.</div>
   </div>
 
-  <!-- BODY -->
+  <!-- ═══ BODY ═══ -->
   <div class="body" id="bodyArea">
 
+    <!-- AMOUNT -->
     <div class="amount-card">
       <span class="label" id="amountLabel">Transfer amount</span>
       <span class="amount" id="amountValue">—</span>
     </div>
 
+    <!-- PURPOSE -->
     <div class="purpose-card hidden" id="purposeCard">
       <span class="label" id="purposeLabel">Purpose</span>
       <span class="purpose" id="purposeValue">—</span>
     </div>
 
-    <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">Confirm &amp; Accept</button>
+    <!-- BUTTON -->
+    <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">
+      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      <span id="acceptBtnLabel">Confirm & Accept Payment</span>
+    </button>
 
-    <div class="recipient-line">
-      <div class="recipient-block">
-        <span class="recipient-k" id="fromLabel">From</span>
-        <span class="recv-name" id="fromName">—</span>
+    <!-- RECIPIENT -->
+    <div class="recipient-section">
+      <div class="recipient-label-row" id="recipientHeading">Recipient Details</div>
+      <div class="recipient-row">
+        <span class="k" id="fromLabel">From</span>
+        <span class="v" id="fromName">—</span>
       </div>
-      <div class="recipient-block">
-        <span class="recipient-k" id="toLabel">To</span>
-        <span class="recv-name" id="reqRecipient">—</span>
+      <div class="recipient-row">
+        <span class="k" id="toLabel">To</span>
+        <span class="v" id="reqRecipient">—</span>
       </div>
     </div>
 
-    <div class="details-panel" id="detailsPanel"></div>
+    <!-- DETAILS -->
+    <div class="details-panel">
+      <div class="panel-title" id="detailsHeading">Transaction Details</div>
+      <div class="panel-body" id="detailsPanel"></div>
+    </div>
 
+    <!-- FOOTER -->
     <div class="sb-footer">
       <img
         class="foot-logo"
@@ -396,6 +440,7 @@
         <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -409,14 +454,14 @@
       heroSub: 'A secure payment is being transferred to your account. Review the details below and confirm to proceed.',
       amountLabel: 'Transfer amount',
       purposeLabel: 'Purpose',
-      receiveBtn: 'Confirm & Accept',
+      acceptBtn: 'Confirm & Accept Payment',
       fromLabel: 'From',
       toLabel: 'To',
+      recipientHeading: 'Recipient Details',
+      detailsHeading: 'Transaction Details',
       needHelp: 'Customer Care',
       callLabel: 'Call',
-      copyBtn: 'Copy',
-      printBtn: 'Print',
-      copied: 'Copied ✓',
+      copied: 'Copied',
       copyToast: 'Receipt copied to clipboard.',
       copyReceiptTitle: 'Stanbic Bank — Incoming Transfer',
       initiating: 'Preparing secure transfer…',
@@ -443,14 +488,14 @@
       heroSub: 'Un paiement sécurisé est en cours de transfert vers votre compte. Vérifiez les détails ci-dessous et confirmez pour continuer.',
       amountLabel: 'Montant du transfert',
       purposeLabel: 'Motif',
-      receiveBtn: 'Confirmer & Accepter',
+      acceptBtn: 'Confirmer et accepter le paiement',
       fromLabel: 'De',
       toLabel: 'À',
+      recipientHeading: 'Détails du destinataire',
+      detailsHeading: 'Détails de la transaction',
       needHelp: 'Service Client',
       callLabel: 'Appelez le',
-      copyBtn: 'Copier',
-      printBtn: 'Imprimer',
-      copied: 'Copié ✓',
+      copied: 'Copié',
       copyToast: 'Reçu copié dans le presse-papiers.',
       copyReceiptTitle: 'Stanbic Bank — Virement entrant',
       initiating: 'Préparation du transfert sécurisé…',
@@ -490,13 +535,13 @@
     document.getElementById('heroSub').textContent = T.heroSub;
     document.getElementById('amountLabel').textContent = T.amountLabel;
     document.getElementById('purposeLabel').textContent = T.purposeLabel;
-    document.getElementById('acceptBtn').textContent = T.receiveBtn;
+    document.getElementById('acceptBtnLabel').textContent = T.acceptBtn;
     document.getElementById('fromLabel').textContent = T.fromLabel;
     document.getElementById('toLabel').textContent = T.toLabel;
+    document.getElementById('recipientHeading').textContent = T.recipientHeading;
+    document.getElementById('detailsHeading').textContent = T.detailsHeading;
     document.getElementById('helpLabel').textContent = T.needHelp;
     document.getElementById('callLabel').textContent = T.callLabel;
-    document.getElementById('copyLbl').textContent = T.copyBtn;
-    document.getElementById('printLbl').textContent = T.printBtn;
   }
 
   async function decodeData() {
@@ -585,23 +630,21 @@
       document.querySelector('.body').innerHTML =
         '<div class="error-box">' + T.invalidLink + '</div>';
       document.getElementById('acceptBtn').style.display = 'none';
-      document.getElementById('copyBtn').style.display = 'none';
       return;
     }
 
     if (data._expired) {
       document.getElementById('acceptBtn').style.display = 'none';
-      document.getElementById('copyBtn').style.display = 'none';
       const expText = data.expiresAt
         ? T.expiredOn + ' ' + formatDate(data.expiresAt) + '.'
         : '';
       document.querySelector('.body').innerHTML =
-        '<div class="expired-icon">' +
-          '<svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.01"/></svg>' +
-        '</div>' +
         '<div style="text-align:center">' +
-          '<div style="font-size:18px;font-weight:800;color:#001E50;margin-bottom:6px">' + T.expiredTitle + '</div>' +
-          '<div style="font-size:12.5px;color:#5B6577;line-height:1.6">' + T.expiredDescPrefix + ' ' + expText + '<br>' + T.expiredDescSuffix + '</div>' +
+          '<div class="expired-icon">' +
+            '<svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.01"/></svg>' +
+          '</div>' +
+          '<div style="font-size:20px;font-weight:800;color:#001E50;margin-bottom:8px">' + T.expiredTitle + '</div>' +
+          '<div style="font-size:13.5px;color:#5B6577;line-height:1.6">' + T.expiredDescPrefix + ' ' + expText + '<br>' + T.expiredDescSuffix + '</div>' +
         '</div>';
       document.title = T.docTitle;
       return;
@@ -611,7 +654,6 @@
       document.querySelector('.body').innerHTML =
         '<div class="error-box">' + T.notFound + '</div>';
       document.getElementById('acceptBtn').style.display = 'none';
-      document.getElementById('copyBtn').style.display = 'none';
       document.title = T.docTitleInvalid;
       return;
     }
@@ -641,7 +683,7 @@
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
     document.getElementById('fromName').textContent = tx.mk || 'Stanbic Bank';
 
-    // Purpose field
+    // Purpose
     const purposeCard = document.getElementById('purposeCard');
     const purposeValue = document.getElementById('purposeValue');
     if (tx.pu && tx.pu.trim()) {
@@ -651,6 +693,7 @@
       purposeCard.classList.add('hidden');
     }
 
+    // Details rows
     const rows = [
       { k: T.kCountry,          v: tx.c },
       { k: T.kPaymentMethod,    v: tx.pm },
@@ -675,7 +718,7 @@
       '----------------------------------',
       T.amountLabel + ': ' + formatAmount(tx.am, tx.cur),
       tx.pu ? T.purposeLabel + ': ' + tx.pu : '',
-      T.fromLabel + ': ' + (tx.mk || ''),
+      T.fromLabel + ': ' + (tx.mk || 'Stanbic Bank'),
       T.toLabel + ': ' + (tx.rn || ''),
       T.kCountry + ': ' + (tx.c || ''),
       T.kReference + ': ' + (tx.ref || ''),
@@ -684,12 +727,10 @@
     ].filter(Boolean).join('\n');
 
     const btn = document.getElementById('copyBtn');
-    const lbl = document.getElementById('copyLbl');
     const done = () => {
       btn.classList.add('copied');
-      lbl.textContent = T.copied;
       showToast(T.copyToast);
-      setTimeout(() => { btn.classList.remove('copied'); lbl.textContent = T.copyBtn; }, 1800);
+      setTimeout(() => btn.classList.remove('copied'), 1800);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(lines).then(done).catch(() => { fallbackCopy(lines); done(); });
