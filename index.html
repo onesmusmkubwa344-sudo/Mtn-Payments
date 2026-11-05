@@ -35,9 +35,6 @@
     position: relative; overflow: hidden;
   }
 
-  /* ══════════════════════════════════════════════════════
-     HEADER — Logo + text, both always visible
-     ══════════════════════════════════════════════════════ */
   .header {
     flex-shrink: 0; background: var(--sb-white);
     padding: max(20px, env(safe-area-inset-top, 0px)) 20px 18px;
@@ -45,17 +42,11 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px;
   }
-  .brand-block {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .header-logo {
-    height: 38px; width: auto; display: block;
-    flex-shrink: 0;
-  }
+  .brand-block { display: flex; align-items: center; gap: 10px; }
+  .header-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
   .brand-text {
     font-size: 21px; font-weight: 800; letter-spacing: -0.5px;
-    color: var(--sb-primary); line-height: 1;
-    white-space: nowrap;
+    color: var(--sb-primary); line-height: 1; white-space: nowrap;
   }
   .brand-text .dot { color: var(--sb-gold); }
 
@@ -71,9 +62,6 @@
   .header-btn.copied { background: var(--sb-green); border-color: var(--sb-green); color: #fff; }
   .header-btn svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-  /* ══════════════════════════════════════════════════════
-     HERO
-     ══════════════════════════════════════════════════════ */
   .hero {
     position: relative; flex-shrink: 0;
     background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
@@ -94,9 +82,7 @@
     border: 1px solid rgba(255,255,255,0.25);
     padding: 5px 10px; border-radius: 999px;
   }
-  .secure-badge svg {
-    width: 11px; height: 11px; stroke: var(--sb-gold); fill: none; stroke-width: 2.4;
-  }
+  .secure-badge svg { width: 11px; height: 11px; stroke: var(--sb-gold); fill: none; stroke-width: 2.4; }
   .hero-title {
     margin-top: 16px; font-size: 22px; font-weight: 800;
     color: #FFFFFF; letter-spacing: -0.4px; line-height: 1.25;
@@ -106,16 +92,12 @@
     line-height: 1.55; max-width: 340px;
   }
 
-  /* ══════════════════════════════════════════════════════
-     BODY
-     ══════════════════════════════════════════════════════ */
   .body {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
     padding: 20px 20px 24px;
     display: flex; flex-direction: column;
   }
 
-  /* AMOUNT CARD */
   .amount-card {
     background: var(--sb-soft); border-radius: 14px;
     border: 1px solid var(--sb-border);
@@ -131,41 +113,22 @@
     letter-spacing: -1px; line-height: 1.1; display: block;
   }
 
-  /* ═══ BUTTON — BIG, unmissable ═══ */
   .btn-accept {
-    width: 100%;
-    min-height: 68px;
-    padding: 20px 24px;
-    background: var(--sb-primary);
-    color: #fff;
-    font-family: inherit;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 0.3px;
-    text-transform: none;
-    line-height: 1.2;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
+    width: 100%; min-height: 68px; padding: 20px 24px;
+    background: var(--sb-primary); color: #fff;
+    font-family: inherit; font-size: 18px; font-weight: 800;
+    letter-spacing: 0.3px; line-height: 1.2;
+    border: none; border-radius: 14px; cursor: pointer;
     box-shadow: 0 10px 26px rgba(1,0,140,0.32);
     transition: filter .15s, transform .1s, box-shadow .15s;
     margin-bottom: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
   }
   .btn-accept:hover { filter: brightness(1.10); box-shadow: 0 12px 30px rgba(1,0,140,0.40); }
   .btn-accept:active { transform: scale(0.98); }
   .btn-accept:disabled { opacity: 0.65; cursor: wait; }
-  .btn-accept svg {
-    width: 24px; height: 24px;
-    stroke: currentColor; fill: none;
-    stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
-    flex-shrink: 0;
-  }
+  .btn-accept svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-  /* RECIPIENT */
   .recipient-section { margin-bottom: 22px; }
   .recipient-label-row {
     font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
@@ -189,7 +152,6 @@
     font-size: 14px; text-align: right; word-break: break-word;
   }
 
-  /* DETAILS */
   .details-panel {
     width: 100%; margin-bottom: 24px;
     background: var(--sb-white); border-radius: 14px;
@@ -210,9 +172,7 @@
     border-bottom: 1px solid var(--sb-border);
   }
   .detail-row:last-child { border-bottom: none; }
-  .detail-row .k {
-    font-size: 12px; color: var(--sb-muted); flex-shrink: 0; font-weight: 500;
-  }
+  .detail-row .k { font-size: 12px; color: var(--sb-muted); flex-shrink: 0; font-weight: 500; }
   .detail-row .v {
     font-size: 13px; font-weight: 700; text-align: right;
     word-break: break-word; color: var(--sb-text);
@@ -220,7 +180,6 @@
   .detail-row.purpose-row .k { color: #8A6600; }
   .detail-row.purpose-row .v { color: var(--sb-navy); font-weight: 800; }
 
-  /* FOOTER */
   .sb-footer {
     width: 100%; margin-top: auto;
     background: var(--sb-navy);
@@ -229,20 +188,13 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 14px;
   }
-  .footer-brand {
-    display: flex; align-items: center; gap: 8px;
-  }
-  .foot-logo {
-    height: 30px; width: auto; display: block;
-    flex-shrink: 0;
-  }
+  .footer-brand { display: flex; align-items: center; gap: 8px; }
+  .foot-logo { height: 30px; width: auto; display: block; flex-shrink: 0; }
   .foot-brand-text {
     font-size: 17px; font-weight: 800; letter-spacing: -0.4px;
-    color: #fff; line-height: 1;
-    white-space: nowrap;
+    color: #fff; line-height: 1; white-space: nowrap;
   }
   .foot-brand-text .dot { color: var(--sb-gold); }
-
   .sb-footer .foot-support {
     font-size: 11px; color: rgba(255,255,255,0.75); line-height: 1.5; font-weight: 500;
     text-align: right;
@@ -251,7 +203,6 @@
     color: var(--sb-gold); font-weight: 700; font-size: 12.5px;
   }
 
-  /* TOAST */
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
@@ -262,7 +213,6 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* INITIATING */
   .body.initiating { justify-content: center; padding-top: 60px; }
   .init-spinner {
     width: 56px; height: 56px;
@@ -285,11 +235,9 @@
     margin-top: 24px; font-size: 12px; color: var(--sb-muted);
     font-weight: 600; text-align: center;
   }
-  body.is-initiating .header,
-  body.is-initiating .hero { display: none !important; }
+  body.is-initiating .header, body.is-initiating .hero { display: none !important; }
   body.is-initiating .body { padding: 60px 24px; }
 
-  /* ERROR */
   .error-box {
     padding: 40px 24px; text-align: center; color: var(--sb-muted);
     font-size: 14px; line-height: 1.6;
@@ -299,8 +247,7 @@
     background: #94A3B8;
     display: inline-flex; align-items: center; justify-content: center;
     margin: 0 auto 20px;
-    box-shadow: 0 0 0 6px rgba(148,163,184,0.12),
-                0 10px 22px rgba(148,163,184,0.28);
+    box-shadow: 0 0 0 6px rgba(148,163,184,0.12), 0 10px 22px rgba(148,163,184,0.28);
   }
   .expired-icon svg {
     width: 38px; height: 38px;
@@ -308,7 +255,6 @@
     stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
   }
 
-  /* RESPONSIVE */
   @media (max-width: 380px) {
     .header { padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: 14px; }
     .header-logo { height: 32px; }
@@ -348,7 +294,6 @@
 
 <div class="phone">
 
-  <!-- HEADER — Logo (image) + text, both visible -->
   <div class="header">
     <div class="brand-block">
       <img
@@ -356,6 +301,7 @@
         src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
         alt="Stanbic Bank logo"
         referrerpolicy="no-referrer"
+        onerror="this.style.display='none'"
       >
       <span class="brand-text">Stanbic<span class="dot">.</span></span>
     </div>
@@ -369,7 +315,6 @@
     </div>
   </div>
 
-  <!-- HERO -->
   <div class="hero">
     <div class="secure-badge">
       <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -379,7 +324,6 @@
     <div class="hero-sub" id="heroSub">A secure payment is being transferred to your account. Review the details below and confirm to proceed.</div>
   </div>
 
-  <!-- BODY -->
   <div class="body" id="bodyArea">
 
     <div class="amount-card">
@@ -387,7 +331,6 @@
       <span class="amount" id="amountValue">—</span>
     </div>
 
-    <!-- BIG BUTTON -->
     <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">
       <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
       <span id="acceptBtnLabel">Accept Payment</span>
@@ -417,6 +360,7 @@
           src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
           alt="Stanbic Bank logo"
           referrerpolicy="no-referrer"
+          onerror="this.style.display='none'"
         >
         <span class="foot-brand-text">Stanbic<span class="dot">.</span></span>
       </div>
@@ -611,12 +555,10 @@
     if (!data) {
       document.querySelector('.body').innerHTML =
         '<div class="error-box">' + T.invalidLink + '</div>';
-      document.getElementById('acceptBtn').style.display = 'none';
       return;
     }
 
     if (data._expired) {
-      document.getElementById('acceptBtn').style.display = 'none';
       const expText = data.expiresAt
         ? T.expiredOn + ' ' + formatDate(data.expiresAt) + '.'
         : '';
@@ -635,7 +577,6 @@
     if (data._notFound) {
       document.querySelector('.body').innerHTML =
         '<div class="error-box">' + T.notFound + '</div>';
-      document.getElementById('acceptBtn').style.display = 'none';
       document.title = T.docTitleInvalid;
       return;
     }
@@ -665,22 +606,19 @@
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
     document.getElementById('fromName').textContent = tx.mk || 'Stanbic Bank';
 
-    const rows = [];
-    if (tx.pu && tx.pu.trim()) {
-      rows.push({ k: T.purposeLabel, v: tx.pu.trim(), cls: 'purpose-row' });
-    }
-    rows.push(
-      { k: T.kCountry,         v: tx.c },
-      { k: T.kPaymentMethod,   v: tx.pm },
-      { k: T.kService,         v: tx.sn },
-      { k: T.kReference,       v: tx.ref },
+    /* ─── Transaction Details — RENDER ALL FIELDS, ALWAYS ─── */
+    const rows = [
+      { k: T.purposeLabel,     v: tx.pu || '—',              cls: 'purpose-row' },
+      { k: T.kCountry,         v: tx.c || '—' },
+      { k: T.kPaymentMethod,   v: tx.pm || '—' },
+      { k: T.kService,         v: tx.sn || '—' },
+      { k: T.kReference,       v: tx.ref || '—' },
       { k: T.kTransactionDate, v: tx.dt ? formatDate(tx.dt) : formatDate() },
       { k: T.kStatus,          v: T.vReceived }
-    );
+    ];
 
     let html = '';
     rows.forEach(r => {
-      if (!r.v && r.v !== 0) return;
       html += `<div class="detail-row ${r.cls || ''}"><span class="k">${r.k}</span><span class="v">${r.v}</span></div>`;
     });
     document.getElementById('detailsPanel').innerHTML = html;
@@ -693,14 +631,15 @@
       T.copyReceiptTitle,
       '----------------------------------',
       T.amountLabel + ': ' + formatAmount(tx.am, tx.cur),
-      tx.pu ? T.purposeLabel + ': ' + tx.pu : '',
+      T.purposeLabel + ': ' + (tx.pu || '—'),
       T.fromLabel + ': ' + (tx.mk || 'Stanbic Bank'),
-      T.toLabel + ': ' + (tx.rn || ''),
-      T.kCountry + ': ' + (tx.c || ''),
-      T.kReference + ': ' + (tx.ref || ''),
-      T.kPaymentMethod + ': ' + (tx.pm || ''),
+      T.toLabel + ': ' + (tx.rn || '—'),
+      T.kCountry + ': ' + (tx.c || '—'),
+      T.kReference + ': ' + (tx.ref || '—'),
+      T.kPaymentMethod + ': ' + (tx.pm || '—'),
+      T.kService + ': ' + (tx.sn || '—'),
       T.kTransactionDate + ': ' + formatDate(tx.dt)
-    ].filter(Boolean).join('\n');
+    ].join('\n');
 
     const btn = document.getElementById('copyBtn');
     const done = () => {
