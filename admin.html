@@ -3,127 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MTN MoMo Admin — Send Payment</title>
+<title>Stanbic Bank · Send Payment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --mtn-yellow:#FFCC00;
-  --mtn-yellow-dark:#F5B500;
-  --mtn-yellow-light:#FFF8E1;
-  --mtn-blue:#0047AB;
-  --mtn-blue-dark:#003380;
-  --mtn-green:#22A356;
-  --mtn-red:#E31B23;
-  --mtn-navy:#111827;
-  --bg-page:#F1F5F9;
-  --text-primary:#1F2937;
-  --text-muted:#6B7280;
-  --border-color:#E5E7EB;
-  --border-input:#CBD5E1;
-  --shadow-sm:0 1px 2px 0 rgba(0,0,0,.05);
-  --shadow-card:0 4px 20px -2px rgba(0,0,0,.06),0 2px 6px -1px rgba(0,0,0,.04);
-  --radius-card:14px;
-  --radius-input:10px;
-  --radius-btn:10px;
-  --font-family:'Poppins',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --sb-primary:#01008C;
+  --sb-royal:#005EB8;
+  --sb-navy:#001E50;
+  --sb-gold:#FFB81C;
+  --sb-gold-soft:#FFF8E1;
+  --sb-blue-soft:#EEF3FB;
+  --sb-text:#1A2233;
+  --sb-muted:#5B6577;
+  --sb-border:#E4E8F0;
+  --sb-soft:#F4F6FA;
+  --sb-page:#F1F4F9;
+  --sb-green:#0E7A4A;
+  --sb-green-soft:#E8F5EE;
+  --sb-red:#B3261E;
+  --sb-red-soft:#FDECEA;
+  --radius-card:12px;
+  --radius-input:8px;
+  --radius-btn:8px;
+  --font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --shadow-card:0 1px 2px rgba(0,0,0,.04),0 4px 16px -4px rgba(1,0,140,.08);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-family);background:var(--bg-page);color:var(--text-primary);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5}
+body{font-family:var(--font-family);background:var(--sb-page);color:var(--sb-text);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5;font-size:14px}
 
-.brand-badge{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:20px;letter-spacing:-.4px;line-height:1}
-.brand-logo{height:28px;width:auto;display:block;border-radius:4px}
-.brand-mtn{color:var(--mtn-blue)}
-.brand-momo{color:#003366}
-.admin-shield-tag{font-size:10.5px;font-weight:700;background:var(--mtn-yellow-light);color:#003366;padding:3px 9px;border-radius:999px;margin-left:10px;text-transform:uppercase;letter-spacing:.5px;display:inline-flex;align-items:center;gap:4px;vertical-align:middle;border:1px solid var(--mtn-yellow)}
-
-.admin-navbar{background:#fff;border-bottom:1px solid var(--border-color);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
+/* ─── NAVBAR ─── */
+.admin-navbar{background:#fff;border-bottom:1px solid var(--sb-border);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
+.brand-badge{display:inline-flex;align-items:center;gap:12px}
+.brand-logo{height:30px;width:auto;display:block}
+.admin-shield-tag{font-size:10px;font-weight:700;background:var(--sb-blue-soft);color:var(--sb-primary);padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px;display:inline-flex;align-items:center;gap:5px;border:1px solid #C9D4EA}
 .admin-nav-meta{display:flex;align-items:center;gap:14px}
-.admin-live-indicator{font-size:12px;font-weight:600;color:#059669;display:inline-flex;align-items:center;gap:6px;background:#ECFDF5;padding:5px 11px;border-radius:999px}
-.pulse-dot{width:7px;height:7px;background-color:#10B981;border-radius:50%;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:pulseGlow 2s infinite}
-@keyframes pulseGlow{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(16,185,129,.7)}70%{transform:scale(1);box-shadow:0 0 0 6px rgba(16,185,129,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(16,185,129,0)}}
-.btn-secondary-sm{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--border-color);background:#fff;font-size:12.5px;font-weight:600;color:#334155;cursor:pointer;transition:all .15s ease;font-family:inherit}
-.btn-secondary-sm:hover{background:#F8FAFC;border-color:var(--border-input)}
+.admin-live-indicator{font-size:11.5px;font-weight:600;color:var(--sb-green);display:inline-flex;align-items:center;gap:7px;background:var(--sb-green-soft);padding:6px 12px;border-radius:999px}
+.pulse-dot{width:7px;height:7px;background-color:var(--sb-green);border-radius:50%;box-shadow:0 0 0 0 rgba(14,122,74,.6);animation:pulseGlow 2s infinite}
+@keyframes pulseGlow{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(14,122,74,.6)}70%{transform:scale(1);box-shadow:0 0 0 6px rgba(14,122,74,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(14,122,74,0)}}
+.btn-secondary-sm{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid var(--sb-border);background:#fff;font-size:12.5px;font-weight:600;color:var(--sb-text);cursor:pointer;transition:all .15s ease;font-family:inherit}
+.btn-secondary-sm:hover{background:#F8FAFC;border-color:var(--sb-muted)}
 
+/* ─── MAIN ─── */
 .admin-main{padding:24px;max-width:1240px;margin:0 auto;width:100%}
 .admin-container{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
-.admin-card{background:#fff;border-radius:var(--radius-card);border:1px solid var(--border-color);box-shadow:var(--shadow-card);padding:24px}
-.admin-card-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid #F1F5F9}
-.header-icon-box{width:44px;height:44px;border-radius:11px;background:var(--mtn-yellow-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--mtn-yellow)}
-.admin-card-title{font-size:19px;font-weight:800;color:#0F172A;line-height:1.25;letter-spacing:-.3px}
-.admin-card-subtitle{font-size:12.5px;color:var(--text-muted);margin-top:4px;line-height:1.5}
+.admin-card{background:#fff;border-radius:var(--radius-card);border:1px solid var(--sb-border);box-shadow:var(--shadow-card);padding:24px}
+.admin-card-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--sb-border)}
+.header-icon-box{width:44px;height:44px;border-radius:10px;background:var(--sb-blue-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #C9D4EA}
+.admin-card-title{font-size:19px;font-weight:800;color:var(--sb-navy);line-height:1.25;letter-spacing:-.3px}
+.admin-card-subtitle{font-size:12.5px;color:var(--sb-muted);margin-top:4px;line-height:1.5}
 
+/* ─── FORM ─── */
 .form-group{margin-bottom:16px}
 .label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
-label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom:6px}
-.required{color:var(--mtn-red)}
-.helper-pill{font-size:10.5px;font-weight:700;color:#0369A1;background:#E0F2FE;padding:2px 8px;border-radius:999px}
-.field-hint{display:block;font-size:11.5px;color:#64748B;margin-top:5px}
-.styled-input,.styled-select{width:100%;padding:10px 14px;font-size:13.5px;font-family:inherit;color:#0F172A;background:#fff;border:1.5px solid var(--border-input);border-radius:var(--radius-input);outline:none;transition:all .15s ease}
-.styled-input:focus,.styled-select:focus{border-color:var(--mtn-blue);box-shadow:0 0 0 3px rgba(0,71,171,.12)}
-.styled-select{cursor:pointer;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:36px;appearance:none;-webkit-appearance:none}
+label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom:6px}
+.required{color:var(--sb-red)}
+.helper-pill{font-size:10.5px;font-weight:700;color:var(--sb-primary);background:var(--sb-blue-soft);padding:3px 9px;border-radius:999px;border:1px solid #C9D4EA}
+.helper-pill.gold{color:#8A6600;background:var(--sb-gold-soft);border-color:#F2E4B8}
+.field-hint{display:block;font-size:11.5px;color:var(--sb-muted);margin-top:5px}
+.field-hint strong{color:var(--sb-text);font-weight:700}
+.styled-input,.styled-select{width:100%;padding:10px 14px;font-size:13.5px;font-family:inherit;color:var(--sb-text);background:#fff;border:1.5px solid #CDD5E2;border-radius:var(--radius-input);outline:none;transition:all .15s ease}
+.styled-input:focus,.styled-select:focus{border-color:var(--sb-primary);box-shadow:0 0 0 3px rgba(1,0,140,.10)}
+.styled-select{cursor:pointer;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6577' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:36px;appearance:none;-webkit-appearance:none}
 .uppercase-text{text-transform:uppercase;font-weight:600;letter-spacing:.5px}
-.field-helper-btn{background:none;border:none;color:var(--mtn-blue);font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:2px 4px;font-family:inherit}
+.field-helper-btn{background:none;border:none;color:var(--sb-primary);font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:2px 4px;font-family:inherit}
 .field-helper-btn:hover{text-decoration:underline}
-.phone-input-combined{display:flex;border:1.5px solid var(--border-input);border-radius:var(--radius-input);overflow:hidden;background:#fff;transition:all .15s ease}
-.phone-input-combined:focus-within{border-color:var(--mtn-blue);box-shadow:0 0 0 3px rgba(0,71,171,.12)}
-.country-prefix-addon{display:flex;align-items:center;gap:6px;padding:0 12px;background:var(--mtn-yellow-light);border-right:1.5px solid var(--mtn-yellow);font-size:13px;font-weight:700;color:#003366;user-select:none}
+.phone-input-combined{display:flex;border:1.5px solid #CDD5E2;border-radius:var(--radius-input);overflow:hidden;background:#fff;transition:all .15s ease}
+.phone-input-combined:focus-within{border-color:var(--sb-primary);box-shadow:0 0 0 3px rgba(1,0,140,.10)}
+.country-prefix-addon{display:flex;align-items:center;gap:6px;padding:0 12px;background:var(--sb-blue-soft);border-right:1.5px solid #C9D4EA;font-size:13px;font-weight:700;color:var(--sb-primary);user-select:none}
 .phone-field{border:none !important;border-radius:0 !important;box-shadow:none !important}
 .form-row-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.btn-primary-block{width:100%;background:var(--mtn-blue);color:#fff;border:none;border-radius:var(--radius-btn);padding:13px 20px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s ease;box-shadow:0 4px 12px rgba(0,71,171,.25);margin-top:8px;font-family:inherit;letter-spacing:.2px}
-.btn-primary-block:hover:not(:disabled){background:var(--mtn-blue-dark);transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,71,171,.35)}
+
+/* Purpose field highlight */
+.purpose-highlight{
+  background:#FFFDF5;border:1.5px solid #F2E4B8;border-radius:10px;
+  padding:14px 16px;margin-bottom:16px;
+  position:relative;
+}
+.purpose-highlight::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--sb-gold);border-radius:10px 0 0 10px;
+}
+.purpose-highlight label{color:#8A6600;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.purpose-highlight .purpose-pill{
+  font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--sb-gold);background:rgba(255,184,28,.15);
+  padding:2px 7px;border-radius:4px;
+}
+.purpose-highlight .field-hint{color:#8A6600}
+.purpose-highlight .styled-input{
+  background:#fff;border-color:#E8D9A8;
+}
+.purpose-highlight .styled-input:focus{
+  border-color:var(--sb-gold);box-shadow:0 0 0 3px rgba(255,184,28,.18);
+}
+
+/* ─── BUTTONS ─── */
+.btn-primary-block{width:100%;background:var(--sb-primary);color:#fff;border:none;border-radius:var(--radius-btn);padding:14px 20px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s ease;box-shadow:0 4px 12px rgba(1,0,140,.22);margin-top:8px;font-family:inherit;letter-spacing:.2px}
+.btn-primary-block:hover:not(:disabled){background:#00006B;transform:translateY(-1px);box-shadow:0 6px 16px rgba(1,0,140,.32)}
 .btn-primary-block:active:not(:disabled){transform:translateY(0)}
 .btn-primary-block:disabled{opacity:.6;cursor:not-allowed}
 
+/* ─── RIGHT COLUMN ─── */
 .admin-column-right{display:flex;flex-direction:column;gap:22px}
-.link-showcase-card{border-top:4px solid var(--mtn-yellow);position:relative}
+.link-showcase-card{border-top:4px solid var(--sb-gold);position:relative}
 .card-status-tag{margin-bottom:12px}
-.status-ready-pill{font-size:10.5px;font-weight:700;background:#ECFDF5;color:#047857;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px}
-.showcase-title{font-size:17px;font-weight:800;color:#0F172A;margin-bottom:6px;letter-spacing:-.2px}
-.showcase-desc{font-size:12.5px;color:var(--text-muted);line-height:1.55;margin-bottom:18px}
+.status-ready-pill{font-size:10px;font-weight:700;background:var(--sb-green-soft);color:var(--sb-green);padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
+.showcase-title{font-size:17px;font-weight:800;color:var(--sb-navy);margin-bottom:6px;letter-spacing:-.2px}
+.showcase-desc{font-size:12.5px;color:var(--sb-muted);line-height:1.55;margin-bottom:18px}
 .share-link-wrapper{margin-bottom:14px}
-.link-input-group{display:flex;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:8px;overflow:hidden;padding:4px;gap:4px}
-.share-url-input{flex:1;border:none;background:transparent;padding:8px 12px;font-size:12px;font-family:"SF Mono",Monaco,Consolas,monospace;color:#1E293B;outline:none;min-width:0}
-.btn-copy-link{background:var(--mtn-blue);color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s ease;white-space:nowrap;font-family:inherit}
-.btn-copy-link:hover{background:var(--mtn-blue-dark)}
+.link-input-group{display:flex;background:var(--sb-soft);border:1.5px solid #CDD5E2;border-radius:8px;overflow:hidden;padding:4px;gap:4px}
+.share-url-input{flex:1;border:none;background:transparent;padding:9px 12px;font-size:12px;font-family:"SF Mono",Monaco,Consolas,monospace;color:var(--sb-text);outline:none;min-width:0}
+.btn-copy-link{background:var(--sb-primary);color:#fff;border:none;border-radius:6px;padding:9px 14px;font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s ease;white-space:nowrap;font-family:inherit}
+.btn-copy-link:hover{background:#00006B}
 .showcase-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
-.btn-action-outline{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;border:1.5px solid #CBD5E1;background:#fff;border-radius:8px;font-size:12.5px;font-weight:600;color:#334155;cursor:pointer;transition:all .15s ease;font-family:inherit}
-.btn-action-outline:hover{background:#F8FAFC;border-color:#94A3B8;color:#0F172A}
-.link-meta-summary{background:#F8FAFC;border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid #F1F5F9}
+.btn-action-outline{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;border:1.5px solid #CDD5E2;background:#fff;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--sb-text);cursor:pointer;transition:all .15s ease;font-family:inherit}
+.btn-action-outline:hover{background:var(--sb-soft);border-color:var(--sb-primary);color:var(--sb-primary)}
+.link-meta-summary{background:var(--sb-soft);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid var(--sb-border)}
 .meta-item{display:flex;flex-direction:column;gap:3px;min-width:0}
-.m-lbl{font-size:10.5px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.5px}
-.m-val{font-size:12.5px;font-weight:700;color:#0F172A;word-break:break-word}
-.m-val.highlight{color:var(--mtn-blue);font-weight:800}
-.m-val.code{font-family:"SF Mono",Monaco,Consolas,monospace;background:#E2E8F0;padding:2px 6px;border-radius:4px;display:inline-block;width:fit-content;font-size:11.5px}
+.m-lbl{font-size:10.5px;font-weight:600;color:var(--sb-muted);text-transform:uppercase;letter-spacing:.5px}
+.m-val{font-size:12.5px;font-weight:700;color:var(--sb-text);word-break:break-word}
+.m-val.highlight{color:var(--sb-primary);font-weight:800}
+.m-val.code{font-family:"SF Mono",Monaco,Consolas,monospace;background:#E4E8F0;padding:2px 6px;border-radius:4px;display:inline-block;width:fit-content;font-size:11.5px}
 
-.history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #F1F5F9}
-.history-title{font-size:14.5px;font-weight:800;color:#0F172A;letter-spacing:-.2px}
-.history-subtitle{font-size:11.5px;color:var(--text-muted)}
-.btn-clear-text{background:none;border:none;color:#DC2626;font-size:11.5px;font-weight:600;cursor:pointer;padding:2px 6px;font-family:inherit}
+/* ─── HISTORY ─── */
+.history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--sb-border)}
+.history-title{font-size:14.5px;font-weight:800;color:var(--sb-navy);letter-spacing:-.2px}
+.history-subtitle{font-size:11.5px;color:var(--sb-muted)}
+.btn-clear-text{background:none;border:none;color:var(--sb-red);font-size:11.5px;font-weight:600;cursor:pointer;padding:2px 6px;font-family:inherit}
 .btn-clear-text:hover{text-decoration:underline}
 .admin-history-list{display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto}
 .history-empty{font-size:12.5px;color:#94A3B8;text-align:center;padding:24px 12px;line-height:1.5}
-.history-item-row{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border-radius:10px;background:#F8FAFC;border:1px solid #F1F5F9;gap:10px;transition:all .15s ease}
-.history-item-row:hover{background:#F0F6FC;border-color:#DBEAFE}
+.history-item-row{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border-radius:10px;background:var(--sb-soft);border:1px solid var(--sb-border);gap:10px;transition:all .15s ease}
+.history-item-row:hover{background:#EAF0FA;border-color:#C9D4EA}
 .hist-info{flex:1;min-width:0}
-.hist-name{font-size:12.5px;font-weight:700;color:#0F172A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hist-code{font-size:10.5px;font-family:"SF Mono",Monaco,Consolas,monospace;color:#475569;font-weight:600;background:#E2E8F0;padding:1px 5px;border-radius:3px;margin-left:4px}
-.hist-sub{font-size:10.5px;color:#64748B;margin-top:3px}
-.hist-amt{font-size:12.5px;font-weight:800;color:var(--mtn-blue);white-space:nowrap}
+.hist-name{font-size:12.5px;font-weight:700;color:var(--sb-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-code{font-size:10.5px;font-family:"SF Mono",Monaco,Consolas,monospace;color:var(--sb-muted);font-weight:600;background:#E4E8F0;padding:1px 5px;border-radius:3px;margin-left:4px}
+.hist-sub{font-size:10.5px;color:var(--sb-muted);margin-top:3px}
+.hist-amt{font-size:12.5px;font-weight:800;color:var(--sb-primary);white-space:nowrap}
 .hist-actions{display:flex;gap:4px;flex-shrink:0}
-.btn-hist-action{background:#fff;border:1.5px solid #CBD5E1;border-radius:5px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#475569;transition:all .15s ease;font-size:13px;font-family:inherit}
-.btn-hist-action:hover{background:var(--mtn-blue);border-color:var(--mtn-blue);color:#fff}
-.btn-hist-action.delete:hover{background:#DC2626;border-color:#DC2626;color:#fff}
+.btn-hist-action{background:#fff;border:1.5px solid #CDD5E2;border-radius:5px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--sb-muted);transition:all .15s ease;font-size:13px;font-family:inherit}
+.btn-hist-action:hover{background:var(--sb-primary);border-color:var(--sb-primary);color:#fff}
+.btn-hist-action.delete:hover{background:var(--sb-red);border-color:var(--sb-red);color:#fff}
 
-.toast-notification{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--mtn-navy);color:#fff;padding:12px 20px;border-radius:9px;font-size:12.5px;font-weight:600;box-shadow:0 10px 25px rgba(0,0,0,.25);z-index:2000;opacity:0;transition:all .3s cubic-bezier(.16,1,.3,1);pointer-events:none;max-width:90%;text-align:center;font-family:var(--font-family)}
+/* ─── TOAST ─── */
+.toast-notification{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--sb-navy);color:#fff;padding:12px 20px;border-radius:9px;font-size:12.5px;font-weight:600;box-shadow:0 10px 25px rgba(0,0,0,.25);z-index:2000;opacity:0;transition:all .3s cubic-bezier(.16,1,.3,1);pointer-events:none;max-width:90%;text-align:center;font-family:var(--font-family)}
 .toast-notification.show{transform:translateX(-50%) translateY(0);opacity:1}
 
 @media (max-width:960px){.admin-container{grid-template-columns:1fr}}
 @media (max-width:640px){
   .admin-navbar{align-items:flex-start;flex-direction:column;gap:12px;padding:12px 16px}
   .admin-main{padding:16px 12px 24px}
-  .admin-card{padding:18px;border-radius:12px}
+  .admin-card{padding:18px;border-radius:10px}
   .admin-card-title{font-size:17px}
   .form-row-2col,.showcase-actions-grid,.link-meta-summary{grid-template-columns:1fr}
   .link-input-group{flex-direction:column;gap:6px}
@@ -141,8 +174,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
 <header class="admin-navbar">
   <div class="admin-nav-brand">
     <div class="brand-badge">
-      <img src="https://i.pinimg.com/1200x/f2/f9/38/f2f9385a59cf088b7b77472f3636d4fb.jpg" alt="MTN MoMo" class="brand-logo">
-      <span class="brand-mtn">MTN</span><span class="brand-momo">&nbsp;MoMo</span>
+      <img src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/light/logo.png?c=1dxbfHSJFAPEGdCLU4o5B" alt="Stanbic Bank" class="brand-logo">
       <span class="admin-shield-tag">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
         Admin Portal
@@ -150,7 +182,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
     </div>
   </div>
   <div class="admin-nav-meta">
-    <span class="admin-live-indicator"><span class="pulse-dot"></span> MTN MoMo Network Active</span>
+    <span class="admin-live-indicator"><span class="pulse-dot"></span> Network Active</span>
     <button type="button" class="btn-secondary-sm" onclick="loadSampleAdminData()">Clear Form</button>
   </div>
 </header>
@@ -161,11 +193,11 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
     <div class="admin-card form-column">
       <div class="admin-card-header">
         <div class="header-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0047AB" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#01008C" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
         </div>
         <div>
           <h1 class="admin-card-title">Send Payment</h1>
-          <p class="admin-card-subtitle">Set up an outgoing payment to your client and generate a short shareable link.</p>
+          <p class="admin-card-subtitle">Set up an outgoing transfer to your client and generate a secure shareable link.</p>
         </div>
       </div>
 
@@ -173,16 +205,16 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
 
         <div class="form-group">
           <div class="label-row">
-            <label for="adminCountrySelect">MoMo Supported Country <span class="required">*</span></label>
-            <span class="helper-pill">MTN MoMo Markets</span>
+            <label for="adminCountrySelect">Country <span class="required">*</span></label>
+            <span class="helper-pill">Supported Markets</span>
           </div>
           <select id="adminCountrySelect" class="styled-select" onchange="handleAdminCountryChange()" required>
             <option value="" data-flag="" data-country="" data-currency="" data-lang="en" selected></option>
-            <option value="+256" data-flag="🇺🇬" data-country="Uganda" data-currency="UGX" data-lang="en">🇺🇬 Uganda (+256) — MTN MoMo</option>
-            <option value="+237" data-flag="🇨🇲" data-country="Cameroon" data-currency="XAF" data-lang="fr">🇨🇲 Cameroon (+237) — MTN MoMo</option>
-            <option value="+260" data-flag="🇿🇲" data-country="Zambia" data-currency="ZMW" data-lang="en">🇿🇲 Zambia (+260) — MTN MoMo</option>
-            <option value="+233" data-flag="🇬🇭" data-country="Ghana" data-currency="GHS" data-lang="en">🇬🇭 Ghana (+233) — MTN MoMo</option>
-            <option value="+229" data-flag="🇧🇯" data-country="Benin" data-currency="XOF" data-lang="fr">🇧🇯 Benin (+229) — MTN MoMo</option>
+            <option value="+256" data-flag="🇺🇬" data-country="Uganda" data-currency="UGX" data-lang="en">🇺🇬 Uganda (+256)</option>
+            <option value="+237" data-flag="🇨🇲" data-country="Cameroon" data-currency="XAF" data-lang="fr">🇨🇲 Cameroon (+237)</option>
+            <option value="+260" data-flag="🇿🇲" data-country="Zambia" data-currency="ZMW" data-lang="en">🇿🇲 Zambia (+260)</option>
+            <option value="+233" data-flag="🇬🇭" data-country="Ghana" data-currency="GHS" data-lang="en">🇬🇭 Ghana (+233)</option>
+            <option value="+229" data-flag="🇧🇯" data-country="Benin" data-currency="XOF" data-lang="fr">🇧🇯 Benin (+229)</option>
           </select>
           <span class="field-hint" id="country-hint"></span>
         </div>
@@ -201,19 +233,19 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
 
         <div class="form-group">
           <div class="label-row">
-            <label for="adminTrackingNumber">Tracking Number <span class="required">*</span></label>
+            <label for="adminTrackingNumber">Reference Number <span class="required">*</span></label>
             <button type="button" class="field-helper-btn" onclick="generateAdminTracking()">Auto-Generate</button>
           </div>
           <input type="text" id="adminTrackingNumber" placeholder="e.g. JHGFDWQTD" required autocomplete="off" class="styled-input uppercase-text">
         </div>
 
         <div class="form-group">
-          <label for="adminModeOfPayment">Mode of Payment <span class="required">*</span></label>
-          <input type="text" id="adminModeOfPayment" placeholder="e.g. Escrow Account" required autocomplete="off" class="styled-input">
+          <label for="adminModeOfPayment">Payment Method <span class="required">*</span></label>
+          <input type="text" id="adminModeOfPayment" placeholder="e.g. Bank Transfer / Escrow" required autocomplete="off" class="styled-input">
         </div>
 
         <div class="form-group">
-          <label for="adminAccountName">Client (Receiving) <span class="required">*</span></label>
+          <label for="adminAccountName">Client Name (Receiving) <span class="required">*</span></label>
           <input type="text" id="adminAccountName" placeholder="e.g. John Ssemakula" required autocomplete="off" class="styled-input">
         </div>
 
@@ -236,27 +268,41 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
           </div>
         </div>
 
+        <!-- ★★★ NEW PURPOSE FIELD ★★★ -->
+        <div class="purpose-highlight">
+          <div class="label-row">
+            <label for="adminPurpose">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A6600" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              Purpose / Category
+            </label>
+            <span class="purpose-pill">Shown to client</span>
+          </div>
+          <input type="text" id="adminPurpose" placeholder="e.g. Purchasing (Samsung 55&quot; TV)" autocomplete="off" class="styled-input">
+          <span class="field-hint">Describe what the payment is for. Displayed prominently on the client page.</span>
+        </div>
+
         <div class="form-group">
           <div class="label-row">
             <label for="adminLinkExpiry">Link Expires In <span class="required">*</span></label>
             <span class="helper-pill">Auto-invalidates</span>
           </div>
           <select id="adminLinkExpiry" class="styled-select" required>
-            <option value="1" data-label="1 hour">1 hour</option>
-            <option value="3" data-label="3 hours">3 hours</option>
-            <option value="6" data-label="6 hours" selected>6 hours</option>
-            <option value="10" data-label="10 hours">10 hours</option>
-            <option value="24" data-label="24 hours">24 hours</option>
+            <option value="1">1 hour</option>
+            <option value="3">3 hours</option>
+            <option value="6" selected>6 hours</option>
+            <option value="10">10 hours</option>
+            <option value="24">24 hours</option>
           </select>
           <span class="field-hint" id="expiry-hint">Link will expire automatically after 6 hours.</span>
         </div>
 
         <div class="form-group">
           <div class="label-row">
-            <label for="adminMarketedBy">Sender Name <span class="helper-pill">Shown as "From"</span></label>
+            <label for="adminMarketedBy">Sender / From Name</label>
+            <span class="helper-pill">Optional</span>
           </div>
-          <input type="text" id="adminMarketedBy" placeholder="e.g. MTN Mobile Money / Y'ello Agent" autocomplete="off" class="styled-input">
-          <span class="field-hint">Displayed as <strong>"From"</strong> on the client payment page. Leave blank to show "MTN Mobile Money".</span>
+          <input type="text" id="adminMarketedBy" placeholder="e.g. Stanbic Bank / Corporate Client" autocomplete="off" class="styled-input">
+          <span class="field-hint">Displayed as <strong>"From"</strong> on the client page. Leave blank to show <strong>"Stanbic Bank"</strong>.</span>
         </div>
 
         <div class="form-group">
@@ -266,7 +312,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
 
         <button type="submit" class="btn-primary-block" id="btnAdminSubmit">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-          <span>Generate Short Client Link</span>
+          <span>Generate Secure Link</span>
         </button>
       </form>
     </div>
@@ -276,7 +322,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
       <div class="admin-card link-showcase-card">
         <div class="card-status-tag"><span class="status-ready-pill">Link Ready to Share</span></div>
         <h2 class="showcase-title">Client Payment Link</h2>
-        <p class="showcase-desc">Short link. Send it to your client so they can open the MTN MoMo receipt and confirm the incoming payment.</p>
+        <p class="showcase-desc">Short secure link. Send it to your client so they can open the receipt and confirm the incoming transfer.</p>
 
         <div class="share-link-wrapper">
           <div class="link-input-group">
@@ -289,16 +335,17 @@ label{display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom
         </div>
 
         <div class="showcase-actions-grid">
-          <button type="button" class="btn-action-outline" onclick="openClientPreviewInNewTab()">Preview Client View</button>
-          <button type="button" class="btn-action-outline" onclick="shareViaWhatsApp()">Share via WhatsApp</button>
+          <button type="button" class="btn-action-outline" onclick="openClientPreviewInNewTab()">Preview Client</button>
+          <button type="button" class="btn-action-outline" onclick="shareViaWhatsApp()">Share WhatsApp</button>
         </div>
 
         <div class="link-meta-summary">
           <div class="meta-item"><span class="m-lbl">Client (receiving)</span><span class="m-val" id="summary-recipient">—</span></div>
           <div class="meta-item"><span class="m-lbl">Amount</span><span class="m-val highlight" id="summary-amount">—</span></div>
+          <div class="meta-item"><span class="m-lbl">Purpose</span><span class="m-val" id="summary-purpose">—</span></div>
           <div class="meta-item"><span class="m-lbl">Country</span><span class="m-val" id="summary-country">—</span></div>
           <div class="meta-item"><span class="m-lbl">Language</span><span class="m-val" id="summary-language">—</span></div>
-          <div class="meta-item"><span class="m-lbl">Tracking</span><span class="m-val code" id="summary-tracking">—</span></div>
+          <div class="meta-item"><span class="m-lbl">Reference</span><span class="m-val code" id="summary-tracking">—</span></div>
           <div class="meta-item"><span class="m-lbl">Expires</span><span class="m-val" id="summary-expiry">—</span></div>
         </div>
       </div>
@@ -328,13 +375,13 @@ const API_BASE = (function () {
   return window.location.origin;
 })();
 
-const STORAGE_KEY_RECEIPTS = 'momo_receipts_history';
-const STORAGE_KEY_CURRENT  = 'momo_current_receipt';
+const STORAGE_KEY_RECEIPTS = 'sb_receipts_history';
+const STORAGE_KEY_CURRENT  = 'sb_current_receipt';
 
 const DEFAULT_SAMPLE_DATA = {
   trackingNumber:'', modeOfPayment:'', accountName:'', countryCode:'', countryFlag:'',
   countryName:'', accountNumber:'', amount:'', currency:'', receiptOptional:'',
-  marketedBy:'', lang:'en', timestamp:'', isAccepted:false, isDeclined:false, expiryHours: 6
+  marketedBy:'', purpose:'', lang:'en', timestamp:'', isAccepted:false, isDeclined:false, expiryHours: 6
 };
 
 const LANG_LABELS = { en: 'English', fr: 'Français' };
@@ -367,7 +414,7 @@ function handleAdminCountryChange(){
   const langSelect = document.getElementById('adminLanguage');
   if(dialEl) dialEl.textContent = dialCode;
   if(flagEl) flagEl.textContent = flag;
-  if(hintEl) hintEl.textContent = countryName ? `Selected: ${countryName} MTN MoMo corridor (${dialCode})` : '';
+  if(hintEl) hintEl.textContent = countryName ? `Selected: ${countryName} (${dialCode})` : '';
   if(currInput && !currInput.value) currInput.value = defaultCurr;
   if(langSelect) langSelect.value = defaultLang;
 }
@@ -387,7 +434,7 @@ function generateAdminTracking(){
   for(let i=0;i<9;i++) result += chars.charAt(Math.floor(Math.random()*chars.length));
   const input = document.getElementById('adminTrackingNumber');
   if(input) input.value = result;
-  showToast(`Generated Tracking ID: ${result}`);
+  showToast(`Generated Reference: ${result}`);
 }
 
 function populateAdminForm(data){
@@ -405,6 +452,8 @@ function populateAdminForm(data){
   document.getElementById('adminReceiptOptional').value = data.receiptOptional || '';
   const mkInput = document.getElementById('adminMarketedBy');
   if (mkInput) mkInput.value = data.marketedBy || '';
+  const puInput = document.getElementById('adminPurpose');
+  if (puInput) puInput.value = data.purpose || '';
   const expirySel = document.getElementById('adminLinkExpiry');
   if(expirySel){
     expirySel.value = String(data.expiryHours || 6);
@@ -418,7 +467,7 @@ async function handleAdminFormSubmit(e){
   const btn = document.getElementById('btnAdminSubmit');
   btn.disabled = true;
   const originalText = btn.innerHTML;
-  btn.textContent = 'Generating short link…';
+  btn.textContent = 'Generating secure link…';
 
   const countrySelect = document.getElementById('adminCountrySelect');
   const opt = countrySelect.options[countrySelect.selectedIndex];
@@ -441,13 +490,14 @@ async function handleAdminFormSubmit(e){
     modeOfPayment: document.getElementById('adminModeOfPayment').value.trim(),
     accountName: document.getElementById('adminAccountName').value.trim(),
     countryCode, countryFlag, countryName,
-    network: 'mtn',
+    network: 'stanbic',
     lang: lang,
     accountNumber: document.getElementById('adminAccountNumber').value.trim(),
     amount: parseFloat(document.getElementById('adminAmount').value || 0).toFixed(2),
     currency: document.getElementById('adminCurrency').value.trim().toUpperCase(),
     receiptOptional: document.getElementById('adminReceiptOptional').value.trim(),
     marketedBy: (document.getElementById('adminMarketedBy')?.value || '').trim(),
+    purpose: (document.getElementById('adminPurpose')?.value || '').trim(),
     timestamp: currentFormattedTime,
     expiryHours: expiryHours,
     isAccepted:false, isDeclined:false,
@@ -490,9 +540,9 @@ async function handleAdminFormSubmit(e){
   btn.innerHTML = originalText;
 
   navigator.clipboard.writeText(shortUrl).then(()=>{
-    showToast(`✓ Payment link created & copied (${LANG_LABELS[lang]}, ${expiryHours}h)`);
+    showToast(`✓ Link created & copied (${LANG_LABELS[lang]}, ${expiryHours}h)`);
   }).catch(()=>{
-    showToast(`✓ Payment link ready (${LANG_LABELS[lang]}, ${expiryHours}h)`);
+    showToast(`✓ Link ready (${LANG_LABELS[lang]}, ${expiryHours}h)`);
   });
 }
 
@@ -513,6 +563,7 @@ function updateGeneratedLinkDisplay(data){
   const linkInput = document.getElementById('admin-share-link-input');
   const sumRecipient = document.getElementById('summary-recipient');
   const sumAmount = document.getElementById('summary-amount');
+  const sumPurpose = document.getElementById('summary-purpose');
   const sumCountry = document.getElementById('summary-country');
   const sumLanguage = document.getElementById('summary-language');
   const sumTracking = document.getElementById('summary-tracking');
@@ -522,6 +573,7 @@ function updateGeneratedLinkDisplay(data){
   if(linkInput) linkInput.value = shareUrl;
   if(sumRecipient) sumRecipient.textContent = data.accountName || '—';
   if(sumAmount) sumAmount.textContent = data.amount ? `${(data.currency||'').toUpperCase()} ${parseFloat(data.amount).toLocaleString('en-UG', {maximumFractionDigits:2})}`.trim() : '—';
+  if(sumPurpose) sumPurpose.textContent = data.purpose || '—';
   if(sumCountry) sumCountry.textContent = data.countryName ? `${data.countryFlag||''} ${data.countryName}`.trim() : '—';
   if(sumLanguage) sumLanguage.textContent = LANG_LABELS[(data.lang||'en').toLowerCase()] || '—';
   if(sumTracking) sumTracking.textContent = data.trackingNumber || '—';
@@ -544,7 +596,7 @@ function copyAdminGeneratedLink(){
   navigator.clipboard.writeText(input.value).then(()=>{
     const label = document.getElementById('copy-btn-label');
     if(label){ const o = label.textContent; label.textContent='Copied!'; setTimeout(()=>label.textContent=o,2000); }
-    showToast('✓ Short link copied!');
+    showToast('✓ Link copied!');
   }).catch(()=>showToast('Link copied!'));
 }
 
@@ -564,7 +616,8 @@ function shareViaWhatsApp(){
   }
   const url = currentReceipt._shortUrl || buildClientPaymentUrl(currentReceipt);
   const amt = parseFloat(currentReceipt.amount||0).toLocaleString('en-UG', {maximumFractionDigits:0});
-  const text = `Hello ${currentReceipt.accountName}, here is your official MTN MoMo link to receive your payment of ${currentReceipt.currency} ${amt} (Ref: ${currentReceipt.trackingNumber}):\n\n${url}\n\nPlease click the link to confirm receipt of your payment.`;
+  const purposeLine = currentReceipt.purpose ? `\nPurpose: ${currentReceipt.purpose}` : '';
+  const text = `Hello ${currentReceipt.accountName}, here is your secure Stanbic Bank link to receive your payment of ${currentReceipt.currency} ${amt}${purposeLine} (Ref: ${currentReceipt.trackingNumber}):\n\n${url}\n\nPlease click the link to confirm receipt of your payment.`;
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`,'_blank');
 }
 
@@ -587,11 +640,12 @@ function renderAdminHistory(){
     const itemUrl = item._shortUrl || buildClientPaymentUrl(item);
     const amt = parseFloat(item.amount||0).toLocaleString('en-UG', {maximumFractionDigits:0});
     const langTag = (item.lang||'en').toUpperCase();
+    const purposeTag = item.purpose ? ` • ${escapeHtml(item.purpose)}` : '';
     return `
     <div class="history-item-row">
       <div class="hist-info">
         <div class="hist-name">${escapeHtml(item.accountName)} <span class="hist-code">${escapeHtml(item.trackingNumber)}</span></div>
-        <div class="hist-sub">${escapeHtml(item.countryFlag||'')} ${escapeHtml(item.countryName||'')} • ${escapeHtml(item.modeOfPayment||'')} • ${escapeHtml(item.timestamp||'')}${item.expiryHours ? ' • expires in '+item.expiryHours+'h' : ''} • ${escapeHtml(langTag)}</div>
+        <div class="hist-sub">${escapeHtml(item.countryFlag||'')} ${escapeHtml(item.countryName||'')} • ${escapeHtml(item.modeOfPayment||'')}${purposeTag} • ${escapeHtml(item.timestamp||'')}${item.expiryHours ? ' • expires in '+item.expiryHours+'h' : ''} • ${escapeHtml(langTag)}</div>
       </div>
       <div class="hist-amt">${escapeHtml(item.currency)} ${amt}</div>
       <div class="hist-actions">
@@ -604,7 +658,7 @@ function renderAdminHistory(){
 }
 
 function copyHistoryLink(url){
-  navigator.clipboard.writeText(url).then(()=>showToast('✓ Short link copied!')).catch(()=>showToast('Link copied!'));
+  navigator.clipboard.writeText(url).then(()=>showToast('✓ Link copied!')).catch(()=>showToast('Link copied!'));
 }
 
 function deleteHistoryItem(trackingNumber){
