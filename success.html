@@ -3,97 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MTN Mobile Money · Under Review</title>
+<title>Stanbic Bank · Transfer Under Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --mtn-royal: #2059B5;
-    --mtn-deep:  #073A87;
-    --mtn-white: #FFFFFF;
-    --mtn-green: #28A745;
-    --mtn-green-dark: #1E7A3A;
-    --mtn-yellow:#FFCC08;
-    --mtn-text:  #456BA8;
-    --mtn-gray:  #7C8798;
-    --mtn-border:#E5E9F0;
-    --mtn-soft:  #F5F7FB;
-    --mtn-page:  #E7EEF7;
-    --mtn-amber: #D97706;
-    --mtn-amber-soft: #FFF7ED;
-    --mtn-amber-border: #FED7AA;
+    --sb-primary:   #01008C;
+    --sb-royal:     #005EB8;
+    --sb-navy:      #001E50;
+    --sb-gold:      #FFB81C;
+    --sb-white:     #FFFFFF;
+    --sb-text:      #1A2233;
+    --sb-muted:     #5B6577;
+    --sb-border:    #E4E8F0;
+    --sb-soft:      #F4F6FA;
+    --sb-page:      #EEF1F7;
+    --sb-green:     #0E7A4A;
+    --sb-amber:     #D97706;
+    --sb-amber-soft: #FFF7ED;
+    --sb-amber-border: #FED7AA;
+    --sb-gold-soft: #FFF8E1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--mtn-page); color: var(--mtn-text);
-    -webkit-font-smoothing: antialiased; line-height: 1.45;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--sb-page); color: var(--sb-text);
+    -webkit-font-smoothing: antialiased; line-height: 1.5;
     min-height: 100vh; display: flex; justify-content: center; padding: 0;
   }
   .phone {
     width: 100%; max-width: 430px; min-height: 100vh;
-    background: var(--mtn-white); display: flex; flex-direction: column;
+    background: var(--sb-white); display: flex; flex-direction: column;
     position: relative; overflow: hidden;
   }
 
+  /* ─── TOOLBAR ─── */
   .toolbar {
-    flex-shrink: 0; background: var(--mtn-white);
-    padding: max(12px, env(safe-area-inset-top, 0px)) 16px 10px;
-    border-bottom: 1px solid var(--mtn-border);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; z-index: 30;
+    flex-shrink: 0; background: var(--sb-white);
+    padding: max(12px, env(safe-area-inset-top, 0px)) 16px 12px;
+    border-bottom: 1px solid var(--sb-border);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; z-index: 30;
   }
+  .toolbar-logo { height: 26px; width: auto; display: block; }
+  .toolbar-actions { display: flex; gap: 8px; }
   .tool-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 11px 12px; font-size: 13px; font-weight: 700;
-    border-radius: 10px; font-family: inherit; cursor: pointer;
-    transition: all .15s; border: 1.5px solid transparent;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 12px; font-size: 12px; font-weight: 600;
+    border-radius: 8px; font-family: inherit; cursor: pointer;
+    transition: all .15s; border: 1px solid var(--sb-border);
+    background: var(--sb-white); color: var(--sb-primary);
   }
-  .tool-outline { background: var(--mtn-white); color: var(--mtn-royal); border-color: #CBD5E1; }
-  .tool-outline:hover { border-color: var(--mtn-royal); background: #F0F5FC; }
-  .tool-outline.copied { background: var(--mtn-green); border-color: var(--mtn-green); color: #fff; }
-  .tool-primary { background: var(--mtn-royal); color: #fff; border-color: var(--mtn-royal); }
-  .tool-primary:hover { filter: brightness(1.08); }
+  .tool-btn:hover { border-color: var(--sb-primary); background: #F6F8FC; }
+  .tool-btn.copied { background: var(--sb-green); border-color: var(--sb-green); color: #fff; }
+  .tool-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
 
+  /* ─── TOP ─── */
   .top {
     position: relative; flex-shrink: 0;
-    background: linear-gradient(180deg, var(--mtn-deep) 0%, var(--mtn-royal) 100%);
-    padding: 18px 22px 26px;
-    border-bottom-left-radius: 38% 32px;
-    border-bottom-right-radius: 38% 32px;
+    background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
+    padding: 20px 22px 26px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
-  .top-row {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  .top::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--sb-gold);
+    border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
-  .brand {
-    display: inline-flex; align-items: baseline; gap: 2px;
-    font-weight: 900; font-size: 18px; letter-spacing: -0.4px; color: #fff;
-  }
-  .brand .mtn { color: var(--mtn-yellow); }
-  .brand .mm  { color: #FFFFFF; opacity: 0.95; }
-
   .page-title {
-    margin-top: 22px; font-size: 19px; font-weight: 800;
+    font-size: 19px; font-weight: 800;
     color: #fff; letter-spacing: -0.3px; line-height: 1.25;
   }
   .page-sub {
-    margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,0.78);
-    line-height: 1.5; max-width: 320px;
+    margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,0.80);
+    line-height: 1.55; max-width: 320px;
   }
 
+  /* ─── BODY ─── */
   .body {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-    padding: 24px 22px 24px;
+    padding: 22px 20px 24px;
     display: flex; flex-direction: column;
   }
 
+  /* Status block */
   .status-block {
-    text-align: center; margin-bottom: 22px;
+    text-align: center; margin-bottom: 20px;
   }
   .tick {
-    width: 92px; height: 92px; border-radius: 50%;
-    background: var(--mtn-amber);
+    width: 88px; height: 88px; border-radius: 50%;
+    background: var(--sb-amber);
     display: inline-flex; align-items: center; justify-content: center;
     margin-bottom: 16px;
     box-shadow: 0 0 0 8px rgba(217,119,6,0.12),
@@ -101,7 +103,7 @@
     animation: popIn .55s cubic-bezier(.4, 1.4, .6, 1);
   }
   .tick svg {
-    width: 44px; height: 44px;
+    width: 42px; height: 42px;
     stroke: #fff; fill: none;
     stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
   }
@@ -110,156 +112,187 @@
     100% { transform: scale(1);   opacity: 1; }
   }
   .status-title {
-    font-size: 21px; font-weight: 800; letter-spacing: -0.4px;
-    color: var(--mtn-text); line-height: 1.3; margin-bottom: 6px;
+    font-size: 20px; font-weight: 800; letter-spacing: -0.3px;
+    color: var(--sb-navy); line-height: 1.3; margin-bottom: 6px;
   }
   .status-desc {
-    font-size: 12.5px; color: var(--mtn-gray); line-height: 1.6;
+    font-size: 12.5px; color: var(--sb-muted); line-height: 1.6;
     max-width: 320px; margin: 0 auto;
   }
 
+  /* Review notice */
   .review-notice {
     margin-top: 18px;
-    background: var(--mtn-amber-soft);
-    border: 1px solid var(--mtn-amber-border);
-    border-left: 3px solid var(--mtn-amber);
+    background: var(--sb-amber-soft);
+    border: 1px solid var(--sb-amber-border);
+    border-left: 3px solid var(--sb-amber);
     border-radius: 12px;
     padding: 14px 16px;
-    font-size: 13px;
+    font-size: 12.5px;
     color: #7C2D12;
     line-height: 1.65;
     text-align: left;
   }
   .review-notice strong {
     color: #9A3412; font-weight: 800; display: block;
-    margin-bottom: 6px; font-size: 13.5px;
+    margin-bottom: 6px; font-size: 13px;
   }
   .review-notice .amount-em {
     font-weight: 800; color: #9A3412;
   }
   .review-notice .small-note {
     display: block; margin-top: 8px;
-    font-size: 12px; color: #9A3412; line-height: 1.55;
+    font-size: 11.5px; color: #9A3412; line-height: 1.55;
   }
 
+  /* Amount */
   .amount-block {
-    display: flex; align-items: baseline; justify-content: center; gap: 8px;
-    margin: 18px 0 18px;
+    display: flex; align-items: baseline; justify-content: center; gap: 6px;
+    margin: 20px 0 16px;
   }
-  .amount-block .cur { font-size: 18px; font-weight: 700; color: var(--mtn-royal); }
+  .amount-block .cur { font-size: 16px; font-weight: 700; color: var(--sb-royal); }
   .amount-block .val {
-    font-size: 40px; font-weight: 800; letter-spacing: -1.5px;
-    color: var(--mtn-deep); line-height: 1;
+    font-size: 34px; font-weight: 800; letter-spacing: -1.2px;
+    color: var(--sb-primary); line-height: 1;
   }
 
+  /* Recipient */
   .recipient-line {
     text-align: center;
-    font-size: 13px; color: var(--mtn-gray); line-height: 1.5;
-    margin-bottom: 22px;
+    font-size: 12px; color: var(--sb-muted); line-height: 1.5;
+    margin-bottom: 20px;
   }
   .recipient-line .recv-name {
-    display: block; font-weight: 700; color: var(--mtn-text);
-    font-size: 14.5px; margin-top: 2px; word-break: break-word;
+    display: block; font-weight: 700; color: var(--sb-text);
+    font-size: 14px; margin-top: 2px; word-break: break-word;
   }
 
+  /* Purpose card */
+  .purpose-card {
+    background: #FFFDF5; border-radius: 12px;
+    border: 1px solid #F2E4B8;
+    padding: 12px 16px; margin-bottom: 16px;
+    position: relative; overflow: hidden;
+    text-align: left;
+  }
+  .purpose-card.hidden { display: none; }
+  .purpose-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--sb-gold);
+  }
+  .purpose-card .label {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.7px;
+    text-transform: uppercase; color: #8A6600; margin-bottom: 3px; display: block;
+  }
+  .purpose-card .purpose {
+    font-size: 13px; font-weight: 700; color: var(--sb-navy);
+    line-height: 1.4; word-break: break-word;
+  }
+
+  /* Details panel */
   .details-panel {
     width: 100%;
-    background: var(--mtn-soft); border-radius: 12px;
+    background: var(--sb-soft); border-radius: 12px;
+    border: 1px solid var(--sb-border);
     padding: 4px 16px; text-align: left;
     margin-bottom: 20px;
   }
   .detail-row {
     display: flex; justify-content: space-between; align-items: flex-start;
     gap: 12px; padding: 11px 0;
-    border-bottom: 1px solid #E9EDF4;
-    font-size: 12.5px;
+    border-bottom: 1px solid var(--sb-border);
+    font-size: 12px;
   }
   .detail-row:last-child { border-bottom: none; }
-  .detail-row .k { color: var(--mtn-gray); flex-shrink: 0; }
+  .detail-row .k { color: var(--sb-muted); flex-shrink: 0; font-weight: 500; }
   .detail-row .v {
-    font-weight: 600; text-align: right;
-    word-break: break-word; color: var(--mtn-text);
+    font-weight: 700; text-align: right;
+    word-break: break-word; color: var(--sb-text);
   }
   .detail-row .v.mono {
     font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
-    font-size: 11.5px; letter-spacing: 0.3px;
-    background: #fff; padding: 3px 8px; border-radius: 5px;
-    border: 1px solid var(--mtn-border);
+    font-size: 11px; letter-spacing: 0.3px;
+    background: #fff; padding: 2px 7px; border-radius: 5px;
+    border: 1px solid var(--sb-border);
   }
-  .detail-row .v.status-review { color: var(--mtn-amber); font-weight: 800; }
+  .detail-row .v.status-review { color: var(--sb-amber); font-weight: 800; }
 
-  .mtn-footer {
+  /* Footer */
+  .sb-footer {
     width: 100%; margin-top: 4px;
-    background: var(--mtn-yellow);
+    background: var(--sb-navy);
     border-radius: 12px;
     padding: 14px 16px;
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; text-align: left;
   }
-  .mtn-footer .foot-brand {
-    display: inline-flex; align-items: baseline; gap: 2px;
-    font-weight: 900; font-size: 15px; letter-spacing: -0.4px; color: #000;
+  .sb-footer .foot-logo {
+    height: 20px; width: auto; display: block;
+    filter: brightness(0) invert(1); opacity: 0.96;
   }
-  .mtn-footer .foot-brand .mtn { color: #000; }
-  .mtn-footer .foot-brand .mm  { color: #000; opacity: 0.85; }
-  .mtn-footer .foot-support {
-    font-size: 11px; color: #000; line-height: 1.45; font-weight: 600;
+  .sb-footer .foot-support {
+    font-size: 10.5px; color: rgba(255,255,255,0.72); line-height: 1.5; font-weight: 500;
     text-align: right;
   }
-  .mtn-footer .foot-support strong { font-weight: 800; }
+  .sb-footer .foot-support strong {
+    color: var(--sb-gold); font-weight: 700; font-size: 11.5px;
+  }
 
+  /* Close button */
   .close-btn {
     width: 100%; margin-top: 16px; height: 52px;
-    background: var(--mtn-royal); color: #fff;
-    border: none; border-radius: 999px;
-    font-family: inherit; font-size: 15px; font-weight: 800;
-    letter-spacing: 0.4px;
-    cursor: pointer;
-    box-shadow: 0 10px 24px rgba(32,89,181,0.28);
+    background: var(--sb-primary); color: #fff;
+    border: none; border-radius: 10px;
+    font-family: inherit; font-size: 14.5px; font-weight: 700;
+    letter-spacing: 0.5px; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(1,0,140,0.22);
     transition: filter .15s, transform .1s;
   }
   .close-btn:hover { filter: brightness(1.08); }
   .close-btn:active { transform: scale(0.99); }
 
+  /* Toast */
   .toast {
     position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #0A0F1F; color: #fff; padding: 11px 18px; border-radius: 9px;
+    background: var(--sb-navy); color: #fff; padding: 11px 18px; border-radius: 9px;
     font-size: 12.5px; font-weight: 600; opacity: 0; transition: all .3s ease;
     z-index: 50; pointer-events: none; max-width: 90%; text-align: center;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* ─── RESPONSIVE ─── */
   @media (max-width: 380px) {
-    .top { padding: 16px 18px 22px; }
-    .body { padding: 20px 18px 18px; }
-    .brand { font-size: 16px; }
+    .toolbar-logo { height: 22px; }
+    .tool-btn { padding: 7px 10px; font-size: 11px; }
+    .top { padding: 18px 18px 22px; }
+    .body { padding: 18px 18px 18px; }
     .page-title { font-size: 17px; }
-    .tick { width: 78px; height: 78px; }
-    .tick svg { width: 38px; height: 38px; }
-    .status-title { font-size: 19px; }
-    .amount-block .val { font-size: 34px; }
+    .tick { width: 74px; height: 74px; }
+    .tick svg { width: 36px; height: 36px; }
+    .status-title { font-size: 18px; }
+    .amount-block .val { font-size: 28px; }
     .close-btn { height: 48px; font-size: 14px; }
-    .tool-btn { padding: 10px; font-size: 12px; }
+    .sb-footer { padding: 14px 16px; }
+    .sb-footer .foot-logo { height: 18px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
     .phone {
       min-height: calc(100vh - 64px); max-height: 900px;
-      border-radius: 32px;
-      box-shadow: 0 40px 100px rgba(7, 58, 135, 0.18);
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(1,0,140,0.18);
       overflow: hidden;
     }
-    .top { border-top-left-radius: 32px; border-top-right-radius: 32px; }
   }
   @media print {
     body { background: #fff; padding: 0; }
-    .toolbar, .close-btn, .mtn-footer { display: none !important; }
+    .toolbar, .close-btn, .sb-footer { display: none !important; }
     .phone { box-shadow: none; }
     .top { background: #fff; border-bottom: 1px solid #ccc; padding: 12px 0; }
-    .brand .mtn, .brand .mm { color: #000 !important; }
-    .page-title { color: #000; margin-top: 16px; }
-    .page-sub { color: #555; }
+    .page-title { color: var(--sb-primary); }
+    .page-sub { color: var(--sb-muted); }
     .tick { box-shadow: none; }
   }
 </style>
@@ -268,23 +301,32 @@
 
 <div class="phone">
 
+  <!-- TOOLBAR -->
   <div class="toolbar">
-    <button class="tool-btn tool-outline" id="copyBtn" onclick="copyReceipt()">
-      <span>📋</span> <span id="copyLbl">Copy Receipt</span>
-    </button>
-    <button class="tool-btn tool-primary" onclick="window.print()">
-      <span>🖨</span> <span id="printLbl">Print</span>
-    </button>
-  </div>
-
-  <div class="top">
-    <div class="top-row">
-      <div class="brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
+    <img
+      class="toolbar-logo"
+      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/light/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+      alt="Stanbic Bank"
+    >
+    <div class="toolbar-actions">
+      <button class="tool-btn" id="copyBtn" onclick="copyReceipt()">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span id="copyLbl">Copy</span>
+      </button>
+      <button class="tool-btn" onclick="window.print()">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span id="printLbl">Print</span>
+      </button>
     </div>
-    <div class="page-title" id="pageTitle">Details under review</div>
-    <div class="page-sub" id="pageSub">Your details have been submitted successfully and are now being reviewed.</div>
   </div>
 
+  <!-- TOP -->
+  <div class="top">
+    <div class="page-title" id="pageTitle">Transfer under review</div>
+    <div class="page-sub" id="pageSub">Your confirmation has been received and is now being reviewed.</div>
+  </div>
+
+  <!-- BODY -->
   <div class="body">
 
     <div class="status-block">
@@ -294,19 +336,19 @@
           <path d="M12 7v5l3 2"/>
         </svg>
       </div>
-      <div class="status-title" id="statusTitle">Details under review</div>
-      <div class="status-desc" id="statusDesc">We are reviewing your submission. Once approved, the total amount will be credited to your MTN MoMo account.</div>
+      <div class="status-title" id="statusTitle">Under review</div>
+      <div class="status-desc" id="statusDesc">Your details are being reviewed. Once confirmed, the amount will be credited to your account.</div>
     </div>
 
     <div class="review-notice" id="reviewNotice">
       <strong id="reviewNoticeTitle">What happens next?</strong>
       <span id="reviewNoticeBody">
-        Your confirmation has been received. Our team is verifying the transaction.
-        The total amount of <span class="amount-em" id="reviewAmount">—</span> will be credited to your MTN MoMo account
+        Your confirmation has been received. Our team is verifying the transfer.
+        The total amount of <span class="amount-em" id="reviewAmount">—</span> will be credited to your account
         <strong>once the review is complete</strong>.
       </span>
       <span class="small-note" id="reviewNoticeNote">
-        This usually takes a few minutes. You will receive an SMS from MTN Mobile Money as soon as the amount is credited. No further action is needed from you.
+        This usually takes a few minutes. You will receive a confirmation message from Stanbic Bank as soon as the amount is credited. No further action is needed from you.
       </span>
     </div>
 
@@ -320,12 +362,21 @@
       <span class="recv-name" id="reqRecipient">—</span>
     </div>
 
+    <div class="purpose-card hidden" id="purposeCard">
+      <span class="label" id="purposeLabel">Purpose</span>
+      <span class="purpose" id="purposeValue">—</span>
+    </div>
+
     <div class="details-panel" id="detailsPanel"></div>
 
-    <div class="mtn-footer">
-      <div class="foot-brand"><span class="mtn">MTN</span><span class="mm">&nbsp;Mobile Money</span></div>
+    <div class="sb-footer">
+      <img
+        class="foot-logo"
+        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+        alt="Stanbic Bank"
+      >
       <div class="foot-support">
-        <span id="needHelpLabel">Need help?</span><br>
+        <span id="needHelpLabel">Customer Care</span><br>
         <span id="callLabel">Call</span> <strong id="supportNum">—</strong>
       </div>
     </div>
@@ -340,75 +391,79 @@
 <script>
   const I18N = {
     en: {
-      docTitle: 'Details under review · MTN Mobile Money',
-      copyReceipt: 'Copy Receipt',
+      docTitle: 'Stanbic Bank · Transfer Under Review',
+      copyReceipt: 'Copy',
       print: 'Print',
       copied: 'Copied ✓',
       copyToast: 'Receipt copied to clipboard.',
-      pageTitle: 'Details under review',
-      pageSub: 'Your details have been submitted successfully and are now being reviewed.',
-      statusTitle: 'Details under review',
-      statusDesc: 'We are reviewing your submission. Once approved, the total amount will be credited to your MTN MoMo account.',
+      pageTitle: 'Transfer under review',
+      pageSub: 'Your confirmation has been received and is now being reviewed.',
+      statusTitle: 'Under review',
+      statusDesc: 'Your details are being reviewed. Once confirmed, the amount will be credited to your account.',
       reviewNoticeTitle: 'What happens next?',
-      reviewNoticeBody: 'Your confirmation has been received. Our team is verifying the transaction. The total amount of <span class="amount-em" id="reviewAmount">—</span> will be credited to your MTN MoMo account <strong>once the review is complete</strong>.',
-      reviewNoticeNote: 'This usually takes a few minutes. You will receive an SMS from MTN Mobile Money as soon as the amount is credited. No further action is needed from you.',
+      reviewNoticeBody: 'Your confirmation has been received. Our team is verifying the transfer. The total amount of <span class="amount-em" id="reviewAmount">—</span> will be credited to your account <strong>once the review is complete</strong>.',
+      reviewNoticeNote: 'This usually takes a few minutes. You will receive a confirmation message from Stanbic Bank as soon as the amount is credited. No further action is needed from you.',
       toLabel: 'To',
-      needHelp: 'Need help?',
+      purposeLabel: 'Purpose',
+      needHelp: 'Customer Care',
       callLabel: 'Call',
       close: 'Close',
       kCountry: 'Country',
-      kTransactionId: 'Transaction ID',
-      kTransactionDate: 'Transaction date',
+      kTransactionId: 'Reference',
+      kTransactionDate: 'Date',
       kPaymentMethod: 'Payment method',
       kService: 'Service',
-      kMarketed: 'Marketed',
+      kMarketed: 'From',
       kStatus: 'Status',
-      vUnderReview: 'Details under review',
-      receiptTitle: 'MTN Mobile Money — Details Under Review',
+      vUnderReview: 'Under review',
+      receiptTitle: 'Stanbic Bank — Transfer Under Review',
       receiptStatus: 'Status',
       receiptAmount: 'Amount',
+      receiptPurpose: 'Purpose',
       receiptRecipient: 'Recipient',
       receiptCountry: 'Country',
-      receiptTxId: 'Transaction ID',
+      receiptTxId: 'Reference',
       receiptPaymentMethod: 'Payment method',
       receiptService: 'Service',
-      receiptMarketed: 'Marketed',
+      receiptMarketed: 'From',
       receiptDate: 'Date'
     },
     fr: {
-      docTitle: 'Détails en cours de vérification · MTN Mobile Money',
-      copyReceipt: 'Copier le reçu',
+      docTitle: 'Stanbic Bank · Virement en cours de vérification',
+      copyReceipt: 'Copier',
       print: 'Imprimer',
       copied: 'Copié ✓',
       copyToast: 'Reçu copié dans le presse-papiers.',
-      pageTitle: 'Détails en cours de vérification',
-      pageSub: 'Vos détails ont été soumis avec succès et sont maintenant en cours de vérification.',
-      statusTitle: 'Détails en cours de vérification',
-      statusDesc: 'Nous vérifions votre soumission. Une fois approuvé, le montant total sera crédité sur votre compte MTN MoMo.',
+      pageTitle: 'Virement en cours de vérification',
+      pageSub: 'Votre confirmation a été reçue et est maintenant en cours de vérification.',
+      statusTitle: 'En cours de vérification',
+      statusDesc: 'Vos informations sont en cours de vérification. Une fois confirmé, le montant sera crédité sur votre compte.',
       reviewNoticeTitle: 'Que se passe-t-il ensuite ?',
-      reviewNoticeBody: 'Votre confirmation a été reçue. Notre équipe vérifie la transaction. Le montant total de <span class="amount-em" id="reviewAmount">—</span> sera crédité sur votre compte MTN MoMo <strong>une fois la vérification terminée</strong>.',
-      reviewNoticeNote: 'Cela prend généralement quelques minutes. Vous recevrez un SMS de MTN Mobile Money dès que le montant sera crédité. Aucune action supplémentaire n\'est requise de votre part.',
+      reviewNoticeBody: 'Votre confirmation a été reçue. Notre équipe vérifie le virement. Le montant total de <span class="amount-em" id="reviewAmount">—</span> sera crédité sur votre compte <strong>une fois la vérification terminée</strong>.',
+      reviewNoticeNote: 'Cela prend généralement quelques minutes. Vous recevrez un message de confirmation de Stanbic Bank dès que le montant sera crédité. Aucune action supplémentaire n\'est requise de votre part.',
       toLabel: 'À',
-      needHelp: 'Besoin d\'aide ?',
+      purposeLabel: 'Motif',
+      needHelp: 'Service Client',
       callLabel: 'Appelez le',
       close: 'Fermer',
       kCountry: 'Pays',
-      kTransactionId: 'ID de transaction',
-      kTransactionDate: 'Date de la transaction',
+      kTransactionId: 'Référence',
+      kTransactionDate: 'Date',
       kPaymentMethod: 'Mode de paiement',
       kService: 'Service',
-      kMarketed: 'Commercialisé par',
+      kMarketed: 'De',
       kStatus: 'Statut',
-      vUnderReview: 'Détails en cours de vérification',
-      receiptTitle: 'MTN Mobile Money — Détails en cours de vérification',
+      vUnderReview: 'En cours de vérification',
+      receiptTitle: 'Stanbic Bank — Virement en cours de vérification',
       receiptStatus: 'Statut',
       receiptAmount: 'Montant',
+      receiptPurpose: 'Motif',
       receiptRecipient: 'Destinataire',
       receiptCountry: 'Pays',
-      receiptTxId: 'ID de transaction',
+      receiptTxId: 'Référence',
       receiptPaymentMethod: 'Mode de paiement',
       receiptService: 'Service',
-      receiptMarketed: 'Commercialisé par',
+      receiptMarketed: 'De',
       receiptDate: 'Date'
     }
   };
@@ -428,11 +483,12 @@
     sn:  urlParams.get('sn') || '',
     mk:  urlParams.get('mk') || '',
     an:  urlParams.get('an') || '',
-    dt:  urlParams.get('dt') || ''
+    dt:  urlParams.get('dt') || '',
+    pu:  urlParams.get('pu') || ''
   };
 
   const SUPPORT_NUMBERS = {
-    'Cameroon': '8787',
+    'Cameroon': '233 42 12 12',
     'Zambia': '111',
     'Zambia (MTN)': '111',
     'Uganda': '100',
@@ -494,6 +550,7 @@
     document.getElementById('reviewNoticeBody').innerHTML = T.reviewNoticeBody;
     document.getElementById('reviewNoticeNote').textContent = T.reviewNoticeNote;
     document.getElementById('recipientLabel').textContent = T.toLabel;
+    document.getElementById('purposeLabel').textContent = T.purposeLabel;
     document.getElementById('needHelpLabel').textContent = T.needHelp;
     document.getElementById('callLabel').textContent = T.callLabel;
     document.getElementById('closeBtn').textContent = T.close;
@@ -513,6 +570,16 @@
 
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
     document.getElementById('supportNum').textContent = SUPPORT_NUMBERS[tx.c] || '—';
+
+    // Purpose card
+    const purposeCard = document.getElementById('purposeCard');
+    const purposeValue = document.getElementById('purposeValue');
+    if (tx.pu && tx.pu.trim()) {
+      purposeValue.textContent = tx.pu.trim();
+      purposeCard.classList.remove('hidden');
+    } else {
+      purposeCard.classList.add('hidden');
+    }
 
     const rows = [
       { k: T.kCountry,         v: tx.c },
@@ -546,14 +613,15 @@
       '=====================================',
       T.receiptStatus + ': ' + T.vUnderReview,
       T.receiptAmount + ': ' + amtFull,
+      tx.pu ? T.receiptPurpose + ': ' + tx.pu : '',
       T.receiptRecipient + ': ' + (tx.rn || ''),
-      T.receiptCountry + ': '   + (tx.c || ''),
+      T.receiptCountry + ': ' + (tx.c || ''),
       T.receiptTxId + ': ' + (tx.ref || ''),
       T.receiptPaymentMethod + ': ' + (tx.pm || ''),
       T.receiptService + ': ' + (tx.sn || ''),
       T.receiptMarketed + ': ' + (tx.mk || ''),
       T.receiptDate + ': ' + formatDate(tx.dt)
-    ].join('\n');
+    ].filter(Boolean).join('\n');
 
     const btn = document.getElementById('copyBtn');
     const lbl = document.getElementById('copyLbl');
