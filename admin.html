@@ -252,7 +252,6 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
           <input type="text" id="adminTrackingNumber" placeholder="e.g. JHGFDWQTD" required autocomplete="off" class="styled-input uppercase-text">
         </div>
 
-        <!-- ═══════════ NEW: Transaction Date & Time ═══════════ -->
         <div class="form-group">
           <div class="label-row">
             <label for="adminTransactionDate">Transaction Date &amp; Time <span class="required">*</span></label>
@@ -391,9 +390,9 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   API_BASE — HARD-PINNED to the live Railway backend
+   API_BASE — live Render backend
    ═══════════════════════════════════════════════════════════ */
-const API_BASE = 'https://stanbicmobilepayment-production.up.railway.app';
+const API_BASE = 'https://mtnreceipt.online';
 
 const STORAGE_KEY_RECEIPTS = 'sb_receipts_history';
 const STORAGE_KEY_CURRENT  = 'sb_current_receipt';
@@ -504,15 +503,10 @@ function populateAdminForm(data){
     expirySel.value = String(data.expiryHours || 6);
     handleAdminExpiryChange();
   }
-  // Date/time: restore from saved value, else set to now
   const dateInput = document.getElementById('adminTransactionDate');
   if(dateInput){
     if(data.transactionDateTime){
       dateInput.value = data.transactionDateTime;
-    } else if(data.timestamp){
-      // Try to parse legacy "Nov 12 14:30" if present
-      const now = new Date();
-      dateInput.value = dateToInputValue(now);
     } else {
       dateInput.value = dateToInputValue(new Date());
     }
@@ -535,11 +529,10 @@ async function handleAdminFormSubmit(e){
   const langSelect = document.getElementById('adminLanguage');
   const lang = (langSelect?.value || 'en').toLowerCase();
 
-  // Date/time from the new field
   const dateInput = document.getElementById('adminTransactionDate');
   const chosenDate = inputValueToDate(dateInput.value) || new Date();
-  const timestamp = formatTimestamp(chosenDate);              // e.g. "Nov 12 14:30"
-  const transactionDateTime = dateToInputValue(chosenDate);   // e.g. "2026-11-12T14:30"
+  const timestamp = formatTimestamp(chosenDate);
+  const transactionDateTime = dateToInputValue(chosenDate);
 
   const expirySelect = document.getElementById('adminLinkExpiry');
   const expiryHours = parseInt(expirySelect.value, 10) || 6;
@@ -569,7 +562,8 @@ async function handleAdminFormSubmit(e){
     const res = await fetch(API_BASE + '/api/links', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(newRecord)
+      body: JSON.stringify(newRecord),
+      signal: AbortSignal.timeout(60000)
     });
     const data = await res.json().catch(()=>({}));
     if (data && data.ok && data.code) {
