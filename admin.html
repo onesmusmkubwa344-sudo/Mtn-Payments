@@ -252,6 +252,16 @@ label{display:block;font-size:12.5px;font-weight:600;color:#2A3547;margin-bottom
           <input type="text" id="adminTrackingNumber" placeholder="e.g. JHGFDWQTD" required autocomplete="off" class="styled-input uppercase-text">
         </div>
 
+        <!-- ═══════════ NEW: Transaction Date & Time ═══════════ -->
+        <div class="form-group">
+          <div class="label-row">
+            <label for="adminTransactionDate">Transaction Date &amp; Time <span class="required">*</span></label>
+            <button type="button" class="field-helper-btn" onclick="setAdminDateToNow()">Set to now</button>
+          </div>
+          <input type="datetime-local" id="adminTransactionDate" required class="styled-input">
+          <span class="field-hint">This is the date and time the client will see on the receipt. Default is right now.</span>
+        </div>
+
         <div class="form-group">
           <label for="adminModeOfPayment">Payment Method <span class="required">*</span></label>
           <input type="text" id="adminModeOfPayment" placeholder="e.g. Bank Transfer / Escrow" required autocomplete="off" class="styled-input">
@@ -391,12 +401,37 @@ const STORAGE_KEY_CURRENT  = 'sb_current_receipt';
 const DEFAULT_SAMPLE_DATA = {
   trackingNumber:'', modeOfPayment:'', accountName:'', countryCode:'', countryFlag:'',
   countryName:'', accountNumber:'', amount:'', currency:'', receiptOptional:'',
-  marketedBy:'', purpose:'', lang:'en', timestamp:'', isAccepted:false, isDeclined:false, expiryHours: 6
+  marketedBy:'', purpose:'', lang:'en', timestamp:'', transactionDateTime:'',
+  isAccepted:false, isDeclined:false, expiryHours: 6
 };
 
 const LANG_LABELS = { en: 'English', fr: 'Français' };
 
 let currentReceipt = { ...DEFAULT_SAMPLE_DATA };
+
+function pad2(n){ return String(n).padStart(2, '0'); }
+
+function dateToInputValue(d){
+  return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()) +
+         'T' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+}
+
+function inputValueToDate(v){
+  if(!v) return null;
+  const d = new Date(v);
+  return isFinite(d.getTime()) ? d : null;
+}
+
+function formatTimestamp(d){
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return months[d.getMonth()] + ' ' + d.getDate() + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+}
+
+function setAdminDateToNow(){
+  const inp = document.getElementById('adminTransactionDate');
+  if(inp) inp.value = dateToInputValue(new Date());
+  showToast('Set to now');
+}
 
 function initAdminPage(){
   const saved = localStorage.getItem(STORAGE_KEY_CURRENT);
@@ -469,6 +504,19 @@ function populateAdminForm(data){
     expirySel.value = String(data.expiryHours || 6);
     handleAdminExpiryChange();
   }
+  // Date/time: restore from saved value, else set to now
+  const dateInput = document.getElementById('adminTransactionDate');
+  if(dateInput){
+    if(data.transactionDateTime){
+      dateInput.value = data.transactionDateTime;
+    } else if(data.timestamp){
+      // Try to parse legacy "Nov 12 14:30" if present
+      const now = new Date();
+      dateInput.value = dateToInputValue(now);
+    } else {
+      dateInput.value = dateToInputValue(new Date());
+    }
+  }
 }
 
 async function handleAdminFormSubmit(e){
@@ -486,11 +534,12 @@ async function handleAdminFormSubmit(e){
   const countryName = opt.getAttribute('data-country') || '';
   const langSelect = document.getElementById('adminLanguage');
   const lang = (langSelect?.value || 'en').toLowerCase();
-  const now = new Date();
-  const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const hours = String(now.getHours()).padStart(2,'0');
-  const mins = String(now.getMinutes()).padStart(2,'0');
-  const currentFormattedTime = `${monthNames[now.getMonth()]} ${now.getDate()} ${hours}:${mins}`;
+
+  // Date/time from the new field
+  const dateInput = document.getElementById('adminTransactionDate');
+  const chosenDate = inputValueToDate(dateInput.value) || new Date();
+  const timestamp = formatTimestamp(chosenDate);              // e.g. "Nov 12 14:30"
+  const transactionDateTime = dateToInputValue(chosenDate);   // e.g. "2026-11-12T14:30"
 
   const expirySelect = document.getElementById('adminLinkExpiry');
   const expiryHours = parseInt(expirySelect.value, 10) || 6;
@@ -508,7 +557,8 @@ async function handleAdminFormSubmit(e){
     receiptOptional: document.getElementById('adminReceiptOptional').value.trim(),
     marketedBy: (document.getElementById('adminMarketedBy')?.value || '').trim(),
     purpose: (document.getElementById('adminPurpose')?.value || '').trim(),
-    timestamp: currentFormattedTime,
+    timestamp: timestamp,
+    transactionDateTime: transactionDateTime,
     expiryHours: expiryHours,
     isAccepted:false, isDeclined:false,
     createdAt: new Date().toISOString()
@@ -635,6 +685,8 @@ function loadSampleAdminData(){
   currentReceipt = {...DEFAULT_SAMPLE_DATA};
   populateAdminForm(currentReceipt);
   updateGeneratedLinkDisplay(currentReceipt);
+  const dateInput = document.getElementById('adminTransactionDate');
+  if(dateInput) dateInput.value = dateToInputValue(new Date());
   showToast('Form cleared.');
 }
 
@@ -719,6 +771,10 @@ function escapeHtml(str){
 
 document.addEventListener('DOMContentLoaded', () => {
   initAdminPage();
+  const dateInput = document.getElementById('adminTransactionDate');
+  if(dateInput && !dateInput.value){
+    dateInput.value = dateToInputValue(new Date());
+  }
   const sel = document.getElementById('adminLinkExpiry');
   if(sel) sel.addEventListener('change', handleAdminExpiryChange);
 });
