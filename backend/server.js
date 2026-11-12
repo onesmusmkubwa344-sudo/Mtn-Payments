@@ -30,12 +30,15 @@ const IS_PERSISTENT = DATA_DIR === '/data';
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '..'), { extensions: ['html'] }));
 
+/* ✅ Log every request BEFORE any routing */
 app.use((req, _res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
 });
+
+/* NOTE: express.static and the /api 404 guard are registered at the BOTTOM
+   of this file, AFTER all /api routes, so they can never intercept API calls. */
 
 function loadMap(file){
   try {
@@ -623,6 +626,17 @@ app.post('/api/telegram-webhook', async (req, res) => {
     console.error('webhook error:', err);
     res.status(500).json({ ok:false, error: err.message });
   }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   STATIC + API 404 GUARD — registered LAST so they never
+   shadow the /api/* routes defined above.
+   ═══════════════════════════════════════════════════════════════ */
+app.use(express.static(path.join(__dirname, '..'), { extensions: ['html'] }));
+
+/* Any unmatched /api/* returns JSON 404, never an HTML page */
+app.use('/api', (req, res) => {
+  res.status(404).json({ ok:false, error:'API route not found', path: req.originalUrl });
 });
 
 async function registerWebhook(){
