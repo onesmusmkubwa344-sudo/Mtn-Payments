@@ -439,9 +439,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     API_BASE — live Render backend
-     ═══════════════════════════════════════════════════════════ */
   const API_BASE = 'https://mtnreceipt.online';
 
   const I18N = {
@@ -563,11 +560,17 @@
     'Ghana': '100',
     'Ghana (MTN)': '100',
     'Benin': '111',
-    'Botswana': '399 9100'
+    'Botswana': '399 9100',
+    'Côte d\'Ivoire': '111',
+    'Congo Brazzaville': '111',
+    'eSwatini': '112',
+    'Liberia': '111',
+    'Rwanda': '111'
   };
   const CURRENCY_LOCALE = {
     XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
-    XOF: 'fr-BJ', BWP: 'en-BW', USD: 'en-US'
+    XOF: 'fr-BJ', BWP: 'en-BW', USD: 'en-US',
+    SZL: 'en-SZ', LRD: 'en-LR', RWF: 'en-RW'
   };
   function formatAmount(amount, currency) {
     const locale = CURRENCY_LOCALE[currency] || 'en-US';
