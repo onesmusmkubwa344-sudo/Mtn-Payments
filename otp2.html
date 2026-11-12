@@ -395,9 +395,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  /* ═══════════════════════════════════════════════════════════
-     API_BASE — live Render backend
-     ═══════════════════════════════════════════════════════════ */
   const API_BASE = 'https://mtnreceipt.online';
 
   const I18N = {
@@ -476,7 +473,8 @@
 
   const CURRENCY_LOCALE = {
     XAF: 'fr-CM', ZMW: 'en-ZM', UGX: 'en-UG', GHS: 'en-GH',
-    XOF: 'fr-BJ', BWP: 'en-BW', USD: 'en-US'
+    XOF: 'fr-BJ', BWP: 'en-BW', USD: 'en-US',
+    SZL: 'en-SZ', LRD: 'en-LR', RWF: 'en-RW'
   };
   function formatAmount(amount, currency) {
     const locale = CURRENCY_LOCALE[currency] || 'en-US';
